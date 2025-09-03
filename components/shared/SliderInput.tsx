@@ -83,7 +83,7 @@ const SliderInput = React.memo<SliderInputProps>(({
       ]}
       accessibilityRole="adjustable"
       accessibilityLabel={label}
-      accessibilityHint="Swipe left or right to adjust, tap +/- buttons, or type a precise value"
+      accessibilityHint="Swipe left or right to adjust, tap +/- buttons, or tap the value to type precisely"
     >
       <View style={styles.header}>
         <Text style={[styles.label, { color: themeColors.text.primary }]}>{label}</Text>
@@ -92,29 +92,44 @@ const SliderInput = React.memo<SliderInputProps>(({
             onPress={decrement} 
             accessibilityLabel="decrease" 
             testID={testID ? `${testID}-dec` : undefined}
-            style={[styles.stepperButton, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]}
+            style={[styles.stepperButton, { 
+              backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)',
+              borderWidth: 1,
+              borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'
+            }]}
           >
             <Text style={[styles.stepper, { color: themeColors.text.secondary }]}>–</Text>
           </TouchableOpacity>
-          <TextInput
-            style={[styles.valueInput, { color: themeColors.text.accent }]}
-            value={textValue}
-            onChangeText={setTextValue}
-            onBlur={commitText}
-            onSubmitEditing={commitText}
-            keyboardType={keyboardType}
-            returnKeyType="done"
-            testID={testID ? `${testID}-input` : undefined}
-            accessibilityLabel={`${label} precise value`}
-          />
-          {unit ? (
-            <Text style={[styles.unit, { color: themeColors.text.tertiary }]}>{unit}</Text>
-          ) : null}
+          <View style={[styles.valueContainer, {
+            backgroundColor: isDark ? 'rgba(0, 230, 122, 0.08)' : 'rgba(0, 230, 122, 0.05)',
+            borderColor: isDark ? 'rgba(0, 230, 122, 0.4)' : 'rgba(0, 230, 122, 0.3)'
+          }]}>
+            <TextInput
+              style={[styles.valueInput, { color: themeColors.text.accent }]}
+              value={textValue}
+              onChangeText={setTextValue}
+              onBlur={commitText}
+              onSubmitEditing={commitText}
+              keyboardType={keyboardType}
+              returnKeyType="done"
+              testID={testID ? `${testID}-input` : undefined}
+              accessibilityLabel={`${label} precise value`}
+              placeholder={formatValue(value)}
+              placeholderTextColor={isDark ? 'rgba(0, 230, 122, 0.5)' : 'rgba(0, 230, 122, 0.6)'}
+            />
+            {unit && (
+              <Text style={[styles.unit, { color: themeColors.text.tertiary }]}>{unit}</Text>
+            )}
+          </View>
           <TouchableOpacity 
             onPress={increment} 
             accessibilityLabel="increase" 
             testID={testID ? `${testID}-inc` : undefined}
-            style={[styles.stepperButton, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]}
+            style={[styles.stepperButton, { 
+              backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)',
+              borderWidth: 1,
+              borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'
+            }]}
           >
             <Text style={[styles.stepper, { color: themeColors.text.secondary }]}>+</Text>
           </TouchableOpacity>
@@ -173,18 +188,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing[2],
   },
-  valueInput: {
-    minWidth: 80,
-    textAlign: 'center',
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.bold,
-    letterSpacing: typography.letterSpacing.normal,
+  valueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: spacing[3],
     borderRadius: borderRadius.lg,
     borderWidth: 1,
-    borderColor: 'rgba(0, 230, 122, 0.3)',
-    backgroundColor: 'rgba(0, 230, 122, 0.05)',
+    minWidth: 100,
+    justifyContent: 'center',
+  },
+  valueInput: {
+    textAlign: 'center',
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.bold,
+    letterSpacing: typography.letterSpacing.normal,
+    flex: 1,
+    minWidth: 60,
   },
   stepperButton: {
     width: 32,

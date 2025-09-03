@@ -147,25 +147,34 @@ export default function CarLoanCalculator() {
             >
               <View style={styles.profitHeaderContent}>
                 <View style={[styles.logoContainer, {
-                  backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.95)',
-                  borderRadius: 80,
-                  padding: 16,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 8 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 20,
-                  elevation: 15,
-                  borderWidth: 2,
-                  borderColor: isDark ? 'rgba(102, 126, 234, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+                  backgroundColor: isDark ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.95)',
+                  borderRadius: 70,
+                  padding: 20,
+                  shadowColor: isDark ? '#667EEA' : '#000',
+                  shadowOffset: { width: 0, height: 10 },
+                  shadowOpacity: isDark ? 0.4 : 0.25,
+                  shadowRadius: 24,
+                  elevation: 18,
+                  borderWidth: 3,
+                  borderColor: isDark ? 'rgba(102, 126, 234, 0.4)' : 'rgba(0, 0, 0, 0.08)',
                 }]}>
                   <SageMascot 
-                    size={100} 
+                    size={80} 
                     emotion="focused" 
                     premium={hasPremiumAccess}
                     animated={true}
                     testID="car-loan-mascot"
                     imageUrl={MASCOT_URL}
                   />
+                </View>
+                <View style={styles.headerTextContainer}>
+                  <Text style={[styles.headerTitle, {
+                    color: '#FFFFFF',
+                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+                    textShadowOffset: { width: 0, height: 2 },
+                    textShadowRadius: 4,
+                  }]}>Auto Loan Calculator</Text>
+                  <Text style={styles.headerSubtitle}>Smart vehicle financing analysis</Text>
                 </View>
               </View>
             </LinearGradient>
@@ -571,6 +580,24 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  headerTextContainer: {
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    letterSpacing: -0.3,
+    lineHeight: 28,
+    marginBottom: 4,
+  },
+  headerSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontWeight: '500',
+    letterSpacing: 0.2,
+    lineHeight: 20,
   },
   headerIcon: {
     width: 64,

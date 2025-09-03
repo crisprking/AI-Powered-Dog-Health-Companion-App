@@ -80,19 +80,19 @@ export default function WelcomeScreen() {
           
           <View style={styles.brandContainer}>
             <View style={[styles.logoBackdrop, {
-              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.9)',
+              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.95)',
               borderRadius: 100,
-              padding: 20,
+              padding: 24,
               shadowColor: isDark ? '#00E67A' : '#000',
-              shadowOffset: { width: 0, height: 8 },
-              shadowOpacity: isDark ? 0.3 : 0.15,
-              shadowRadius: 20,
-              elevation: 12,
-              borderWidth: 2,
-              borderColor: isDark ? 'rgba(0, 230, 122, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+              shadowOffset: { width: 0, height: 12 },
+              shadowOpacity: isDark ? 0.4 : 0.2,
+              shadowRadius: 24,
+              elevation: 16,
+              borderWidth: 3,
+              borderColor: isDark ? 'rgba(0, 230, 122, 0.4)' : 'rgba(0, 0, 0, 0.08)',
             }]}>
               <SageMascot 
-                size={140} 
+                size={120} 
                 emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
                 premium={hasPremiumAccess}
                 animated={true}
@@ -102,10 +102,10 @@ export default function WelcomeScreen() {
             </View>
             <View style={styles.appNameContainer}>
               <Text style={[styles.appName, { 
-                color: '#000000',
-                textShadowColor: 'rgba(255, 255, 255, 0.8)',
+                color: isDark ? '#FFFFFF' : '#000000',
+                textShadowColor: isDark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
                 textShadowOffset: { width: 0, height: 2 },
-                textShadowRadius: 4,
+                textShadowRadius: 6,
                 fontWeight: '900',
               }]}>
                 {APP_NAME}
@@ -148,7 +148,7 @@ export default function WelcomeScreen() {
             fontWeight: typography.weight.medium,
             lineHeight: typography.size.base * typography.lineHeight.normal,
           }]}>
-            Swipe horizontally • Tap to calculate • Type for precision
+            Swipe to explore • Tap to calculate • Long press for quick input
           </Text>
           <HorizontalCalculators onOpen={handleCalculatorPress} />
         </View>

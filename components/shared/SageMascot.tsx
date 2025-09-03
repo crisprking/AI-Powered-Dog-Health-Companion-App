@@ -26,17 +26,19 @@ const SageMascot: React.FC<SageMascotProps> = ({
   useEffect(() => {
     if (!animated) return;
 
-    // Fixed animation system - separate native driver usage for different properties
+    // Optimized animation system with proper cleanup
+    const animations: Animated.CompositeAnimation[] = [];
+
     const bounceAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(bounceAnim, {
-          toValue: -2,
-          duration: 2500,
-          useNativeDriver: true, // Transform animations can use native driver
+          toValue: -3,
+          duration: 2000,
+          useNativeDriver: true,
         }),
         Animated.timing(bounceAnim, {
           toValue: 0,
-          duration: 2500,
+          duration: 2000,
           useNativeDriver: true,
         }),
       ])
@@ -45,13 +47,13 @@ const SageMascot: React.FC<SageMascotProps> = ({
     const scaleAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(scaleAnim, {
-          toValue: 1.015,
-          duration: 3500,
-          useNativeDriver: true, // Scale can use native driver
+          toValue: 1.02,
+          duration: 3000,
+          useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
           toValue: 1,
-          duration: 3500,
+          duration: 3000,
           useNativeDriver: true,
         }),
       ])
@@ -60,27 +62,27 @@ const SageMascot: React.FC<SageMascotProps> = ({
     const blinkAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(blinkAnim, {
-          toValue: 0.85,
-          duration: 600,
-          useNativeDriver: true, // Opacity can use native driver
+          toValue: 0.9,
+          duration: 500,
+          useNativeDriver: true,
         }),
         Animated.timing(blinkAnim, {
           toValue: 1,
-          duration: 600,
+          duration: 500,
           useNativeDriver: true,
         }),
-        Animated.delay(800),
+        Animated.delay(1200),
       ])
     );
 
+    animations.push(bounceAnimation, scaleAnimation, blinkAnimation);
+    
     bounceAnimation.start();
     scaleAnimation.start();
     blinkAnimation.start();
 
     return () => {
-      bounceAnimation.stop();
-      scaleAnimation.stop();
-      blinkAnimation.stop();
+      animations.forEach(anim => anim.stop());
     };
   }, [animated, bounceAnim, scaleAnim, blinkAnim]);
 

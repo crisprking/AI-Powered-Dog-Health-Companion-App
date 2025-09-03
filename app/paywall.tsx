@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView } from '
 import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, X, Sparkles, Check, Star, Shield, Zap } from 'lucide-react-native';
+import SageMascot from '@/components/shared/SageMascot';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
 import { useSubscription, useSubscriptionStatusText } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -51,9 +52,13 @@ function PaywallScreen() {
       >
         <View style={styles.heroContent}>
           <View style={styles.mascotContainer}>
-            <View style={styles.logoIcon}>
-              <Crown size={48} color="#FFF" />
-            </View>
+            <SageMascot 
+              size={96} 
+              emotion="celebrating" 
+              premium={isPro}
+              animated={true}
+              testID="paywall-mascot"
+            />
           </View>
           
           <Text style={styles.title}>
@@ -222,17 +227,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       },
       mascotContainer: {
-        marginBottom: spacing[4],
-      },
-      logoIcon: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        backgroundColor: 'rgba(0, 230, 122, 0.2)',
+        marginBottom: spacing[6],
         alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 2,
-        borderColor: 'rgba(0, 230, 122, 0.3)',
       },
       title: {
         fontSize: typography.size['4xl'],
@@ -279,14 +275,16 @@ const styles = StyleSheet.create({
         fontSize: typography.size['3xl'],
         fontWeight: typography.weight.bold,
         textAlign: 'center',
-        marginBottom: spacing[2],
+        marginBottom: spacing[3],
         letterSpacing: typography.letterSpacing.tight,
+        lineHeight: typography.lineHeight.snug,
       },
       valueSubtitle: {
-        fontSize: typography.size.base,
+        fontSize: typography.size.lg,
         textAlign: 'center',
         lineHeight: typography.lineHeight.relaxed,
         fontWeight: typography.weight.medium,
+        opacity: 0.9,
       },
       featuresSection: {
         gap: spacing[4],
@@ -316,17 +314,19 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       featureTitle: {
-        fontSize: typography.size.lg,
+        fontSize: typography.size.xl,
         fontWeight: typography.weight.bold,
         color: colors.text.primary,
-        marginBottom: spacing[1],
+        marginBottom: spacing[2],
         letterSpacing: typography.letterSpacing.tight,
+        lineHeight: typography.lineHeight.snug,
       },
       featureDescription: {
-        fontSize: typography.size.sm,
+        fontSize: typography.size.base,
         color: colors.text.secondary,
-        lineHeight: typography.lineHeight.snug,
+        lineHeight: typography.lineHeight.relaxed,
         fontWeight: typography.weight.medium,
+        opacity: 0.9,
       },
       socialProof: {
         padding: spacing[6],
@@ -405,9 +405,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       pricingTitle: {
-        fontSize: typography.size['2xl'],
+        fontSize: typography.size['3xl'],
         fontWeight: typography.weight.bold,
         letterSpacing: typography.letterSpacing.tight,
+        lineHeight: typography.lineHeight.snug,
       },
       pricingPrice: {
         flexDirection: 'row',
@@ -425,10 +426,12 @@ const styles = StyleSheet.create({
         marginLeft: spacing[1],
       },
       pricingDescription: {
-        fontSize: typography.size.base,
+        fontSize: typography.size.lg,
         textAlign: 'center',
         marginBottom: spacing[6],
         fontWeight: typography.weight.medium,
+        lineHeight: typography.lineHeight.relaxed,
+        opacity: 0.95,
       },
       ctaButton: {
         backgroundColor: 'rgba(255,255,255,0.2)',
@@ -444,10 +447,11 @@ const styles = StyleSheet.create({
         elevation: colors.shadow.sm.elevation,
       },
       ctaButtonText: {
-        fontSize: typography.size.lg,
+        fontSize: typography.size.xl,
         fontWeight: typography.weight.bold,
         textAlign: 'center',
         letterSpacing: typography.letterSpacing.wide,
+        lineHeight: typography.lineHeight.snug,
       },
       restoreButton: {
         alignItems: 'center',

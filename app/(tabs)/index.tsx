@@ -103,7 +103,7 @@ export default function WelcomeScreen() {
           </LinearGradient>
         </View>
 
-        {/* Calculator Cards - iOS Optimized */}
+        {/* Calculator Cards - Perfect Text Readability */}
         <View style={styles.calculatorSection}>
           <TouchableOpacity
             style={[styles.calculatorCard, { backgroundColor: themeColors.surface.secondary }]}
@@ -406,16 +406,17 @@ const styles = StyleSheet.create({
     paddingRight: spacing[2],
   },
   calculatorTitle: {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.semibold,
-    marginBottom: spacing[1],
-    lineHeight: 22,
+    fontSize: typography.size.xl,
+    fontWeight: typography.weight.bold,
+    marginBottom: spacing[2],
+    lineHeight: typography.lineHeight.snug,
+    letterSpacing: typography.letterSpacing.tight,
   },
   calculatorSubtitle: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.regular,
-    lineHeight: 18,
-    opacity: 0.8,
+    fontSize: typography.size.base,
+    fontWeight: typography.weight.medium,
+    lineHeight: typography.lineHeight.relaxed,
+    opacity: 0.85,
   },
   calculatorArrow: {
     width: 32,
@@ -458,15 +459,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   premiumTitle: {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.semibold,
-    marginBottom: spacing[1],
+    fontSize: typography.size.xl,
+    fontWeight: typography.weight.bold,
+    marginBottom: spacing[2],
     lineHeight: typography.lineHeight.snug,
+    letterSpacing: typography.letterSpacing.tight,
   },
   premiumDescription: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.regular,
-    lineHeight: typography.lineHeight.normal,
+    fontSize: typography.size.base,
+    fontWeight: typography.weight.medium,
+    lineHeight: typography.lineHeight.relaxed,
+    opacity: 0.9,
   },
   premiumButton: {
     flexDirection: 'row',
@@ -489,12 +492,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[6],
   },
   featuresTitle: {
-    fontSize: typography.size.xl, // Smaller, less overwhelming
-    fontWeight: typography.weight.semibold, // Less aggressive
-    color: '#F5F5F5', // Softer white
+    fontSize: typography.size['2xl'],
+    fontWeight: typography.weight.bold,
     textAlign: 'center',
-    marginBottom: spacing[8], // More space
-    letterSpacing: typography.letterSpacing.normal, // More readable
+    marginBottom: spacing[8],
+    letterSpacing: typography.letterSpacing.tight,
     lineHeight: typography.lineHeight.snug,
   },
   featuresList: {
@@ -515,11 +517,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   featureText: {
-    fontSize: typography.size.sm, // Smaller, easier to read
-    color: 'rgba(192,192,192,0.9)', // Warmer, softer
-    fontWeight: typography.weight.regular, // Lighter weight
+    fontSize: typography.size.base,
+    fontWeight: typography.weight.medium,
     flex: 1,
-    lineHeight: typography.lineHeight.relaxed, // Better spacing
+    lineHeight: typography.lineHeight.relaxed,
+    opacity: 0.9,
   },
   featureTextDisabled: {
     color: '#999',
@@ -538,11 +540,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing[4],
   },
   trustText: {
-    fontSize: typography.size.xs, // Smaller, less prominent
-    color: '#00E67A', // Softer green
-    fontWeight: typography.weight.regular, // Lighter
+    fontSize: typography.size.sm,
+    color: '#00E67A',
+    fontWeight: typography.weight.medium,
     flex: 1,
-    lineHeight: typography.lineHeight.relaxed, // Better readability
+    lineHeight: typography.lineHeight.relaxed,
+    opacity: 0.95,
   },
   
   // Premium Status

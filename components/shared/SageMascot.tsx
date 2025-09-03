@@ -26,19 +26,20 @@ const SageMascot: React.FC<SageMascotProps> = ({
   useEffect(() => {
     if (!animated) return;
 
-    const useDriver = false;
+    // Use consistent native driver setting to avoid conflicts
+    const useNativeDriver = false;
 
     const bounceAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(bounceAnim, {
-          toValue: -2,
-          duration: 4000,
-          useNativeDriver: useDriver,
+          toValue: -3,
+          duration: 3000,
+          useNativeDriver,
         }),
         Animated.timing(bounceAnim, {
           toValue: 0,
-          duration: 4000,
-          useNativeDriver: useDriver,
+          duration: 3000,
+          useNativeDriver,
         }),
       ])
     );
@@ -46,14 +47,14 @@ const SageMascot: React.FC<SageMascotProps> = ({
     const scaleAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(scaleAnim, {
-          toValue: 1.01,
-          duration: 5000,
-          useNativeDriver: useDriver,
+          toValue: 1.02,
+          duration: 4000,
+          useNativeDriver,
         }),
         Animated.timing(scaleAnim, {
           toValue: 1,
-          duration: 5000,
-          useNativeDriver: useDriver,
+          duration: 4000,
+          useNativeDriver,
         }),
       ])
     );
@@ -61,16 +62,16 @@ const SageMascot: React.FC<SageMascotProps> = ({
     const blinkAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(blinkAnim, {
-          toValue: 0.85,
-          duration: 900,
-          useNativeDriver: useDriver,
+          toValue: 0.8,
+          duration: 800,
+          useNativeDriver,
         }),
         Animated.timing(blinkAnim, {
           toValue: 1,
-          duration: 900,
-          useNativeDriver: useDriver,
+          duration: 800,
+          useNativeDriver,
         }),
-        Animated.delay(400),
+        Animated.delay(600),
       ])
     );
 

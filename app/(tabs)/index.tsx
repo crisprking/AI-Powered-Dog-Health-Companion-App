@@ -7,7 +7,7 @@ import SageMascot from '@/components/shared/SageMascot';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
-import { APP_NAME, TAGLINE, MASCOT_URL } from '@/constants/branding';
+import { APP_NAME, TAGLINE, MASCOT_URL, BRAND_COLORS } from '@/constants/branding';
 import { useSubscription, useSubscriptionStatusText, useHasPremiumAccess } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { SimpleThemeToggle } from '@/components/shared/ThemeToggle';
@@ -79,14 +79,21 @@ export default function WelcomeScreen() {
           </View>
           
           <View style={styles.brandContainer}>
-            <View style={styles.logoBackdrop}>
+            <View style={[styles.logoBackdrop, {
+              backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)'
+            }]}>
               <LinearGradient
-                colors={['rgba(0,230,122,0.18)', 'rgba(0,209,102,0.08)']}
+                colors={isDark 
+                  ? ['rgba(0,230,122,0.25)', 'rgba(0,209,102,0.15)']
+                  : ['rgba(0,230,122,0.18)', 'rgba(0,209,102,0.08)']
+                }
                 style={styles.logoGradientRing}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               />
-              <View style={styles.logoSurface} />
+              <View style={[styles.logoSurface, {
+                backgroundColor: isDark ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.9)'
+              }]} />
               <SageMascot 
                 size={140} 
                 emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
@@ -95,6 +102,23 @@ export default function WelcomeScreen() {
                 testID="sage-mascot"
                 imageUrl={MASCOT_URL}
               />
+            </View>
+            
+            {/* App Name with Black Text */}
+            <View style={styles.appNameContainer}>
+              <Text style={[styles.appName, {
+                color: BRAND_COLORS.textBlack,
+                textShadowColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.1)',
+                textShadowOffset: { width: 0, height: 1 },
+                textShadowRadius: 2,
+              }]}>
+                {APP_NAME}
+              </Text>
+              <Text style={[styles.appTagline, {
+                color: isDark ? themeColors.text.secondary : 'rgba(0,0,0,0.7)'
+              }]}>
+                {TAGLINE}
+              </Text>
             </View>
           </View>
         </View>
@@ -113,8 +137,14 @@ export default function WelcomeScreen() {
           </LinearGradient>
         </View>
 
-        {/* Calculator Cards - Horizontal, snap, swipeable */}
+        {/* Calculator Cards - Enhanced UX */}
         <View style={styles.calculatorSection}>
+          <Text style={[styles.calculatorSectionTitle, { color: themeColors.text.primary }]}>
+            Financial Calculators
+          </Text>
+          <Text style={[styles.calculatorSectionSubtitle, { color: themeColors.text.secondary }]}>
+            Swipe to explore • Tap for instant calculations
+          </Text>
           <HorizontalCalculators onOpen={handleCalculatorPress} />
         </View>
 
@@ -231,6 +261,7 @@ const CARD_SPACING = 16 as const;
 const CARD_WIDTH = 320 as const;
 
 function HorizontalCalculators({ onOpen }: { onOpen: (type: 'mortgage' | 'car-loan') => void }) {
+  const { colors: themeColors } = useTheme();
   const scrollRef = useRef<ScrollView>(null);
   const [index, setIndex] = useState<number>(0);
   const data = useMemo(() => ([
@@ -282,17 +313,17 @@ function HorizontalCalculators({ onOpen }: { onOpen: (type: 'mortgage' | 'car-lo
               marginRight: CARD_SPACING,
             }}
           >
-            <View style={[styles.calculatorCard, { backgroundColor: colors.surface.secondary }]}> 
+            <View style={[styles.calculatorCard, { backgroundColor: themeColors.surface.secondary }]}> 
               <View style={styles.calculatorCardContent}>
                 <View style={[styles.calculatorIconContainer, { backgroundColor: item.bg }]}> 
                   {item.icon}
                 </View>
                 <View style={styles.calculatorTextContainer}>
-                  <Text style={[styles.calculatorTitle, { color: colors.text.primary }]}>{item.title}</Text>
-                  <Text style={[styles.calculatorSubtitle, { color: colors.text.secondary }]}>{item.subtitle}</Text>
+                  <Text style={[styles.calculatorTitle, { color: themeColors.text.primary }]}>{item.title}</Text>
+                  <Text style={[styles.calculatorSubtitle, { color: themeColors.text.secondary }]}>{item.subtitle}</Text>
                 </View>
                 <View style={styles.calculatorArrow}>
-                  <ArrowRight size={18} color={colors.text.tertiary} strokeWidth={2} />
+                  <ArrowRight size={18} color={themeColors.text.tertiary} strokeWidth={2} />
                 </View>
               </View>
             </View>
@@ -368,6 +399,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     position: 'relative',
+    borderRadius: 100,
+    marginBottom: 20,
   },
   logoGradientRing: {
     position: 'absolute',
@@ -385,24 +418,31 @@ const styles = StyleSheet.create({
     width: 156,
     height: 156,
     borderRadius: 78,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  brandTitle: {
-    fontSize: 28,
-    fontWeight: '800',
-    letterSpacing: -0.5,
-    marginBottom: 8,
-    marginTop: 16,
+  appNameContainer: {
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  appName: {
+    fontSize: 32,
+    fontWeight: '900',
+    letterSpacing: -0.8,
     textAlign: 'center',
-    lineHeight: 32,
+    lineHeight: 36,
+    marginBottom: 4,
   },
-  brandSubtitle: {
+  appTagline: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '600',
     textAlign: 'center',
-    letterSpacing: 0.2,
+    letterSpacing: 0.3,
     lineHeight: 20,
-    opacity: 0.9,
+    opacity: 0.8,
   },
   
   // Profit Banner
@@ -433,9 +473,25 @@ const styles = StyleSheet.create({
   
   // Calculator Section
   calculatorSection: {
-    paddingHorizontal: 20,
-    gap: 16,
     marginBottom: 24,
+  },
+  calculatorSectionTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 8,
+    paddingHorizontal: 20,
+    letterSpacing: -0.3,
+    lineHeight: 26,
+  },
+  calculatorSectionSubtitle: {
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 20,
+    opacity: 0.7,
+    lineHeight: 18,
   },
   calculatorCard: {
     borderRadius: 16,

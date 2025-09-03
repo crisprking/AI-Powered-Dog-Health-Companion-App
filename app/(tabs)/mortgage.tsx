@@ -4,7 +4,7 @@ import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, Save, FileText, Share, MoreHorizontal, Home, TrendingUp, Calculator, DollarSign, Target, BarChart3, Sparkles, Zap, ArrowRight } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
-import { MASCOT_URL } from '@/constants/branding';
+import { MASCOT_URL, BRAND_COLORS } from '@/constants/branding';
 import * as Haptics from 'expo-haptics';
 import InputField from '@/components/shared/InputField';
 import SliderInput from '@/components/shared/SliderInput';
@@ -262,16 +262,27 @@ export default function MortgageCalculator() {
               style={styles.profitHeaderGradient}
             >
               <View style={styles.profitHeaderContent}>
-                <SageMascot 
-                  size={64} 
-                  emotion="analytical" 
-                  premium={hasPremiumAccess}
-                  animated={true}
-                  testID="mortgage-mascot"
-                  imageUrl={MASCOT_URL}
-                />
-                <Text style={styles.profitHeaderTitle}>Mortgage Calculator</Text>
-                <Text style={styles.profitHeaderSubtitle}>AI-powered mortgage analysis</Text>
+                <View style={[styles.logoContainer, {
+                  backgroundColor: isDark ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.9)'
+                }]}>
+                  <SageMascot 
+                    size={80} 
+                    emotion="analytical" 
+                    premium={hasPremiumAccess}
+                    animated={true}
+                    testID="mortgage-mascot"
+                    imageUrl={MASCOT_URL}
+                  />
+                </View>
+                <View style={styles.headerTextContainer}>
+                  <Text style={[styles.profitHeaderTitle, {
+                    color: BRAND_COLORS.textBlack,
+                    textShadowColor: 'rgba(255,255,255,0.8)',
+                    textShadowOffset: { width: 0, height: 1 },
+                    textShadowRadius: 2,
+                  }]}>FinSage Pro</Text>
+                  <Text style={styles.profitHeaderSubtitle}>AI-powered mortgage analysis</Text>
+                </View>
               </View>
             </LinearGradient>
           </Animated.View>
@@ -705,6 +716,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profitHeaderContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing[4],
+  },
+  logoContainer: {
+    borderRadius: 50,
+    padding: spacing[2],
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  headerTextContainer: {
     alignItems: 'center',
   },
   headerIcon: {
@@ -717,20 +743,20 @@ const styles = StyleSheet.create({
     marginBottom: spacing[3],
   },
   profitHeaderTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginTop: 12,
+    fontSize: 28,
+    fontWeight: '900',
     textAlign: 'center',
-    lineHeight: 28,
+    lineHeight: 32,
+    letterSpacing: -0.5,
+    marginBottom: 4,
   },
   profitHeaderSubtitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: 'rgba(255,255,255,0.9)',
-    marginTop: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.95)',
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 18,
+    letterSpacing: 0.2,
   },
   profitBanner: {
     marginBottom: spacing[6],

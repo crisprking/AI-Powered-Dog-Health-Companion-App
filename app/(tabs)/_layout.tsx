@@ -158,7 +158,11 @@ import { useTheme } from "@/contexts/ThemeContext";
         right: 0,
         bottom: 0,
         borderRadius: borderRadius['2xl'],
-        ...colors.shadow.lg,
+        shadowColor: colors.shadow.lg.shadowColor,
+        shadowOffset: colors.shadow.lg.shadowOffset,
+        shadowOpacity: colors.shadow.lg.shadowOpacity,
+        shadowRadius: colors.shadow.lg.shadowRadius,
+        elevation: colors.shadow.lg.elevation,
       },
       iconGlow: {
         position: 'absolute',

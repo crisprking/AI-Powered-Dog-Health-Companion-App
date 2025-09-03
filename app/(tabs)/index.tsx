@@ -118,12 +118,12 @@ export default function WelcomeScreen() {
                 <ArrowRight size={20} color="#000" style={styles.calculatorArrow} />
               </View>
               <View style={styles.calculatorContent}>
-                <Text style={styles.calculatorTitle}>Mortgage Calculator</Text>
-                <Text style={styles.calculatorSubtitle}>Complete PITI analysis</Text>
+                <Text style={[styles.calculatorTitle, { color: 'rgba(0, 0, 0, 0.9)' }]}>Mortgage Calculator</Text>
+                <Text style={[styles.calculatorSubtitle, { color: 'rgba(0, 0, 0, 0.8)' }]}>Complete PITI analysis</Text>
                 <View style={styles.calculatorFeatures}>
-                  <Text style={styles.calculatorFeature}>• Real-time calculations</Text>
-                  <Text style={styles.calculatorFeature}>• Complete cost breakdown</Text>
-                  <Text style={styles.calculatorFeature}>• Professional insights</Text>
+                  <Text style={[styles.calculatorFeature, { color: 'rgba(0, 0, 0, 0.8)' }]}>• Real-time calculations</Text>
+                  <Text style={[styles.calculatorFeature, { color: 'rgba(0, 0, 0, 0.8)' }]}>• Complete cost breakdown</Text>
+                  <Text style={[styles.calculatorFeature, { color: 'rgba(0, 0, 0, 0.8)' }]}>• Professional insights</Text>
                 </View>
               </View>
             </LinearGradient>
@@ -145,12 +145,12 @@ export default function WelcomeScreen() {
                 <ArrowRight size={20} color="#FFF" style={styles.calculatorArrow} />
               </View>
               <View style={styles.calculatorContent}>
-                <Text style={styles.calculatorTitle}>Auto Loan Calculator</Text>
-                <Text style={styles.calculatorSubtitle}>Smart financing analysis</Text>
+                <Text style={[styles.calculatorTitle, { color: '#FFF' }]}>Auto Loan Calculator</Text>
+                <Text style={[styles.calculatorSubtitle, { color: 'rgba(255, 255, 255, 0.9)' }]}>Smart financing analysis</Text>
                 <View style={styles.calculatorFeatures}>
-                  <Text style={styles.calculatorFeature}>• Trade-in value included</Text>
-                  <Text style={styles.calculatorFeature}>• All fees calculated</Text>
-                  <Text style={styles.calculatorFeature}>• Rate optimization</Text>
+                  <Text style={[styles.calculatorFeature, { color: 'rgba(255, 255, 255, 0.9)' }]}>• Trade-in value included</Text>
+                  <Text style={[styles.calculatorFeature, { color: 'rgba(255, 255, 255, 0.9)' }]}>• All fees calculated</Text>
+                  <Text style={[styles.calculatorFeature, { color: 'rgba(255, 255, 255, 0.9)' }]}>• Rate optimization</Text>
                 </View>
               </View>
             </LinearGradient>

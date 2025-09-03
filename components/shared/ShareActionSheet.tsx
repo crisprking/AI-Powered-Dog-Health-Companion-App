@@ -38,7 +38,7 @@ import React from 'react';
         subtitle: string;
         onPress: () => void;
         isPremium?: boolean;
-        gradient: readonly [string, string];
+        gradient: string[];
       }) => (
         <TouchableOpacity
           style={[styles.actionButton, !hasPremiumAccess && isPremium && styles.actionButtonDisabled]}
@@ -46,7 +46,7 @@ import React from 'react';
           disabled={!hasPremiumAccess && isPremium}
         >
           <LinearGradient
-            colors={!hasPremiumAccess && isPremium ? ['#E5E5E5', '#D4D4D4'] : gradient}
+            colors={!hasPremiumAccess && isPremium ? ['#E5E5E5', '#D4D4D4'] : gradient as any}
             style={styles.actionButtonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -95,7 +95,7 @@ import React from 'react';
             
             <View style={styles.container}>
               <LinearGradient
-                colors={colors.gradient.subtle}
+                colors={colors.gradient.subtle as any}
                 style={styles.containerGradient}
               >
                 {/* Header */}
@@ -119,7 +119,7 @@ import React from 'react';
                       onShare();
                       onClose();
                     }}
-                    gradient={colors.gradient.primary}
+                    gradient={colors.gradient.primary as string[]}
                   />
 
                   <ActionButton
@@ -131,7 +131,7 @@ import React from 'react';
                       onClose();
                     }}
                     isPremium={true}
-                    gradient={colors.gradient.secondary}
+                    gradient={colors.gradient.secondary as string[]}
                   />
 
                   <ActionButton
@@ -143,14 +143,14 @@ import React from 'react';
                       onClose();
                     }}
                     isPremium={true}
-                    gradient={colors.gradient.accent}
+                    gradient={colors.gradient.accent as string[]}
                   />
                 </View>
 
                 {!hasPremiumAccess && (
                   <View style={styles.premiumPrompt}>
                     <LinearGradient
-                      colors={colors.gradient.luxury}
+                      colors={colors.gradient.luxury as any}
                       style={styles.premiumPromptGradient}
                     >
                       <Crown size={20} color={colors.text.inverse} />
@@ -180,7 +180,11 @@ import React from 'react';
         borderTopLeftRadius: borderRadius['3xl'],
         borderTopRightRadius: borderRadius['3xl'],
         overflow: 'hidden',
-        ...colors.shadow.xl,
+        shadowColor: colors.shadow.xl.shadowColor,
+        shadowOffset: colors.shadow.xl.shadowOffset,
+        shadowOpacity: colors.shadow.xl.shadowOpacity,
+        shadowRadius: colors.shadow.xl.shadowRadius,
+        elevation: colors.shadow.xl.elevation,
       },
       containerGradient: {
         paddingTop: spacing[6],
@@ -219,7 +223,11 @@ import React from 'react';
       actionButton: {
         borderRadius: borderRadius['2xl'],
         overflow: 'hidden',
-        ...colors.shadow.md,
+        shadowColor: colors.shadow.md.shadowColor,
+        shadowOffset: colors.shadow.md.shadowOffset,
+        shadowOpacity: colors.shadow.md.shadowOpacity,
+        shadowRadius: colors.shadow.md.shadowRadius,
+        elevation: colors.shadow.md.elevation,
       },
       actionButtonDisabled: {
         opacity: 0.6,
@@ -251,7 +259,11 @@ import React from 'react';
         backgroundColor: colors.surface.elevated,
         alignItems: 'center',
         justifyContent: 'center',
-        ...colors.shadow.sm,
+        shadowColor: colors.shadow.sm.shadowColor,
+        shadowOffset: colors.shadow.sm.shadowOffset,
+        shadowOpacity: colors.shadow.sm.shadowOpacity,
+        shadowRadius: colors.shadow.sm.shadowRadius,
+        elevation: colors.shadow.sm.elevation,
       },
       actionButtonText: {
         flex: 1,

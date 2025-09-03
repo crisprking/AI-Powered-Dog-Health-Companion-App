@@ -96,7 +96,11 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius['2xl'],
     padding: spacing[6],
     marginBottom: spacing[6],
-    ...colors.shadow.md,
+    shadowColor: colors.shadow.md.shadowColor,
+    shadowOffset: colors.shadow.md.shadowOffset,
+    shadowOpacity: colors.shadow.md.shadowOpacity,
+    shadowRadius: colors.shadow.md.shadowRadius,
+    elevation: colors.shadow.md.elevation,
   },
   title: {
     fontSize: typography.size.xl,

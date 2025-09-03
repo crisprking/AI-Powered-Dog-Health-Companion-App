@@ -7,7 +7,7 @@ interface ResultCardProps {
   title: string;
   value: string;
   subtitle?: string;
-  gradient?: readonly [string, string, ...string[]];
+  gradient?: string[];
   testID?: string;
 }
 
@@ -15,12 +15,12 @@ const ResultCard = React.memo<ResultCardProps>(({
   title, 
   value, 
   subtitle, 
-  gradient = colors.gradient.primary,
+  gradient = colors.gradient.primary as string[],
   testID 
 }) => {
   return (
     <LinearGradient
-      colors={gradient}
+      colors={gradient as any}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
@@ -43,7 +43,11 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius['2xl'],
     padding: spacing[6],
     marginBottom: spacing[4],
-    ...colors.shadow.lg,
+    shadowColor: colors.shadow.lg.shadowColor,
+    shadowOffset: colors.shadow.lg.shadowOffset,
+    shadowOpacity: colors.shadow.lg.shadowOpacity,
+    shadowRadius: colors.shadow.lg.shadowRadius,
+    elevation: colors.shadow.lg.elevation,
   },
   content: {
     alignItems: 'center',

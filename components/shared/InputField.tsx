@@ -69,7 +69,11 @@ const styles = StyleSheet.create({
     borderColor: colors.border.light,
     paddingHorizontal: spacing[4],
     height: 64,
-    ...colors.shadow.sm,
+    shadowColor: colors.shadow.sm.shadowColor,
+    shadowOffset: colors.shadow.sm.shadowOffset,
+    shadowOpacity: colors.shadow.sm.shadowOpacity,
+    shadowRadius: colors.shadow.sm.shadowRadius,
+    elevation: colors.shadow.sm.elevation,
   },
   input: {
     flex: 1,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet, Platform } from 'react-native';
+import { View, Animated, StyleSheet, Platform, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface SageMascotProps {
@@ -8,6 +8,7 @@ interface SageMascotProps {
   animated?: boolean;
   testID?: string;
   premium?: boolean;
+  imageUrl?: string;
 }
 
 const SageMascot: React.FC<SageMascotProps> = ({
@@ -15,7 +16,8 @@ const SageMascot: React.FC<SageMascotProps> = ({
   emotion = 'confident',
   animated = true,
   testID,
-  premium = false
+  premium = false,
+  imageUrl
 }) => {
   const bounceAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -124,36 +126,44 @@ const SageMascot: React.FC<SageMascotProps> = ({
           backgroundColor: premium ? 'rgba(245, 158, 11, 0.2)' : 'rgba(0, 230, 122, 0.15)'
         }
       ]} />
-      <LinearGradient
-        colors={gradientColors}
-        style={[styles.gradient, { width: size, height: size, borderRadius: size * 0.3 }]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
-        <View style={[styles.face, { width: size * 0.6, height: size * 0.6 }]}>
-          <View style={styles.eyeContainer}>
-            <View style={[styles.eye, { 
+      {imageUrl ? (
+        <Image
+          source={{ uri: imageUrl }}
+          style={{ width: size, height: size, borderRadius: size * 0.3 }}
+          resizeMode="contain"
+        />
+      ) : (
+        <LinearGradient
+          colors={gradientColors}
+          style={[styles.gradient, { width: size, height: size, borderRadius: size * 0.3 }]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <View style={[styles.face, { width: size * 0.6, height: size * 0.6 }]}>
+            <View style={styles.eyeContainer}>
+              <View style={[styles.eye, { 
+                backgroundColor: eyeColor,
+                width: expression.eyeSize,
+                height: expression.eyeSize,
+                borderRadius: expression.eyeSize / 2
+              }]} />
+              <View style={[styles.eye, { 
+                backgroundColor: eyeColor,
+                width: expression.eyeSize,
+                height: expression.eyeSize,
+                borderRadius: expression.eyeSize / 2
+              }]} />
+            </View>
+            <View style={[styles.mouth, { 
               backgroundColor: eyeColor,
-              width: expression.eyeSize,
-              height: expression.eyeSize,
-              borderRadius: expression.eyeSize / 2
-            }]} />
-            <View style={[styles.eye, { 
-              backgroundColor: eyeColor,
-              width: expression.eyeSize,
-              height: expression.eyeSize,
-              borderRadius: expression.eyeSize / 2
+              width: expression.mouthWidth,
+              height: expression.mouthHeight,
+              borderRadius: expression.mouthHeight,
+              marginTop: 6
             }]} />
           </View>
-          <View style={[styles.mouth, { 
-            backgroundColor: eyeColor,
-            width: expression.mouthWidth,
-            height: expression.mouthHeight,
-            borderRadius: expression.mouthHeight,
-            marginTop: 6
-          }]} />
-        </View>
-      </LinearGradient>
+        </LinearGradient>
+      )}
     </Container>
   );
 };

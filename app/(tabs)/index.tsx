@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Home, Car, Crown, Shield, Star, ArrowRight, Calculator, DollarSign, Target, BarChart3, Settings } from 'lucide-react-native';
@@ -25,7 +25,7 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: themeColors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
       <StatusBar style={isDark ? "light" : "dark"} />
       
       {/* Header with Theme Toggle */}
@@ -251,7 +251,7 @@ export default function WelcomeScreen() {
           )}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -332,16 +332,16 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   brandTitle: {
-    fontSize: typography.size['3xl'],
-    fontWeight: typography.weight.bold,
+    fontSize: 28,
+    fontWeight: '800',
     letterSpacing: -0.5,
-    marginBottom: spacing[2],
-    marginTop: spacing[4],
+    marginBottom: 8,
+    marginTop: 16,
     textAlign: 'center',
   },
   brandSubtitle: {
-    fontSize: typography.size.base,
-    fontWeight: typography.weight.medium,
+    fontSize: 16,
+    fontWeight: '500',
     textAlign: 'center',
     letterSpacing: 0.2,
     lineHeight: 20,
@@ -406,17 +406,17 @@ const styles = StyleSheet.create({
     paddingRight: spacing[2],
   },
   calculatorTitle: {
-    fontSize: typography.size['2xl'],
-    fontWeight: typography.weight.bold,
-    marginBottom: spacing[2],
-    lineHeight: typography.lineHeight.tight,
-    letterSpacing: typography.letterSpacing.tight,
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 8,
+    lineHeight: 24,
+    letterSpacing: -0.3,
   },
   calculatorSubtitle: {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.medium,
-    lineHeight: typography.lineHeight.normal,
-    opacity: 0.9,
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 20,
+    opacity: 0.85,
   },
   calculatorArrow: {
     width: 32,
@@ -459,17 +459,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   premiumTitle: {
-    fontSize: typography.size['2xl'],
-    fontWeight: typography.weight.bold,
-    marginBottom: spacing[3],
-    lineHeight: typography.lineHeight.tight,
-    letterSpacing: typography.letterSpacing.tight,
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 8,
+    lineHeight: 22,
+    letterSpacing: -0.2,
   },
   premiumDescription: {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.medium,
-    lineHeight: typography.lineHeight.normal,
-    opacity: 0.9,
+    fontSize: 15,
+    fontWeight: '500',
+    lineHeight: 20,
+    opacity: 0.85,
   },
   premiumButton: {
     flexDirection: 'row',

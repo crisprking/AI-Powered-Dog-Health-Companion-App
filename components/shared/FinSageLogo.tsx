@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import SageMascot from './SageMascot';
 import { MASCOT_URL, BRAND_COLORS } from '@/constants/branding';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface FinSageLogoProps {
   variant?: 'full' | 'icon' | 'wordmark' | 'premium';
@@ -35,37 +35,50 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
   const config = getSizeConfig();
   
   const renderMascot = () => (
-    <SageMascot
-      size={config.mascotSize}
-      emotion={premium ? 'celebrating' : 'confident'}
-      premium={premium}
-      animated={animated}
-      imageUrl={MASCOT_URL}
+    <Image
+      source={{ uri: MASCOT_URL }}
+      style={{
+        width: config.mascotSize,
+        height: config.mascotSize,
+        borderRadius: config.mascotSize * 0.1,
+      }}
+      resizeMode="contain"
       testID={`${testID}-mascot`}
     />
   );
+  
+  const { isDark } = useTheme();
   
   const renderWordmark = () => {
     if (!showText) return null;
     
     return (
       <View style={styles.wordmarkContainer}>
-        <LinearGradient
-          colors={premium ? [BRAND_COLORS.premium, BRAND_COLORS.premiumDark] : [BRAND_COLORS.primary, BRAND_COLORS.primaryDark]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={[styles.textGradient, { borderRadius: config.fontSize * 0.3 }]}
-        >
-          <Text style={[styles.brandText, { 
-            fontSize: config.fontSize,
-            color: BRAND_COLORS.textWhite,
-            textShadowColor: 'rgba(0,0,0,0.3)',
-            textShadowOffset: { width: 0, height: 1 },
-            textShadowRadius: 2
-          }]}>
-            FinSage Pro
-          </Text>
-        </LinearGradient>
+        <View style={[
+          styles.textContainer,
+          {
+            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.95)',
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            borderRadius: config.fontSize * 0.4,
+          }
+        ]}>
+          <LinearGradient
+            colors={premium ? [BRAND_COLORS.premium, BRAND_COLORS.premiumDark] : [BRAND_COLORS.primary, BRAND_COLORS.primaryDark]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[styles.textGradient, { borderRadius: config.fontSize * 0.3 }]}
+          >
+            <Text style={[styles.brandText, { 
+              fontSize: config.fontSize,
+              color: BRAND_COLORS.textWhite,
+              textShadowColor: 'rgba(0,0,0,0.5)',
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 3
+            }]}>
+              FinSage Pro
+            </Text>
+          </LinearGradient>
+        </View>
         {premium && (
           <View style={[styles.premiumBadge, { marginTop: config.spacing * 0.3 }]}>
             <LinearGradient
@@ -143,14 +156,17 @@ const styles = StyleSheet.create({
   wordmarkContainer: {
     alignItems: 'center',
   },
-  textGradient: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+  textContainer: {
+    borderWidth: 1,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  textGradient: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   brandText: {
     fontWeight: '800',

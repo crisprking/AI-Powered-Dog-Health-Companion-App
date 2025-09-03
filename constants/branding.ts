@@ -1,6 +1,6 @@
 export const APP_NAME = 'FinSage Pro';
 export const TAGLINE = 'Your AI Financial Advisor';
-export const MASCOT_URL = 'https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/t2vyqi799p9auoc72kb7v';
+export const MASCOT_URL = 'https://r2-pub.rork.com/generated-images/2d67f78c-2ed7-457d-a0a5-28087aefba44.png';
 
 // Brand Story & Narrative
 export const BRAND_STORY = {

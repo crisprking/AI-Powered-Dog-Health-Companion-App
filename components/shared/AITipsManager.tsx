@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Share, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Sparkles, Heart, Share2, Bookmark, MessageCircle, TrendingUp, DollarSign, Crown, X, Copy, Check } from 'lucide-react-native';
+import { Sparkles, Heart, Share2, Bookmark, MessageCircle, TrendingUp, DollarSign, X, Copy, Check } from 'lucide-react-native';
+import FinSageLogo from './FinSageLogo';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useHasPremiumAccess } from '@/contexts/SubscriptionContext';
 import { router } from 'expo-router';
@@ -200,7 +201,7 @@ export default function AITipsManager({
               <Bookmark size={18} color={isSaved ? '#F59E0B' : themeColors.text.tertiary} fill={isSaved ? '#F59E0B' : 'none'} />
               <Text style={[styles.actionText, { color: isSaved ? '#F59E0B' : themeColors.text.tertiary }]}>Save</Text>
               {!hasPremiumAccess && tipUsageCount >= 2 && (
-                <Crown size={12} color="#F59E0B" />
+                <FinSageLogo variant="icon" size="small" premium={true} testID="save-premium-indicator" />
               )}
             </TouchableOpacity>
             
@@ -235,7 +236,7 @@ export default function AITipsManager({
                   <MessageCircle size={14} color="#00E67A" />
                   <Text style={[styles.quickQuestionText, { color: themeColors.text.secondary }]}>{question}</Text>
                   {!hasPremiumAccess && tipUsageCount >= 1 && (
-                    <Crown size={10} color="#F59E0B" />
+                    <FinSageLogo variant="icon" size="small" premium={true} testID="question-premium-indicator" />
                   )}
                 </TouchableOpacity>
               ))}
@@ -249,11 +250,11 @@ export default function AITipsManager({
                 colors={['#F59E0B', '#D97706']}
                 style={styles.premiumGradient}
               >
-                <Crown size={24} color="#FFFFFF" />
+                <FinSageLogo variant="icon" size="medium" premium={true} testID="premium-upsell-logo" />
                 <View style={styles.premiumContent}>
-                  <Text style={styles.premiumTitle}>Unlock Unlimited AI Insights</Text>
+                  <Text style={styles.premiumTitle}>Unlock FinSage Pro Intelligence</Text>
                   <Text style={styles.premiumSubtitle}>
-                    • Unlimited follow-up questions{'\n'}• Save all AI tips{'\n'}• Advanced financial strategies{'\n'}• Priority AI responses
+                    • Unlimited AI conversations{'\n'}• Save your financial wisdom library{'\n'}• Advanced investment strategies{'\n'}• Priority AI responses{'\n'}• Professional financial reports
                   </Text>
                   <TouchableOpacity
                     style={styles.premiumButton}

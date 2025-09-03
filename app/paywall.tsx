@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Crown, X, Sparkles, Check, Star, Shield, Zap } from 'lucide-react-native';
+import { X, Sparkles, Check, Star, Shield, Zap } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
+import FinSageLogo from '@/components/shared/FinSageLogo';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
-import { MASCOT_URL } from '@/constants/branding';
+import { MASCOT_URL, BRAND_STORY } from '@/constants/branding';
 import { useSubscription, useSubscriptionStatusText } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -69,8 +70,8 @@ function PaywallScreen() {
           
           <Text style={styles.subtitle}>
             {isPro 
-              ? 'Full access to professional financial tools!' 
-              : 'Professional financial analysis at your fingertips'}
+              ? BRAND_STORY.mission 
+              : 'Transform your financial future with AI-powered insights'}
           </Text>
           
           <View style={styles.statusBadge}>
@@ -84,7 +85,7 @@ function PaywallScreen() {
         <View style={styles.valueSection}>
           <Text style={[styles.valueTitle, { color: themeColors.text.primary }]}>Professional Features</Text>
           <Text style={[styles.valueSubtitle, { color: themeColors.text.secondary }]}>
-            Advanced financial analytics and professional reports
+            {BRAND_STORY.vision} - Advanced AI-powered financial intelligence
           </Text>
         </View>
 
@@ -142,7 +143,7 @@ function PaywallScreen() {
             <Text style={[styles.ratingText, { color: themeColors.text.secondary }]}>4.9 • 2,847 reviews</Text>
           </View>
           <Text style={[styles.testimonial, { color: themeColors.text.primary }]}>
-            &ldquo;FinSage Pro&apos;s precision calculations helped me save $47,000 on my mortgage. The professional reports are invaluable for my financial planning.&rdquo;
+            &ldquo;FinSage Pro transformed my financial decisions. The AI insights helped me save $47,000 on my mortgage and build a smarter investment strategy.&rdquo;
           </Text>
           <Text style={[styles.testimonialAuthor, { color: themeColors.text.tertiary }]}>— Sarah M., Real Estate Investor</Text>
         </View>
@@ -153,10 +154,13 @@ function PaywallScreen() {
             <View style={styles.pricingCard}>
               <LinearGradient colors={['#F59E0B', '#D97706']} style={styles.pricingGradient}>
                 <View style={styles.pricingHeader}>
-                  <View style={styles.pricingIconContainer}>
-                    <Crown size={32} color="#FFF" />
-                  </View>
-                  <Text style={[styles.pricingTitle, { color: themeColors.text.inverse }]}>FinSage Pro</Text>
+                  <FinSageLogo 
+                    variant="premium" 
+                    size="medium" 
+                    premium={true} 
+                    animated={true}
+                    testID="paywall-logo"
+                  />
                 </View>
                 
                 <View style={styles.pricingPrice}>

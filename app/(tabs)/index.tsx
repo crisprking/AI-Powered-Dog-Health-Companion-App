@@ -406,16 +406,17 @@ const styles = StyleSheet.create({
     paddingRight: spacing[2],
   },
   calculatorTitle: {
-    fontSize: typography.size.xl,
+    fontSize: typography.size['2xl'],
     fontWeight: typography.weight.bold,
     marginBottom: spacing[2],
-    lineHeight: typography.lineHeight.snug,
+    lineHeight: typography.lineHeight.tight,
     letterSpacing: typography.letterSpacing.tight,
   },
   calculatorSubtitle: {
-    fontSize: typography.size.base,
+    fontSize: typography.size.lg,
     fontWeight: typography.weight.medium,
-    lineHeight: typography.lineHeight.relaxed,
+    lineHeight: typography.lineHeight.normal,
+    opacity: 0.9,
   },
   calculatorArrow: {
     width: 32,
@@ -458,16 +459,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   premiumTitle: {
-    fontSize: typography.size.xl,
+    fontSize: typography.size['2xl'],
     fontWeight: typography.weight.bold,
-    marginBottom: spacing[2],
-    lineHeight: typography.lineHeight.snug,
+    marginBottom: spacing[3],
+    lineHeight: typography.lineHeight.tight,
     letterSpacing: typography.letterSpacing.tight,
   },
   premiumDescription: {
-    fontSize: typography.size.base,
+    fontSize: typography.size.lg,
     fontWeight: typography.weight.medium,
-    lineHeight: typography.lineHeight.relaxed,
+    lineHeight: typography.lineHeight.normal,
+    opacity: 0.9,
   },
   premiumButton: {
     flexDirection: 'row',
@@ -515,10 +517,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   featureText: {
-    fontSize: typography.size.base,
+    fontSize: typography.size.lg,
     fontWeight: typography.weight.medium,
     flex: 1,
-    lineHeight: typography.lineHeight.relaxed,
+    lineHeight: typography.lineHeight.normal,
   },
   featureTextDisabled: {
     color: '#999',
@@ -537,11 +539,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing[4],
   },
   trustText: {
-    fontSize: typography.size.sm,
+    fontSize: typography.size.base,
     color: '#00E67A',
     fontWeight: typography.weight.medium,
     flex: 1,
-    lineHeight: typography.lineHeight.relaxed,
+    lineHeight: typography.lineHeight.normal,
   },
   
   // Premium Status
@@ -556,9 +558,10 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.xl,
   },
   premiumStatusText: {
-    fontSize: typography.size.sm,
+    fontSize: typography.size.base,
     color: '#F59E0B',
     fontWeight: typography.weight.semibold,
     flex: 1,
+    lineHeight: typography.lineHeight.normal,
   },
 });

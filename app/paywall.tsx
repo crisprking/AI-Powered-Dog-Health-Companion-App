@@ -458,16 +458,16 @@ const styles = StyleSheet.create({
         fontWeight: typography.weight.semibold,
       },
       trustSection: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
         padding: spacing[4],
         borderRadius: borderRadius.xl,
         marginBottom: spacing[6],
+        gap: spacing[3],
       },
       trustItem: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: spacing[2],
+        justifyContent: 'center',
       },
       trustText: {
         fontSize: typography.size.sm,

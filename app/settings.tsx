@@ -145,8 +145,8 @@ export default function SettingsScreen() {
   const handleExportData = () => {
     if (!hasPremiumAccess) {
       Alert.alert(
-        'FinSage Pro Required',
-        'Data export requires FinSage Pro. Upgrade to access professional features.',
+        'MintSage Pro Required',
+        'Data export requires MintSage Pro. Upgrade to access professional features.',
         [
           { text: 'Cancel', style: 'cancel' },
           { text: 'Upgrade', onPress: handleUpgrade }
@@ -187,12 +187,12 @@ export default function SettingsScreen() {
     const storeUrl = Platform.select({
       ios: 'https://apps.apple.com/app/id123456789',
       android: 'https://play.google.com/store/apps/details?id=com.finsage.app',
-      default: 'https://finsage.app'
+      default: 'https://mintsage.app'
     });
     
     Alert.alert(
-      'Rate FinSage',
-      'Love using FinSage? Please rate us on the App Store!',
+      'Rate MintSage',
+      'Love using MintSage? Please rate us on the App Store!',
       [
         { text: 'Later', style: 'cancel' },
         { text: 'Rate Now', onPress: () => console.log('Open store:', storeUrl) }
@@ -201,7 +201,7 @@ export default function SettingsScreen() {
   };
 
   const handleShare = () => {
-    const shareText = 'Check out FinSage - the professional financial calculator app that helped me optimize my finances! Download it now: https://finsage.app';
+    const shareText = 'Check out MintSage - the professional financial calculator app that helped me optimize my finances! Download it now: https://mintsage.app';
     console.log('Share:', shareText);
   };
 
@@ -254,7 +254,7 @@ export default function SettingsScreen() {
           
           <View style={styles.profileInfo}>
             <Text style={[styles.profileTitle, { color: colors.text.primary }]}>
-              FinSage Pro
+              MintSage Pro
             </Text>
             <Text style={[styles.profileSubtitle, { color: colors.text.secondary }]}>
               {statusText}
@@ -384,7 +384,7 @@ export default function SettingsScreen() {
           ]}>
             <SettingsItem
               icon={Star}
-              title="Rate FinSage"
+              title="Rate MintSage"
               subtitle="Help us improve with your feedback"
               onPress={handleRateApp}
               testID="rate-setting"
@@ -392,7 +392,7 @@ export default function SettingsScreen() {
             
             <SettingsItem
               icon={Share2}
-              title="Share FinSage"
+              title="Share MintSage"
               subtitle="Tell your friends about FinSage"
               onPress={handleShare}
               testID="share-setting"
@@ -445,7 +445,7 @@ export default function SettingsScreen() {
           { borderTopColor: colors.border.light }
         ]}>
           <Text style={[styles.appInfoText, { color: colors.text.tertiary }]}>
-            FinSage Pro v1.0.0
+            MintSage Pro v1.0.0
           </Text>
           <Text style={[styles.appInfoText, { color: colors.text.tertiary }]}>
             Professional Financial Calculator

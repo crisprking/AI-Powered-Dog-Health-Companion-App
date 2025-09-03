@@ -36,7 +36,7 @@ export default function CarLoanCalculator() {
   const handlePremiumFeature = useCallback((featureName: string) => {
     if (!hasPremiumAccess) {
       Alert.alert(
-        'FinSage Pro Required',
+        'MintSage Pro Required',
         `${featureName} requires FinSage Pro. Unlock advanced financial tools and maximize your profit potential.`,
         [
           { text: 'Cancel', style: 'cancel' },
@@ -418,7 +418,7 @@ export default function CarLoanCalculator() {
                 style={styles.premiumGradient}
               >
                 <Crown size={28} color="#FFFFFF" />
-                <Text style={styles.premiumTitle}>Unlock FinSage Pro</Text>
+                <Text style={styles.premiumTitle}>Unlock MintSage Pro</Text>
                 <Text style={styles.premiumSubtitle}>
                   Rate comparison • Payment scenarios • Professional reports
                 </Text>

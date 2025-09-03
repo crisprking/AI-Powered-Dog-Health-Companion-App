@@ -33,7 +33,7 @@ function PaywallScreen() {
     <View style={styles.root} testID="paywall-screen">
       <Stack.Screen
         options={{
-          title: 'MintSage Pro',
+          title: 'FinSage Pro',
           headerTransparent: true,
           headerRight: () => (
             <TouchableOpacity
@@ -64,7 +64,7 @@ function PaywallScreen() {
           </View>
           
           <Text style={styles.title}>
-            {isPro ? 'MintSage Pro Active' : isTrialActive ? `Trial: ${trialDaysLeft} days left` : 'Unlock MintSage Pro'}
+            {isPro ? 'FinSage Pro Active' : isTrialActive ? `Trial: ${trialDaysLeft} days left` : 'Unlock FinSage Pro'}
           </Text>
           
           <Text style={styles.subtitle}>
@@ -142,7 +142,7 @@ function PaywallScreen() {
             <Text style={[styles.ratingText, { color: themeColors.text.secondary }]}>4.9 • 2,847 reviews</Text>
           </View>
           <Text style={[styles.testimonial, { color: themeColors.text.primary }]}>
-            &ldquo;MintSage Pro&apos;s precision calculations helped me save $47,000 on my mortgage. The professional reports are invaluable for my financial planning.&rdquo;
+            &ldquo;FinSage Pro&apos;s precision calculations helped me save $47,000 on my mortgage. The professional reports are invaluable for my financial planning.&rdquo;
           </Text>
           <Text style={[styles.testimonialAuthor, { color: themeColors.text.tertiary }]}>— Sarah M., Real Estate Investor</Text>
         </View>
@@ -156,7 +156,7 @@ function PaywallScreen() {
                   <View style={styles.pricingIconContainer}>
                     <Crown size={32} color="#FFF" />
                   </View>
-                  <Text style={[styles.pricingTitle, { color: themeColors.text.inverse }]}>MintSage Pro</Text>
+                  <Text style={[styles.pricingTitle, { color: themeColors.text.inverse }]}>FinSage Pro</Text>
                 </View>
                 
                 <View style={styles.pricingPrice}>

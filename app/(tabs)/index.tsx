@@ -79,14 +79,23 @@ export default function WelcomeScreen() {
           </View>
           
           <View style={styles.brandContainer}>
-            <SageMascot 
-              size={140} 
-              emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
-              premium={hasPremiumAccess}
-              animated={true}
-              testID="sage-mascot"
-              imageUrl={MASCOT_URL}
-            />
+            <View style={styles.logoBackdrop}>
+              <LinearGradient
+                colors={['rgba(0,230,122,0.18)', 'rgba(0,209,102,0.08)']}
+                style={styles.logoGradientRing}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              />
+              <View style={styles.logoSurface} />
+              <SageMascot 
+                size={140} 
+                emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
+                premium={hasPremiumAccess}
+                animated={true}
+                testID="sage-mascot"
+                imageUrl={MASCOT_URL}
+              />
+            </View>
           </View>
         </View>
 
@@ -309,6 +318,31 @@ const styles = StyleSheet.create({
   },
   brandContainer: {
     alignItems: 'center',
+  },
+  logoBackdrop: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 200,
+    height: 200,
+    position: 'relative',
+  },
+  logoGradientRing: {
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 6,
+  },
+  logoSurface: {
+    position: 'absolute',
+    width: 156,
+    height: 156,
+    borderRadius: 78,
+    backgroundColor: 'rgba(255,255,255,0.9)',
   },
   brandTitle: {
     fontSize: 28,

@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Home, Car, Crown, Shield, Star, ArrowRight, Calculator, DollarSign, Target, BarChart3, Settings } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
 import { useSubscription, useSubscriptionStatusText, useHasPremiumAccess } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -25,7 +26,7 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]} edges={['top']}>
       <StatusBar style={isDark ? "light" : "dark"} />
       
       {/* Header with Theme Toggle */}
@@ -70,7 +71,7 @@ export default function WelcomeScreen() {
               <Calculator size={16} color="#00E67A" />
             )}
             <Text style={[styles.statusText, {
-              color: hasPremiumAccess ? '#F59E0B' : themeColors.text.primary
+              color: hasPremiumAccess ? '#F59E0B' : '#00E67A'
             }]}>
               {statusText}
             </Text>
@@ -263,15 +264,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: spacing[4],
-    paddingVertical: spacing[3],
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   settingsButton: {
     width: 44,
     height: 44,
-    borderRadius: borderRadius.xl,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -279,57 +280,35 @@ const styles = StyleSheet.create({
     // Additional styling if needed
   },
   scrollContent: {
-    paddingTop: spacing[8], // Reduced top padding
-    paddingBottom: spacing[32], // More bottom breathing room
-    gap: spacing[8], // More space between sections
+    paddingTop: 20,
+    paddingBottom: Platform.OS === 'ios' ? 120 : 100,
+    gap: 24,
   },
   
-  // Hero Section - More relaxed
+  // Hero Section
   heroSection: {
     alignItems: 'center',
-    paddingHorizontal: spacing[8], // More side padding
-    marginBottom: spacing[16], // More space below
+    paddingHorizontal: 24,
+    marginBottom: 32,
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing[3], // More icon spacing
-    backgroundColor: 'rgba(245,245,245,0.08)', // Softer background
-    paddingHorizontal: spacing[5], // More padding
-    paddingVertical: spacing[4], // Taller badge
-    borderRadius: borderRadius.full,
-    marginBottom: spacing[10], // More space below
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 50,
+    marginBottom: 24,
     borderWidth: 1,
-    borderColor: 'rgba(0,230,122,0.2)', // Softer border
-  },
-  statusBadgePremium: {
-    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-    borderColor: 'rgba(245, 158, 11, 0.3)',
   },
   statusText: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.bold,
-    color: '#FFFFFF',
-    letterSpacing: typography.letterSpacing.wide,
-  },
-  statusTextPremium: {
-    color: '#F59E0B',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    lineHeight: 16,
   },
   brandContainer: {
     alignItems: 'center',
-  },
-  logoContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing[4],
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 8,
   },
   brandTitle: {
     fontSize: 28,
@@ -338,6 +317,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 16,
     textAlign: 'center',
+    lineHeight: 32,
   },
   brandSubtitle: {
     fontSize: 16,
@@ -350,37 +330,39 @@ const styles = StyleSheet.create({
   
   // Profit Banner
   profitBanner: {
-    paddingHorizontal: spacing[6],
-    marginBottom: spacing[6],
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
   profitBannerGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: spacing[4],
-    borderRadius: borderRadius.xl,
+    padding: 16,
+    borderRadius: 16,
   },
   profitBannerContent: {
-    marginLeft: spacing[3],
+    marginLeft: 12,
   },
   profitBannerTitle: {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.bold,
+    fontSize: 18,
+    fontWeight: '700',
     color: '#FFF',
+    lineHeight: 22,
   },
   profitBannerSubtitle: {
-    fontSize: typography.size.sm,
+    fontSize: 14,
     color: 'rgba(255,255,255,0.9)',
+    lineHeight: 18,
   },
   
-  // Calculator Section - Clean Design
+  // Calculator Section
   calculatorSection: {
-    paddingHorizontal: spacing[6],
-    gap: spacing[4],
-    marginBottom: spacing[8],
+    paddingHorizontal: 20,
+    gap: 16,
+    marginBottom: 24,
   },
   calculatorCard: {
-    borderRadius: borderRadius.xl,
-    marginBottom: spacing[4],
+    borderRadius: 16,
+    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.08,
@@ -390,33 +372,33 @@ const styles = StyleSheet.create({
   calculatorCardContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: spacing[6],
-    borderRadius: borderRadius.xl,
+    padding: 20,
+    borderRadius: 16,
   },
   calculatorIconContainer: {
     width: 52,
     height: 52,
-    borderRadius: borderRadius.lg,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: spacing[4],
+    marginRight: 16,
   },
   calculatorTextContainer: {
     flex: 1,
-    paddingRight: spacing[2],
+    paddingRight: 8,
   },
   calculatorTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
-    marginBottom: 8,
-    lineHeight: 24,
-    letterSpacing: -0.3,
+    marginBottom: 4,
+    lineHeight: 22,
+    letterSpacing: -0.2,
   },
   calculatorSubtitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
-    lineHeight: 20,
-    opacity: 0.85,
+    lineHeight: 18,
+    opacity: 0.8,
   },
   calculatorArrow: {
     width: 32,
@@ -425,14 +407,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   
-  // Premium Section - Clean Design
+  // Premium Section
   premiumSection: {
-    paddingHorizontal: spacing[6],
-    marginBottom: spacing[8],
+    paddingHorizontal: 20,
+    marginBottom: 24,
   },
   premiumCard: {
-    borderRadius: borderRadius.xl,
-    padding: spacing[5],
+    borderRadius: 16,
+    padding: 20,
     borderWidth: 1,
     borderColor: 'rgba(245, 158, 11, 0.2)',
     shadowColor: '#000',
@@ -444,124 +426,122 @@ const styles = StyleSheet.create({
   premiumHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: spacing[4],
+    marginBottom: 16,
   },
   premiumIconContainer: {
     width: 48,
     height: 48,
-    borderRadius: borderRadius.lg,
+    borderRadius: 12,
     backgroundColor: 'rgba(245, 158, 11, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: spacing[3],
+    marginRight: 12,
   },
   premiumTextContainer: {
     flex: 1,
   },
   premiumTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '700',
-    marginBottom: 8,
-    lineHeight: 22,
+    marginBottom: 4,
+    lineHeight: 20,
     letterSpacing: -0.2,
   },
   premiumDescription: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '500',
-    lineHeight: 20,
-    opacity: 0.85,
+    lineHeight: 18,
+    opacity: 0.8,
   },
   premiumButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing[2],
+    gap: 8,
     backgroundColor: '#F59E0B',
-    paddingVertical: spacing[3],
-    paddingHorizontal: spacing[6],
-    borderRadius: borderRadius.lg,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 12,
   },
   premiumButtonText: {
-    fontSize: typography.size.base,
-    fontWeight: typography.weight.semibold,
+    fontSize: 16,
+    fontWeight: '600',
     color: '#FFF',
+    lineHeight: 18,
   },
   
   // Features Section
   featuresSection: {
-    paddingHorizontal: spacing[6],
+    paddingHorizontal: 20,
   },
   featuresTitle: {
-    fontSize: typography.size['2xl'],
-    fontWeight: typography.weight.bold,
+    fontSize: 22,
+    fontWeight: '700',
     textAlign: 'center',
-    marginBottom: spacing[8],
-    letterSpacing: typography.letterSpacing.tight,
-    lineHeight: typography.lineHeight.snug,
+    marginBottom: 24,
+    letterSpacing: -0.3,
+    lineHeight: 26,
   },
   featuresList: {
-    gap: spacing[4],
-    marginBottom: spacing[8],
+    gap: 16,
+    marginBottom: 24,
   },
   featureItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing[3],
+    gap: 12,
   },
   featureIcon: {
     width: 32,
     height: 32,
-    borderRadius: borderRadius.lg,
+    borderRadius: 8,
     backgroundColor: 'rgba(0, 255, 136, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   featureText: {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.medium,
+    fontSize: 16,
+    fontWeight: '500',
     flex: 1,
-    lineHeight: typography.lineHeight.normal,
-  },
-  featureTextDisabled: {
-    color: '#999',
+    lineHeight: 20,
   },
   
   // Trust Badge
   trustBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing[3],
+    gap: 12,
     backgroundColor: 'rgba(0, 255, 136, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(0, 255, 136, 0.2)',
-    padding: spacing[4],
-    borderRadius: borderRadius.xl,
-    marginBottom: spacing[4],
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
   },
   trustText: {
-    fontSize: typography.size.base,
+    fontSize: 14,
     color: '#00E67A',
-    fontWeight: typography.weight.medium,
+    fontWeight: '500',
     flex: 1,
-    lineHeight: typography.lineHeight.normal,
+    lineHeight: 18,
   },
   
   // Premium Status
   premiumStatus: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing[3],
+    gap: 12,
     backgroundColor: 'rgba(245, 158, 11, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(245, 158, 11, 0.3)',
-    padding: spacing[4],
-    borderRadius: borderRadius.xl,
+    padding: 16,
+    borderRadius: 12,
   },
   premiumStatusText: {
-    fontSize: typography.size.base,
+    fontSize: 15,
     color: '#F59E0B',
-    fontWeight: typography.weight.semibold,
+    fontWeight: '600',
     flex: 1,
-    lineHeight: typography.lineHeight.normal,
+    lineHeight: 18,
   },
 });

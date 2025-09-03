@@ -62,13 +62,13 @@ function PaywallScreen() {
           </View>
           
           <Text style={styles.title}>
-            {isPro ? 'FinSage Pro Active' : isTrialActive ? `Trial: ${trialDaysLeft} days left` : 'Unlock Professional Analytics'}
+            {isPro ? 'FinSage Pro Active' : isTrialActive ? `Trial: ${trialDaysLeft} days left` : 'Unlock FinSage Pro'}
           </Text>
           
           <Text style={styles.subtitle}>
             {isPro 
               ? 'Full access to professional financial tools!' 
-              : 'Join thousands who trust FinSage for precision financial analysis.'}
+              : 'Professional financial analysis at your fingertips'}
           </Text>
           
           <View style={styles.statusBadge}>
@@ -80,9 +80,9 @@ function PaywallScreen() {
       <ScrollView style={[styles.content, { backgroundColor: themeColors.background }]} showsVerticalScrollIndicator={false}>
         {/* Professional Value Proposition */}
         <View style={styles.valueSection}>
-          <Text style={[styles.valueTitle, { color: themeColors.text.primary }]}>Professional Financial Analysis</Text>
+          <Text style={[styles.valueTitle, { color: themeColors.text.primary }]}>Professional Features</Text>
           <Text style={[styles.valueSubtitle, { color: themeColors.text.secondary }]}>
-            Bank-grade calculations with advanced analytics for maximum profitability
+            Advanced financial analytics and professional reports
           </Text>
         </View>
 
@@ -231,18 +231,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       },
       title: {
-        fontSize: 32,
+        fontSize: 28,
         fontWeight: '800',
         color: colors.text.inverse,
         textAlign: 'center',
         marginBottom: 12,
-        letterSpacing: -0.5,
+        letterSpacing: -0.3,
+        lineHeight: 32,
       },
       subtitle: {
         fontSize: 16,
-        color: 'rgba(255,255,255,0.85)',
+        color: 'rgba(255,255,255,0.9)',
         textAlign: 'center',
-        lineHeight: 22,
+        lineHeight: 20,
         marginBottom: 16,
         fontWeight: '500',
       },
@@ -272,17 +273,17 @@ const styles = StyleSheet.create({
         marginBottom: spacing[8],
       },
       valueTitle: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: '700',
         textAlign: 'center',
-        marginBottom: 12,
-        letterSpacing: -0.5,
-        lineHeight: 28,
+        marginBottom: 8,
+        letterSpacing: -0.3,
+        lineHeight: 26,
       },
       valueSubtitle: {
         fontSize: 16,
         textAlign: 'center',
-        lineHeight: 22,
+        lineHeight: 20,
         fontWeight: '500',
       },
       featuresSection: {
@@ -313,17 +314,17 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       featureTitle: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: '700',
         color: colors.text.primary,
-        marginBottom: 8,
-        letterSpacing: -0.3,
-        lineHeight: 22,
+        marginBottom: 4,
+        letterSpacing: -0.2,
+        lineHeight: 20,
       },
       featureDescription: {
-        fontSize: 15,
+        fontSize: 14,
         color: colors.text.secondary,
-        lineHeight: 20,
+        lineHeight: 18,
         fontWeight: '500',
       },
       socialProof: {
@@ -351,12 +352,12 @@ const styles = StyleSheet.create({
         fontWeight: typography.weight.semibold,
       },
       testimonial: {
-        fontSize: typography.size.base,
+        fontSize: 15,
         textAlign: 'center',
         fontStyle: 'italic',
-        lineHeight: typography.lineHeight.relaxed,
-        marginBottom: spacing[2],
-        fontWeight: typography.weight.medium,
+        lineHeight: 20,
+        marginBottom: 8,
+        fontWeight: '500',
       },
       testimonialAuthor: {
         fontSize: typography.size.sm,
@@ -403,10 +404,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       pricingTitle: {
-        fontSize: typography.size['3xl'],
-        fontWeight: typography.weight.bold,
-        letterSpacing: typography.letterSpacing.tight,
-        lineHeight: typography.lineHeight.snug,
+        fontSize: 24,
+        fontWeight: '700',
+        letterSpacing: -0.3,
+        lineHeight: 28,
       },
       pricingPrice: {
         flexDirection: 'row',
@@ -414,21 +415,21 @@ const styles = StyleSheet.create({
         marginBottom: spacing[3],
       },
       priceAmount: {
-        fontSize: typography.size['5xl'],
-        fontWeight: typography.weight.extrabold,
-        letterSpacing: typography.letterSpacing.tighter,
+        fontSize: 36,
+        fontWeight: '800',
+        letterSpacing: -0.5,
       },
       pricePeriod: {
-        fontSize: typography.size.xl,
-        fontWeight: typography.weight.medium,
-        marginLeft: spacing[1],
+        fontSize: 18,
+        fontWeight: '500',
+        marginLeft: 4,
       },
       pricingDescription: {
-        fontSize: typography.size.lg,
+        fontSize: 16,
         textAlign: 'center',
-        marginBottom: spacing[6],
-        fontWeight: typography.weight.medium,
-        lineHeight: typography.lineHeight.relaxed,
+        marginBottom: 20,
+        fontWeight: '500',
+        lineHeight: 20,
       },
       ctaButton: {
         backgroundColor: 'rgba(255,255,255,0.2)',
@@ -444,11 +445,11 @@ const styles = StyleSheet.create({
         elevation: colors.shadow.sm.elevation,
       },
       ctaButtonText: {
-        fontSize: typography.size.xl,
-        fontWeight: typography.weight.bold,
+        fontSize: 18,
+        fontWeight: '700',
         textAlign: 'center',
-        letterSpacing: typography.letterSpacing.wide,
-        lineHeight: typography.lineHeight.snug,
+        letterSpacing: 0.3,
+        lineHeight: 20,
       },
       restoreButton: {
         alignItems: 'center',

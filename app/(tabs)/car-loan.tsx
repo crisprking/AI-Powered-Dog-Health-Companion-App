@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Animated, Platform } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Animated, Platform, ActivityIndicator } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, Save, FileText, Share, MoreHorizontal, Car, TrendingUp, Calculator, DollarSign, Target, BarChart3, Sparkles, Zap, ArrowRight } from 'lucide-react-native';
@@ -10,6 +10,7 @@ import InputField from '@/components/shared/InputField';
 import SliderInput from '@/components/shared/SliderInput';
 import ResultCard from '@/components/shared/ResultCard';
 import ShareActionSheet from '@/components/shared/ShareActionSheet';
+import AITipsManager from '@/components/shared/AITipsManager';
 import EmotionalFeedback from '@/components/shared/EmotionalFeedback';
 import { useCarLoanCalculator } from '@/hooks/useCarLoanCalculator';
 import { formatCurrency, formatPercent } from '@/utils/calculations';
@@ -27,6 +28,10 @@ export default function CarLoanCalculator() {
   const [showShareSheet, setShowShareSheet] = useState<boolean>(false);
   const [showFeedback, setShowFeedback] = useState<boolean>(false);
   const [feedbackType, setFeedbackType] = useState<'success' | 'celebration' | 'encouragement' | 'progress'>('success');
+  const [aiLoading, setAiLoading] = useState<boolean>(false);
+  const [aiAdvice, setAiAdvice] = useState<string>('');
+  const [aiError, setAiError] = useState<string>('');
+  const [showAITipsManager, setShowAITipsManager] = useState<boolean>(false);
 
   
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -111,6 +116,33 @@ export default function CarLoanCalculator() {
   const potentialSavings = useMemo(() => {
     return calculation ? calculation.totalInterest * 0.12 : 0; // Potential 12% savings with better rates
   }, [calculation]);
+
+  const askAI = useCallback(async () => {
+    if (!calculation) return;
+    try {
+      setAiError('');
+      setAiAdvice('');
+      setAiLoading(true);
+      const messages = [
+        { role: 'system', content: 'You are a helpful, concise financial assistant. Provide practical, risk-aware advice.' },
+        { role: 'user', content: `Give me tailored auto loan tips. Vehicle price ${inputs.vehiclePrice}, down ${inputs.downPayment}, trade-in ${inputs.tradeInValue}, rate ${inputs.interestRate}%, term ${inputs.loanTerm} yrs, sales tax ${inputs.salesTaxRate}%, fees ${inputs.fees}. Focus on: reducing monthly payment, cutting lifetime interest, better financing options, and actionable next steps in 3-5 bullets.` }
+      ];
+      const res = await fetch('https://toolkit.rork.com/text/llm/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages }),
+      });
+      if (!res.ok) throw new Error(`AI request failed: ${res.status}`);
+      const json = await res.json();
+      const text = (json?.completion as string) ?? '';
+      setAiAdvice(text);
+    } catch (e: any) {
+      setAiError('Unable to fetch AI advice right now. Please try again.');
+      console.log('AI error', e?.message ?? e);
+    } finally {
+      setAiLoading(false);
+    }
+  }, [inputs, calculation]);
 
   return (
     <>
@@ -449,8 +481,35 @@ export default function CarLoanCalculator() {
                     </View>
                   </View>
                   
+                  <TouchableOpacity 
+                    style={styles.insightActionButton}
+                    onPress={async () => {
+                      if (!aiAdvice) {
+                        await askAI();
+                      }
+                      if (aiAdvice) {
+                        setShowAITipsManager(true);
+                      }
+                    }}
+                  >
+                    {aiLoading ? (
+                      <ActivityIndicator color="#667EEA" />
+                    ) : (
+                      <>
+                        <Text style={styles.insightActionText}>
+                          {aiAdvice ? 'View AI Tips' : 'Ask AI for tips'}
+                        </Text>
+                        <ArrowRight size={16} color="#667EEA" />
+                      </>
+                    )}
+                  </TouchableOpacity>
+
+                  {aiError ? (
+                    <Text style={[styles.insightDetailText, { color: '#EF4444' }]}>{aiError}</Text>
+                  ) : null}
+                  
                   {hasPremiumAccess && (
-                    <TouchableOpacity style={styles.insightActionButton}>
+                    <TouchableOpacity style={[styles.insightActionButton, { marginTop: spacing[2] }]}>
                       <Text style={styles.insightActionText}>View Rate Comparison</Text>
                       <ArrowRight size={16} color="#667EEA" />
                     </TouchableOpacity>
@@ -541,6 +600,15 @@ export default function CarLoanCalculator() {
           onExportCSV={handleExportCSV}
           hasPremiumAccess={hasPremiumAccess}
           calculatorType="car-loan"
+        />
+        
+        <AITipsManager
+          visible={showAITipsManager}
+          onClose={() => setShowAITipsManager(false)}
+          initialAdvice={aiAdvice}
+          calculatorType="car-loan"
+          calculationData={carLoanData}
+          testID="car-loan-ai-tips"
         />
       </View>
     </>

@@ -11,7 +11,7 @@ import SliderInput from '@/components/shared/SliderInput';
 import ResultCard from '@/components/shared/ResultCard';
 import PaymentBreakdown from '@/components/shared/PaymentBreakdown';
 import ShareActionSheet from '@/components/shared/ShareActionSheet';
-
+import AITipsManager from '@/components/shared/AITipsManager';
 import EmotionalFeedback from '@/components/shared/EmotionalFeedback';
 import { useMortgageCalculator } from '@/hooks/useMortgageCalculator';
 import { formatCurrency, formatPercent } from '@/utils/calculations';
@@ -181,6 +181,7 @@ export default function MortgageCalculator() {
   const [aiLoading, setAiLoading] = useState<boolean>(false);
   const [aiAdvice, setAiAdvice] = useState<string>('');
   const [aiError, setAiError] = useState<string>('');
+  const [showAITipsManager, setShowAITipsManager] = useState<boolean>(false);
 
   const askAI = useCallback(async () => {
     try {
@@ -604,12 +605,25 @@ export default function MortgageCalculator() {
                 </View>
 
                 <View style={{ gap: spacing[3] }}>
-                  <TouchableOpacity style={styles.insightActionButton} onPress={askAI} testID="mortgage-ask-ai">
+                  <TouchableOpacity 
+                    style={styles.insightActionButton} 
+                    onPress={async () => {
+                      if (!aiAdvice) {
+                        await askAI();
+                      }
+                      if (aiAdvice) {
+                        setShowAITipsManager(true);
+                      }
+                    }} 
+                    testID="mortgage-ask-ai"
+                  >
                     {aiLoading ? (
                       <ActivityIndicator color="#00E67A" />
                     ) : (
                       <>
-                        <Text style={styles.insightActionText}>Ask AI for tips</Text>
+                        <Text style={styles.insightActionText}>
+                          {aiAdvice ? 'View AI Tips' : 'Ask AI for tips'}
+                        </Text>
                         <ArrowRight size={16} color="#00E67A" />
                       </>
                     )}
@@ -617,12 +631,6 @@ export default function MortgageCalculator() {
 
                   {aiError ? (
                     <Text style={[styles.insightDetailText, { color: '#EF4444' }]}>{aiError}</Text>
-                  ) : null}
-
-                  {aiAdvice ? (
-                    <View style={{ backgroundColor: 'rgba(0,230,122,0.08)', borderColor: 'rgba(0,230,122,0.25)', borderWidth: 1, borderRadius: borderRadius.lg, padding: spacing[3] }}>
-                      <Text style={{ color: themeColors.text.primary, fontSize: 14, lineHeight: 18 }}>{aiAdvice}</Text>
-                    </View>
                   ) : null}
                 </View>
                 
@@ -717,6 +725,15 @@ export default function MortgageCalculator() {
           onExportCSV={handleExportCSV}
           hasPremiumAccess={hasPremiumAccess}
           calculatorType="mortgage"
+        />
+        
+        <AITipsManager
+          visible={showAITipsManager}
+          onClose={() => setShowAITipsManager(false)}
+          initialAdvice={aiAdvice}
+          calculatorType="mortgage"
+          calculationData={mortgageData}
+          testID="mortgage-ai-tips"
         />
       </View>
     </>

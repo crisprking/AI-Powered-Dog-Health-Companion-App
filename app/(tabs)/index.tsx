@@ -80,16 +80,16 @@ export default function WelcomeScreen() {
           
           <View style={styles.brandContainer}>
             <View style={[styles.logoBackdrop, {
-              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.95)',
+              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.9)',
               borderRadius: 100,
               padding: 24,
               shadowColor: isDark ? '#00E67A' : '#000',
-              shadowOffset: { width: 0, height: 12 },
-              shadowOpacity: isDark ? 0.4 : 0.2,
-              shadowRadius: 24,
-              elevation: 16,
-              borderWidth: 3,
-              borderColor: isDark ? 'rgba(0, 230, 122, 0.4)' : 'rgba(0, 0, 0, 0.08)',
+              shadowOffset: { width: 0, height: 8 },
+              shadowOpacity: isDark ? 0.3 : 0.15,
+              shadowRadius: 16,
+              elevation: 12,
+              borderWidth: 2,
+              borderColor: isDark ? 'rgba(0, 230, 122, 0.2)' : 'rgba(0, 0, 0, 0.05)',
             }]}>
               <SageMascot 
                 size={120} 
@@ -101,23 +101,26 @@ export default function WelcomeScreen() {
               />
             </View>
             <View style={styles.appNameContainer}>
-              <View style={[styles.appNameBadge, {
-                backgroundColor: isDark 
-                  ? 'rgba(0, 0, 0, 0.85)' 
-                  : 'rgba(255, 255, 255, 0.95)',
-                borderColor: isDark 
-                  ? 'rgba(0, 230, 122, 0.3)' 
-                  : 'rgba(0, 0, 0, 0.1)',
-                shadowColor: isDark ? '#00E67A' : '#000',
-                shadowOpacity: isDark ? 0.3 : 0.15,
-              }]}>
+              <LinearGradient
+                colors={isDark ? ['#000000', '#1A1A1A'] : ['#FFFFFF', '#F8F9FA']}
+                style={[styles.appNameBadge, {
+                  borderColor: isDark 
+                    ? 'rgba(0, 230, 122, 0.3)' 
+                    : 'rgba(0, 0, 0, 0.1)',
+                  shadowColor: isDark ? '#00E67A' : '#000',
+                  shadowOpacity: isDark ? 0.4 : 0.1,
+                }]}
+              >
                 <Text style={[styles.appName, { 
                   color: isDark ? '#FFFFFF' : '#000000',
                   fontWeight: '900',
+                  textShadowColor: isDark ? 'rgba(0, 230, 122, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 2,
                 }]}>
                   {APP_NAME}
                 </Text>
-              </View>
+              </LinearGradient>
               <Text style={[styles.appTagline, { color: themeColors.text.secondary }]}>
                 {TAGLINE}
               </Text>

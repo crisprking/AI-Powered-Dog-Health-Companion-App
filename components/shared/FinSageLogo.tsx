@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MASCOT_URL, BRAND_COLORS } from '@/constants/branding';
-import { useTheme } from '@/contexts/ThemeContext';
+import { MASCOT_URL } from '@/constants/branding';
 
 interface FinSageLogoProps {
   variant?: 'full' | 'icon' | 'wordmark' | 'premium';
@@ -47,45 +46,54 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
     />
   );
   
-  const { isDark } = useTheme();
+
   
   const renderWordmark = () => {
     if (!showText) return null;
     
     return (
       <View style={styles.wordmarkContainer}>
-        <View style={[
-          styles.textContainer,
-          {
-            backgroundColor: isDark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.95)',
-            borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-            borderRadius: config.fontSize * 0.4,
-          }
-        ]}>
-          <LinearGradient
-            colors={premium ? [BRAND_COLORS.premium, BRAND_COLORS.premiumDark] : [BRAND_COLORS.primary, BRAND_COLORS.primaryDark]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={[styles.textGradient, { borderRadius: config.fontSize * 0.3 }]}
-          >
+        <LinearGradient
+          colors={premium ? ['#1a1a2e', '#16213e', '#0f3460'] : ['#667eea', '#764ba2']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.modernContainer, { borderRadius: config.fontSize * 0.6 }]}
+        >
+          <View style={styles.brandContainer}>
             <Text style={[styles.brandText, { 
-              fontSize: config.fontSize,
-              color: BRAND_COLORS.textWhite,
-              textShadowColor: 'rgba(0,0,0,0.5)',
-              textShadowOffset: { width: 0, height: 1 },
-              textShadowRadius: 3
+              fontSize: config.fontSize * 1.1,
+              color: '#FFFFFF',
+              textShadowColor: 'rgba(0,0,0,0.8)',
+              textShadowOffset: { width: 0, height: 2 },
+              textShadowRadius: 4
             }]}>
-              FinSage Pro
+              FinSage
             </Text>
-          </LinearGradient>
-        </View>
+            <View style={styles.proContainer}>
+              <LinearGradient
+                colors={['#FFD700', '#FFA500', '#FF6B35']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.proGradient}
+              >
+                <Text style={[styles.proText, { fontSize: config.fontSize * 0.5 }]}>PRO</Text>
+              </LinearGradient>
+            </View>
+          </View>
+          <Text style={[styles.taglineText, { 
+            fontSize: config.fontSize * 0.45,
+            color: 'rgba(255, 255, 255, 0.9)'
+          }]}>
+            Your AI Financial Wizard
+          </Text>
+        </LinearGradient>
         {premium && (
-          <View style={[styles.premiumBadge, { marginTop: config.spacing * 0.3 }]}>
+          <View style={[styles.premiumBadge, { marginTop: config.spacing * 0.4 }]}>
             <LinearGradient
-              colors={['#FFD700', '#FFA500']}
+              colors={['#FFD700', '#FFA500', '#FF6B35']}
               style={styles.premiumGradient}
             >
-              <Text style={[styles.premiumText, { fontSize: config.fontSize * 0.4 }]}>PREMIUM</Text>
+              <Text style={[styles.premiumText, { fontSize: config.fontSize * 0.35 }]}>✨ PREMIUM UNLOCKED</Text>
             </LinearGradient>
           </View>
         )}
@@ -156,22 +164,53 @@ const styles = StyleSheet.create({
   wordmarkContainer: {
     alignItems: 'center',
   },
-  textContainer: {
-    borderWidth: 1,
+  modernContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
-  textGradient: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+  brandContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 2,
   },
   brandText: {
-    fontWeight: '800',
-    letterSpacing: -0.5,
+    fontWeight: '900',
+    letterSpacing: -1,
     textAlign: 'center',
+  },
+  proContainer: {
+    marginLeft: 6,
+    marginTop: -2,
+  },
+  proGradient: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    shadowColor: '#FFA500',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  proText: {
+    color: '#000',
+    fontWeight: '900',
+    letterSpacing: 0.5,
+    textAlign: 'center',
+  },
+  taglineText: {
+    fontWeight: '600',
+    letterSpacing: 0.2,
+    textAlign: 'center',
+    opacity: 0.95,
   },
   premiumBadge: {
     alignItems: 'center',

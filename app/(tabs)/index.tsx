@@ -80,45 +80,25 @@ export default function WelcomeScreen() {
           
           <View style={styles.brandContainer}>
             <View style={[styles.logoBackdrop, {
-              backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)'
+              backgroundColor: 'transparent'
             }]}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(0,230,122,0.25)', 'rgba(0,209,102,0.15)']
-                  : ['rgba(0,230,122,0.18)', 'rgba(0,209,102,0.08)']
+                  ? ['rgba(0,230,122,0.15)', 'rgba(0,209,102,0.08)']
+                  : ['rgba(0,230,122,0.12)', 'rgba(0,209,102,0.06)']
                 }
                 style={styles.logoGradientRing}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               />
-              <View style={[styles.logoSurface, {
-                backgroundColor: isDark ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.9)'
-              }]} />
               <SageMascot 
-                size={140} 
+                size={160} 
                 emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
                 premium={hasPremiumAccess}
                 animated={true}
                 testID="sage-mascot"
                 imageUrl={MASCOT_URL}
               />
-            </View>
-            
-            {/* App Name with Black Text */}
-            <View style={styles.appNameContainer}>
-              <Text style={[styles.appName, {
-                color: BRAND_COLORS.textBlack,
-                textShadowColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.1)',
-                textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 2,
-              }]}>
-                {APP_NAME}
-              </Text>
-              <Text style={[styles.appTagline, {
-                color: isDark ? themeColors.text.secondary : 'rgba(0,0,0,0.7)'
-              }]}>
-                {TAGLINE}
-              </Text>
             </View>
           </View>
         </View>
@@ -396,53 +376,22 @@ const styles = StyleSheet.create({
   logoBackdrop: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 200,
-    height: 200,
+    width: 220,
+    height: 220,
     position: 'relative',
-    borderRadius: 100,
-    marginBottom: 20,
+    borderRadius: 110,
+    marginBottom: 32,
   },
   logoGradientRing: {
     position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    width: 220,
+    height: 220,
+    borderRadius: 110,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 6,
-  },
-  logoSurface: {
-    position: 'absolute',
-    width: 156,
-    height: 156,
-    borderRadius: 78,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
     elevation: 4,
-  },
-  appNameContainer: {
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  appName: {
-    fontSize: 32,
-    fontWeight: '900',
-    letterSpacing: -0.8,
-    textAlign: 'center',
-    lineHeight: 36,
-    marginBottom: 4,
-  },
-  appTagline: {
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-    letterSpacing: 0.3,
-    lineHeight: 20,
-    opacity: 0.8,
   },
   
   // Profit Banner

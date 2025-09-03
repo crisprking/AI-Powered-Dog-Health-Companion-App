@@ -21,21 +21,24 @@ const SageMascot: React.FC<SageMascotProps> = ({
 }) => {
   const bounceAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const blinkAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    if (!animated || Platform.OS === 'web') return;
+    if (!animated) return;
+
+    const useDriver = Platform.OS !== 'web';
 
     const bounceAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(bounceAnim, {
           toValue: -2,
           duration: 4000,
-          useNativeDriver: true,
+          useNativeDriver: useDriver,
         }),
         Animated.timing(bounceAnim, {
           toValue: 0,
           duration: 4000,
-          useNativeDriver: true,
+          useNativeDriver: useDriver,
         }),
       ])
     );
@@ -45,24 +48,42 @@ const SageMascot: React.FC<SageMascotProps> = ({
         Animated.timing(scaleAnim, {
           toValue: 1.01,
           duration: 5000,
-          useNativeDriver: true,
+          useNativeDriver: useDriver,
         }),
         Animated.timing(scaleAnim, {
           toValue: 1,
           duration: 5000,
-          useNativeDriver: true,
+          useNativeDriver: useDriver,
         }),
+      ])
+    );
+
+    const blinkAnimation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(blinkAnim, {
+          toValue: 0.85,
+          duration: 900,
+          useNativeDriver: false,
+        }),
+        Animated.timing(blinkAnim, {
+          toValue: 1,
+          duration: 900,
+          useNativeDriver: false,
+        }),
+        Animated.delay(400),
       ])
     );
 
     bounceAnimation.start();
     scaleAnimation.start();
+    blinkAnimation.start();
 
     return () => {
       bounceAnimation.stop();
       scaleAnimation.stop();
+      blinkAnimation.stop();
     };
-  }, [animated, bounceAnim, scaleAnim]);
+  }, [animated, bounceAnim, scaleAnim, blinkAnim]);
 
   const getEmotionColor = () => {
     switch (emotion) {
@@ -104,14 +125,15 @@ const SageMascot: React.FC<SageMascotProps> = ({
     ? ['#F59E0B', '#D97706'] 
     : ['#00E67A', '#00D166'];
 
-  const Container = animated && Platform.OS !== 'web' ? Animated.View : View;
+  const Container: any = animated ? Animated.View : View;
   const containerStyle = [
     styles.container,
-    animated && Platform.OS !== 'web' && {
+    animated && {
       transform: [
         { translateY: bounceAnim },
         { scale: scaleAnim }
-      ]
+      ],
+      opacity: blinkAnim,
     }
   ].filter(Boolean);
 

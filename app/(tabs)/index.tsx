@@ -80,15 +80,13 @@ export default function WelcomeScreen() {
           
           <View style={styles.brandContainer}>
             <SageMascot 
-              size={96} 
+              size={140} 
               emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
               premium={hasPremiumAccess}
               animated={true}
               testID="sage-mascot"
               imageUrl={MASCOT_URL}
             />
-            <Text style={[styles.brandTitle, { color: themeColors.text.primary }]}>{APP_NAME}</Text>
-            <Text style={[styles.brandSubtitle, { color: themeColors.text.secondary }]}>{TAGLINE}</Text>
           </View>
         </View>
 

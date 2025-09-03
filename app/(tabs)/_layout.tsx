@@ -82,7 +82,7 @@ import { useTheme } from "@/contexts/ThemeContext";
             tabBarLabelStyle: {
               fontSize: 13,
               fontWeight: '700',
-              marginTop: spacing[2],
+              marginTop: spacing[1],
               letterSpacing: 0.4,
             },
             tabBarItemStyle: {
@@ -149,7 +149,7 @@ import { useTheme } from "@/contexts/ThemeContext";
         justifyContent: 'center',
         borderRadius: borderRadius['2xl'],
         position: 'relative',
-        marginBottom: 2,
+        marginBottom: 8,
       },
       iconContainerActive: {
         transform: [{ scale: 1.05 }],

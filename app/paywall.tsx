@@ -284,7 +284,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: typography.lineHeight.relaxed,
         fontWeight: typography.weight.medium,
-        opacity: 0.9,
       },
       featuresSection: {
         gap: spacing[4],
@@ -326,7 +325,6 @@ const styles = StyleSheet.create({
         color: colors.text.secondary,
         lineHeight: typography.lineHeight.relaxed,
         fontWeight: typography.weight.medium,
-        opacity: 0.9,
       },
       socialProof: {
         padding: spacing[6],
@@ -431,7 +429,6 @@ const styles = StyleSheet.create({
         marginBottom: spacing[6],
         fontWeight: typography.weight.medium,
         lineHeight: typography.lineHeight.relaxed,
-        opacity: 0.95,
       },
       ctaButton: {
         backgroundColor: 'rgba(255,255,255,0.2)',

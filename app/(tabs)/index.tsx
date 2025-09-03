@@ -416,7 +416,6 @@ const styles = StyleSheet.create({
     fontSize: typography.size.base,
     fontWeight: typography.weight.medium,
     lineHeight: typography.lineHeight.relaxed,
-    opacity: 0.85,
   },
   calculatorArrow: {
     width: 32,
@@ -469,7 +468,6 @@ const styles = StyleSheet.create({
     fontSize: typography.size.base,
     fontWeight: typography.weight.medium,
     lineHeight: typography.lineHeight.relaxed,
-    opacity: 0.9,
   },
   premiumButton: {
     flexDirection: 'row',
@@ -521,7 +519,6 @@ const styles = StyleSheet.create({
     fontWeight: typography.weight.medium,
     flex: 1,
     lineHeight: typography.lineHeight.relaxed,
-    opacity: 0.9,
   },
   featureTextDisabled: {
     color: '#999',
@@ -545,7 +542,6 @@ const styles = StyleSheet.create({
     fontWeight: typography.weight.medium,
     flex: 1,
     lineHeight: typography.lineHeight.relaxed,
-    opacity: 0.95,
   },
   
   // Premium Status

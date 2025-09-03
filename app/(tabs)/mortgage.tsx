@@ -456,7 +456,7 @@ export default function MortgageCalculator() {
             />
           </Animated.View>
 
-          {/* Enhanced AI-Powered Insight */}
+          {/* Clean Professional Insight */}
           <Animated.View 
             style={[
               styles.insightCard,
@@ -466,18 +466,15 @@ export default function MortgageCalculator() {
               }
             ]}
           >
-            <LinearGradient
-              colors={calculation.loanToValue <= 80 ? ['#0F4C3A', '#1A5F4A'] : ['#4C1F0F', '#5F2A1A']}
-              style={styles.insightGradient}
-            >
+            <View style={[styles.insightCardContent, { backgroundColor: themeColors.surface.secondary }]}>
               <View style={styles.insightHeader}>
                 <View style={[styles.aiIconContainer, {
-                  backgroundColor: calculation.loanToValue <= 80 ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'
+                  backgroundColor: calculation.loanToValue <= 80 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'
                 }]}>
                   <Target size={24} color={calculation.loanToValue <= 80 ? '#10B981' : '#EF4444'} />
                 </View>
                 <View style={styles.insightTitleContainer}>
-                  <Text style={styles.insightTitle}>Professional Analysis</Text>
+                  <Text style={[styles.insightTitle, { color: themeColors.text.primary }]}>Professional Analysis</Text>
                   <View style={styles.aiIndicator}>
                     <Sparkles size={14} color="#00E67A" />
                     <Text style={styles.aiText}>AI-Powered</Text>
@@ -486,21 +483,21 @@ export default function MortgageCalculator() {
               </View>
               
               <View style={styles.insightContent}>
-                <Text style={styles.insightMainText}>
+                <Text style={[styles.insightMainText, { color: themeColors.text.primary }]}>
                   {calculation.loanToValue > 80 
-                    ? `💡 Optimization Opportunity Detected`
-                    : `🎉 Excellent Financial Position`}
+                    ? `Optimization Opportunity`
+                    : `Excellent Financial Position`}
                 </Text>
                 
-                <Text style={styles.insightDetailText}>
+                <Text style={[styles.insightDetailText, { color: themeColors.text.secondary }]}>
                   {calculation.loanToValue > 80 
-                    ? `Your current LTV is ${calculation.loanToValue.toFixed(1)}%. Consider increasing your down payment to ${formatCurrency(inputs.homePrice * 0.2)} to eliminate PMI costs of ${formatCurrency(calculation.breakdown.pmi * 12)} annually.`
-                    : `Your ${calculation.loanToValue.toFixed(1)}% LTV ratio is outstanding. You're avoiding PMI costs and building equity efficiently while maintaining optimal cash flow.`}
+                    ? `Your LTV is ${calculation.loanToValue.toFixed(1)}%. Consider increasing your down payment to eliminate PMI costs of ${formatCurrency(calculation.breakdown.pmi * 12)} annually.`
+                    : `Your ${calculation.loanToValue.toFixed(1)}% LTV ratio is outstanding. You're avoiding PMI costs and building equity efficiently.`}
                 </Text>
                 
                 <View style={styles.insightMetrics}>
                   <View style={styles.metricItem}>
-                    <Text style={styles.metricLabel}>Potential Annual Savings</Text>
+                    <Text style={[styles.metricLabel, { color: themeColors.text.tertiary }]}>Annual Savings</Text>
                     <Text style={[styles.metricValue, {
                       color: calculation.loanToValue > 80 ? '#EF4444' : '#10B981'
                     }]}>
@@ -511,7 +508,7 @@ export default function MortgageCalculator() {
                   </View>
                   
                   <View style={styles.metricItem}>
-                    <Text style={styles.metricLabel}>Risk Level</Text>
+                    <Text style={[styles.metricLabel, { color: themeColors.text.tertiary }]}>Risk Level</Text>
                     <Text style={[styles.metricValue, {
                       color: calculation.loanToValue > 80 ? '#F59E0B' : '#10B981'
                     }]}>
@@ -527,7 +524,7 @@ export default function MortgageCalculator() {
                   </TouchableOpacity>
                 )}
               </View>
-            </LinearGradient>
+            </View>
           </Animated.View>
 
           {/* Premium Upgrade */}
@@ -720,18 +717,18 @@ const styles = StyleSheet.create({
   },
   insightCard: {
     marginBottom: spacing[6],
-    borderRadius: borderRadius['2xl'],
-    overflow: 'hidden',
+    borderRadius: borderRadius.xl,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  insightGradient: {
-    padding: spacing[6],
-    borderWidth: 2,
-    borderColor: 'rgba(0,230,122,0.3)',
+  insightCardContent: {
+    padding: spacing[5],
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 230, 122, 0.2)',
   },
   insightHeader: {
     flexDirection: 'row',
@@ -751,41 +748,42 @@ const styles = StyleSheet.create({
   },
   insightTitle: {
     fontSize: typography.size.lg,
-    fontWeight: typography.weight.bold,
-    color: '#FFFFFF',
+    fontWeight: typography.weight.semibold,
     marginBottom: spacing[1],
+    lineHeight: typography.lineHeight.snug,
   },
   insightContent: {
     gap: spacing[4],
   },
   insightMainText: {
     fontSize: typography.size.lg,
-    fontWeight: typography.weight.bold,
-    color: '#FFFFFF',
+    fontWeight: typography.weight.semibold,
     textAlign: 'center',
-    marginBottom: spacing[2],
+    marginBottom: spacing[3],
+    lineHeight: typography.lineHeight.snug,
   },
   insightDetailText: {
     fontSize: typography.size.base,
-    color: 'rgba(255,255,255,0.9)',
     lineHeight: typography.lineHeight.relaxed,
     textAlign: 'center',
+    fontWeight: typography.weight.regular,
   },
   insightMetrics: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    borderRadius: borderRadius.xl,
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    borderRadius: borderRadius.lg,
     padding: spacing[4],
+    marginTop: spacing[4],
   },
   metricItem: {
     alignItems: 'center',
   },
   metricLabel: {
     fontSize: typography.size.xs,
-    color: 'rgba(255,255,255,0.7)',
     marginBottom: spacing[1],
     textAlign: 'center',
+    fontWeight: typography.weight.medium,
   },
   metricValue: {
     fontSize: typography.size.lg,

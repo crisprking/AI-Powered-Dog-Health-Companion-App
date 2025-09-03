@@ -100,33 +100,23 @@ export default function WelcomeScreen() {
           </LinearGradient>
         </View>
 
-        {/* Calculator Cards */}
+        {/* Calculator Cards - Clean & Readable */}
         <View style={styles.calculatorSection}>
           <TouchableOpacity
             style={styles.calculatorCard}
             onPress={() => handleCalculatorPress('mortgage')}
             testID="open-mortgage"
           >
-            <LinearGradient
-              colors={['#00E67A', '#00D166']}
-              style={styles.calculatorGradient}
-            >
-              <View style={styles.calculatorHeader}>
-                <View style={styles.calculatorIcon}>
-                  <Home size={28} color="#000" />
-                </View>
-                <ArrowRight size={20} color="#000" style={styles.calculatorArrow} />
+            <View style={[styles.calculatorCardContent, { backgroundColor: themeColors.surface.secondary }]}>
+              <View style={styles.calculatorIconContainer}>
+                <Home size={32} color="#00E67A" />
               </View>
-              <View style={styles.calculatorContent}>
-                <Text style={[styles.calculatorTitle, { color: 'rgba(0, 0, 0, 0.9)' }]}>Mortgage Calculator</Text>
-                <Text style={[styles.calculatorSubtitle, { color: 'rgba(0, 0, 0, 0.8)' }]}>Complete PITI analysis</Text>
-                <View style={styles.calculatorFeatures}>
-                  <Text style={[styles.calculatorFeature, { color: 'rgba(0, 0, 0, 0.8)' }]}>• Real-time calculations</Text>
-                  <Text style={[styles.calculatorFeature, { color: 'rgba(0, 0, 0, 0.8)' }]}>• Complete cost breakdown</Text>
-                  <Text style={[styles.calculatorFeature, { color: 'rgba(0, 0, 0, 0.8)' }]}>• Professional insights</Text>
-                </View>
+              <View style={styles.calculatorTextContainer}>
+                <Text style={[styles.calculatorTitle, { color: themeColors.text.primary }]}>Mortgage Calculator</Text>
+                <Text style={[styles.calculatorSubtitle, { color: themeColors.text.secondary }]}>Complete home loan analysis</Text>
               </View>
-            </LinearGradient>
+              <ArrowRight size={20} color={themeColors.text.tertiary} />
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -134,47 +124,38 @@ export default function WelcomeScreen() {
             onPress={() => handleCalculatorPress('car-loan')}
             testID="open-car-loan"
           >
-            <LinearGradient
-              colors={['#5B6FE8', '#6B5B95']}
-              style={styles.calculatorGradient}
-            >
-              <View style={styles.calculatorHeader}>
-                <View style={styles.calculatorIcon}>
-                  <Car size={28} color="#FFF" />
-                </View>
-                <ArrowRight size={20} color="#FFF" style={styles.calculatorArrow} />
+            <View style={[styles.calculatorCardContent, { backgroundColor: themeColors.surface.secondary }]}>
+              <View style={styles.calculatorIconContainer}>
+                <Car size={32} color="#667EEA" />
               </View>
-              <View style={styles.calculatorContent}>
-                <Text style={[styles.calculatorTitle, { color: '#FFF' }]}>Auto Loan Calculator</Text>
-                <Text style={[styles.calculatorSubtitle, { color: 'rgba(255, 255, 255, 0.9)' }]}>Smart financing analysis</Text>
-                <View style={styles.calculatorFeatures}>
-                  <Text style={[styles.calculatorFeature, { color: 'rgba(255, 255, 255, 0.9)' }]}>• Trade-in value included</Text>
-                  <Text style={[styles.calculatorFeature, { color: 'rgba(255, 255, 255, 0.9)' }]}>• All fees calculated</Text>
-                  <Text style={[styles.calculatorFeature, { color: 'rgba(255, 255, 255, 0.9)' }]}>• Rate optimization</Text>
-                </View>
+              <View style={styles.calculatorTextContainer}>
+                <Text style={[styles.calculatorTitle, { color: themeColors.text.primary }]}>Auto Loan Calculator</Text>
+                <Text style={[styles.calculatorSubtitle, { color: themeColors.text.secondary }]}>Smart vehicle financing</Text>
               </View>
-            </LinearGradient>
+              <ArrowRight size={20} color={themeColors.text.tertiary} />
+            </View>
           </TouchableOpacity>
         </View>
 
-        {/* Premium Section */}
+        {/* Premium Section - Clean Design */}
         {!isPro && (
           <View style={styles.premiumSection}>
-            <LinearGradient
-              colors={['#F59E0B', '#D97706']}
-              style={styles.premiumCard}
-            >
+            <View style={[styles.premiumCard, { backgroundColor: themeColors.surface.secondary }]}>
               <View style={styles.premiumHeader}>
-                <Crown size={32} color="#FFF" />
-                <Text style={styles.premiumTitle}>
-                  {isTrialActive ? 'FinSage Pro Active' : 'Unlock FinSage Pro'}
-                </Text>
+                <View style={styles.premiumIconContainer}>
+                  <Crown size={24} color="#F59E0B" />
+                </View>
+                <View style={styles.premiumTextContainer}>
+                  <Text style={[styles.premiumTitle, { color: themeColors.text.primary }]}>
+                    {isTrialActive ? 'FinSage Pro Active' : 'Unlock FinSage Pro'}
+                  </Text>
+                  <Text style={[styles.premiumDescription, { color: themeColors.text.secondary }]}>
+                    {isTrialActive 
+                      ? 'Advanced analytics and professional reports' 
+                      : 'Professional-grade financial analysis tools'}
+                  </Text>
+                </View>
               </View>
-              <Text style={styles.premiumDescription}>
-                {isTrialActive 
-                  ? 'Advanced analytics and professional reports for maximum profitability.' 
-                  : 'Professional-grade tools for serious financial analysis and wealth building.'}
-              </Text>
               <TouchableOpacity
                 style={styles.premiumButton}
                 onPress={handleStartTrial}
@@ -185,7 +166,7 @@ export default function WelcomeScreen() {
                 </Text>
                 <ArrowRight size={16} color="#FFF" />
               </TouchableOpacity>
-            </LinearGradient>
+            </View>
           </View>
         )}
 
@@ -379,104 +360,105 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.9)',
   },
   
-  // Calculator Section
+  // Calculator Section - Clean Design
   calculatorSection: {
     paddingHorizontal: spacing[6],
     gap: spacing[4],
     marginBottom: spacing[8],
   },
   calculatorCard: {
-    borderRadius: borderRadius['2xl'],
-    overflow: 'hidden',
+    borderRadius: borderRadius.xl,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  calculatorGradient: {
-    padding: spacing[6],
-    minHeight: 180,
-    flexDirection: 'column',
-  },
-  calculatorHeader: {
+  calculatorCardContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing[4],
+    padding: spacing[5],
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.05)',
   },
-  calculatorIcon: {
+  calculatorIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: borderRadius.xl,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: borderRadius.lg,
+    backgroundColor: 'rgba(0, 230, 122, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: spacing[4],
   },
-  calculatorArrow: {
-    opacity: 0.8,
-  },
-  calculatorContent: {
+  calculatorTextContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
   },
   calculatorTitle: {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.bold,
-    color: '#FFF',
-    marginBottom: spacing[2],
-    letterSpacing: typography.letterSpacing.tight,
-    lineHeight: typography.lineHeight.tight,
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.semibold,
+    marginBottom: spacing[1],
+    lineHeight: typography.lineHeight.snug,
   },
   calculatorSubtitle: {
     fontSize: typography.size.sm,
-    color: 'rgba(255, 255, 255, 0.85)',
-    marginBottom: spacing[4],
-    fontWeight: typography.weight.medium,
-    lineHeight: typography.lineHeight.normal,
-  },
-  calculatorFeatures: {
-    gap: spacing[1],
-  },
-  calculatorFeature: {
-    fontSize: typography.size.xs,
-    color: 'rgba(255, 255, 255, 0.75)',
     fontWeight: typography.weight.regular,
     lineHeight: typography.lineHeight.normal,
   },
   
-  // Premium Section
+  // Premium Section - Clean Design
   premiumSection: {
     paddingHorizontal: spacing[6],
     marginBottom: spacing[8],
   },
   premiumCard: {
-    borderRadius: borderRadius['2xl'],
-    padding: spacing[6],
+    borderRadius: borderRadius.xl,
+    padding: spacing[5],
+    borderWidth: 1,
+    borderColor: 'rgba(245, 158, 11, 0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   premiumHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing[3],
-    marginBottom: spacing[3],
+    marginBottom: spacing[4],
   },
-  premiumTitle: {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.bold,
-    color: '#FFF',
+  premiumIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: borderRadius.lg,
+    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing[3],
+  },
+  premiumTextContainer: {
     flex: 1,
   },
+  premiumTitle: {
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.semibold,
+    marginBottom: spacing[1],
+    lineHeight: typography.lineHeight.snug,
+  },
   premiumDescription: {
-    fontSize: typography.size.base,
-    color: 'rgba(255, 255, 255, 0.9)',
-    lineHeight: typography.lineHeight.relaxed,
-    marginBottom: spacing[5],
-    fontWeight: typography.weight.medium,
+    fontSize: typography.size.sm,
+    fontWeight: typography.weight.regular,
+    lineHeight: typography.lineHeight.normal,
   },
   premiumButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing[2],
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: '#F59E0B',
     paddingVertical: spacing[3],
     paddingHorizontal: spacing[6],
-    borderRadius: borderRadius.xl,
+    borderRadius: borderRadius.lg,
   },
   premiumButtonText: {
     fontSize: typography.size.base,

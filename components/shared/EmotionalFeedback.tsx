@@ -305,12 +305,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   message: {
-    fontSize: typography.size.lg,
-    fontWeight: typography.weight.bold,
+    fontSize: typography.size.base,
+    fontWeight: typography.weight.semibold,
     color: '#FFFFFF',
     textAlign: 'center',
-    letterSpacing: typography.letterSpacing.wide,
-    lineHeight: typography.lineHeight.snug,
+    letterSpacing: typography.letterSpacing.normal,
+    lineHeight: typography.lineHeight.relaxed,
   },
   premiumBadge: {
     fontSize: typography.size.xs,

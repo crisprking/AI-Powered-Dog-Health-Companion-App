@@ -63,12 +63,12 @@ const SageMascot: React.FC<SageMascotProps> = ({
         Animated.timing(blinkAnim, {
           toValue: 0.85,
           duration: 900,
-          useNativeDriver: false,
+          useNativeDriver: useDriver,
         }),
         Animated.timing(blinkAnim, {
           toValue: 1,
           duration: 900,
-          useNativeDriver: false,
+          useNativeDriver: useDriver,
         }),
         Animated.delay(400),
       ])

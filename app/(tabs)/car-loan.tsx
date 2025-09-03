@@ -147,14 +147,16 @@ export default function CarLoanCalculator() {
             >
               <View style={styles.profitHeaderContent}>
                 <View style={[styles.logoContainer, {
-                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.95)',
                   borderRadius: 80,
                   padding: 16,
                   shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.15,
-                  shadowRadius: 12,
-                  elevation: 8,
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 20,
+                  elevation: 15,
+                  borderWidth: 2,
+                  borderColor: isDark ? 'rgba(102, 126, 234, 0.3)' : 'rgba(0, 0, 0, 0.1)',
                 }]}>
                   <SageMascot 
                     size={100} 
@@ -186,13 +188,14 @@ export default function CarLoanCalculator() {
 
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
-              <Car size={20} color="#667EEA" strokeWidth={2.5} />
+              <Car size={24} color="#667EEA" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { 
                 color: themeColors.text.primary,
                 fontSize: typography.size.lg,
                 fontWeight: typography.weight.bold,
                 lineHeight: typography.size.lg * typography.lineHeight.tight,
                 letterSpacing: typography.letterSpacing.tight,
+                marginLeft: 16,
               }]}>Vehicle Details</Text>
             </View>
             
@@ -228,13 +231,14 @@ export default function CarLoanCalculator() {
 
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
-              <Calculator size={20} color="#667EEA" strokeWidth={2.5} />
+              <Calculator size={24} color="#667EEA" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { 
                 color: themeColors.text.primary,
                 fontSize: typography.size.lg,
                 fontWeight: typography.weight.bold,
                 lineHeight: typography.size.lg * typography.lineHeight.tight,
                 letterSpacing: typography.letterSpacing.tight,
+                marginLeft: 16,
               }]}>Loan Terms</Text>
             </View>
             
@@ -263,13 +267,14 @@ export default function CarLoanCalculator() {
 
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
-              <DollarSign size={20} color="#667EEA" strokeWidth={2.5} />
+              <DollarSign size={24} color="#667EEA" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { 
                 color: themeColors.text.primary,
                 fontSize: typography.size.lg,
                 fontWeight: typography.weight.bold,
                 lineHeight: typography.size.lg * typography.lineHeight.tight,
                 letterSpacing: typography.letterSpacing.tight,
+                marginLeft: 16,
               }]}>Additional Costs</Text>
             </View>
             
@@ -298,13 +303,14 @@ export default function CarLoanCalculator() {
           {calculation && (
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <BarChart3 size={20} color="#667EEA" strokeWidth={2.5} />
+                <BarChart3 size={24} color="#667EEA" strokeWidth={2.5} />
                 <Text style={[styles.sectionTitle, { 
                   color: themeColors.text.primary,
                   fontSize: typography.size.lg,
                   fontWeight: typography.weight.bold,
                   lineHeight: typography.size.lg * typography.lineHeight.tight,
                   letterSpacing: typography.letterSpacing.tight,
+                  marginLeft: 16,
                 }]}>Financial Analysis</Text>
               </View>
               
@@ -614,7 +620,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    marginLeft: 12,
     lineHeight: 22,
   },
   resultsGrid: {

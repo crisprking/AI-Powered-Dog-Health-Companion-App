@@ -80,14 +80,16 @@ export default function WelcomeScreen() {
           
           <View style={styles.brandContainer}>
             <View style={[styles.logoBackdrop, {
-              backgroundColor: isDark ? 'rgba(0, 230, 122, 0.05)' : 'rgba(0, 230, 122, 0.03)',
+              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.9)',
               borderRadius: 100,
               padding: 20,
               shadowColor: isDark ? '#00E67A' : '#000',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: isDark ? 0.15 : 0.08,
-              shadowRadius: 12,
-              elevation: 6,
+              shadowOffset: { width: 0, height: 8 },
+              shadowOpacity: isDark ? 0.3 : 0.15,
+              shadowRadius: 20,
+              elevation: 12,
+              borderWidth: 2,
+              borderColor: isDark ? 'rgba(0, 230, 122, 0.3)' : 'rgba(0, 0, 0, 0.1)',
             }]}>
               <SageMascot 
                 size={140} 
@@ -100,10 +102,11 @@ export default function WelcomeScreen() {
             </View>
             <View style={styles.appNameContainer}>
               <Text style={[styles.appName, { 
-                color: isDark ? '#FFFFFF' : '#000000',
-                textShadowColor: isDark ? 'rgba(0, 230, 122, 0.3)' : 'rgba(0, 0, 0, 0.1)',
-                textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 2,
+                color: '#000000',
+                textShadowColor: 'rgba(255, 255, 255, 0.8)',
+                textShadowOffset: { width: 0, height: 2 },
+                textShadowRadius: 4,
+                fontWeight: '900',
               }]}>
                 {APP_NAME}
               </Text>
@@ -145,7 +148,7 @@ export default function WelcomeScreen() {
             fontWeight: typography.weight.medium,
             lineHeight: typography.size.base * typography.lineHeight.normal,
           }]}>
-            Swipe to explore • Tap for instant calculations
+            Swipe horizontally • Tap to calculate • Type for precision
           </Text>
           <HorizontalCalculators onOpen={handleCalculatorPress} />
         </View>

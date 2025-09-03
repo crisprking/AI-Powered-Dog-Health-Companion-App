@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet, Platform, Image } from 'react-native';
+import { View, Animated, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 interface SageMascotProps {
@@ -26,20 +26,18 @@ const SageMascot: React.FC<SageMascotProps> = ({
   useEffect(() => {
     if (!animated) return;
 
-    // Optimized animations with consistent native driver usage
-    const useNativeDriver = Platform.OS !== 'web';
-
+    // Fixed animation system - separate native driver usage for different properties
     const bounceAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(bounceAnim, {
           toValue: -2,
           duration: 2500,
-          useNativeDriver,
+          useNativeDriver: true, // Transform animations can use native driver
         }),
         Animated.timing(bounceAnim, {
           toValue: 0,
           duration: 2500,
-          useNativeDriver,
+          useNativeDriver: true,
         }),
       ])
     );
@@ -49,12 +47,12 @@ const SageMascot: React.FC<SageMascotProps> = ({
         Animated.timing(scaleAnim, {
           toValue: 1.015,
           duration: 3500,
-          useNativeDriver,
+          useNativeDriver: true, // Scale can use native driver
         }),
         Animated.timing(scaleAnim, {
           toValue: 1,
           duration: 3500,
-          useNativeDriver,
+          useNativeDriver: true,
         }),
       ])
     );
@@ -64,12 +62,12 @@ const SageMascot: React.FC<SageMascotProps> = ({
         Animated.timing(blinkAnim, {
           toValue: 0.85,
           duration: 600,
-          useNativeDriver,
+          useNativeDriver: true, // Opacity can use native driver
         }),
         Animated.timing(blinkAnim, {
           toValue: 1,
           duration: 600,
-          useNativeDriver,
+          useNativeDriver: true,
         }),
         Animated.delay(800),
       ])

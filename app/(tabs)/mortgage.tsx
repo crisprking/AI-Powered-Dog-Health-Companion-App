@@ -263,14 +263,16 @@ export default function MortgageCalculator() {
             >
               <View style={styles.profitHeaderContent}>
                 <View style={[styles.logoContainer, {
-                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.95)',
                   borderRadius: 80,
                   padding: 16,
                   shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.15,
-                  shadowRadius: 12,
-                  elevation: 8,
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 20,
+                  elevation: 15,
+                  borderWidth: 2,
+                  borderColor: isDark ? 'rgba(0, 230, 122, 0.3)' : 'rgba(0, 0, 0, 0.1)',
                 }]}>
                   <SageMascot 
                     size={100} 
@@ -327,13 +329,14 @@ export default function MortgageCalculator() {
             ]}
           >
             <View style={styles.sectionHeader}>
-              <Calculator size={20} color="#00E67A" strokeWidth={2.5} />
+              <Calculator size={24} color="#00E67A" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { 
                 color: themeColors.text.primary,
                 fontSize: typography.size.lg,
                 fontWeight: typography.weight.bold,
                 lineHeight: typography.size.lg * typography.lineHeight.tight,
                 letterSpacing: typography.letterSpacing.tight,
+                marginLeft: 16,
               }]}>Property Details</Text>
             </View>
             
@@ -390,13 +393,14 @@ export default function MortgageCalculator() {
             ]}
           >
             <View style={styles.sectionHeader}>
-              <DollarSign size={20} color="#00E67A" strokeWidth={2.5} />
+              <DollarSign size={24} color="#00E67A" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { 
                 color: themeColors.text.primary,
                 fontSize: typography.size.lg,
                 fontWeight: typography.weight.bold,
                 lineHeight: typography.size.lg * typography.lineHeight.tight,
                 letterSpacing: typography.letterSpacing.tight,
+                marginLeft: 16,
               }]}>Additional Costs</Text>
             </View>
             
@@ -463,13 +467,14 @@ export default function MortgageCalculator() {
             ]}
           >
             <View style={styles.sectionHeader}>
-              <BarChart3 size={20} color="#00E67A" strokeWidth={2.5} />
+              <BarChart3 size={24} color="#00E67A" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { 
                 color: themeColors.text.primary,
                 fontSize: typography.size.lg,
                 fontWeight: typography.weight.bold,
                 lineHeight: typography.size.lg * typography.lineHeight.tight,
                 letterSpacing: typography.letterSpacing.tight,
+                marginLeft: 16,
               }]}>Smart Analysis</Text>
               <View style={styles.liveIndicator}>
                 <Animated.View style={[styles.pulseDot, { transform: [{ scale: pulseAnim }] }]} />
@@ -791,7 +796,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    marginLeft: 12,
     lineHeight: 22,
   },
   resultsGrid: {

@@ -80,16 +80,36 @@ export default function WelcomeScreen() {
           
           <View style={styles.brandContainer}>
             <View style={[styles.logoBackdrop, {
-              backgroundColor: 'transparent'
+              backgroundColor: isDark ? 'rgba(0, 230, 122, 0.05)' : 'rgba(0, 230, 122, 0.03)',
+              borderRadius: 100,
+              padding: 20,
+              shadowColor: isDark ? '#00E67A' : '#000',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: isDark ? 0.15 : 0.08,
+              shadowRadius: 12,
+              elevation: 6,
             }]}>
               <SageMascot 
-                size={160} 
+                size={140} 
                 emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
                 premium={hasPremiumAccess}
                 animated={true}
                 testID="sage-mascot"
                 imageUrl={MASCOT_URL}
               />
+            </View>
+            <View style={styles.appNameContainer}>
+              <Text style={[styles.appName, { 
+                color: isDark ? '#FFFFFF' : '#000000',
+                textShadowColor: isDark ? 'rgba(0, 230, 122, 0.3)' : 'rgba(0, 0, 0, 0.1)',
+                textShadowOffset: { width: 0, height: 1 },
+                textShadowRadius: 2,
+              }]}>
+                {APP_NAME}
+              </Text>
+              <Text style={[styles.appTagline, { color: themeColors.text.secondary }]}>
+                {TAGLINE}
+              </Text>
             </View>
           </View>
         </View>
@@ -110,10 +130,21 @@ export default function WelcomeScreen() {
 
         {/* Calculator Cards - Enhanced UX */}
         <View style={styles.calculatorSection}>
-          <Text style={[styles.calculatorSectionTitle, { color: themeColors.text.primary }]}>
+          <Text style={[styles.calculatorSectionTitle, { 
+            color: themeColors.text.primary,
+            fontSize: typography.size['2xl'],
+            fontWeight: typography.weight.bold,
+            lineHeight: typography.size['2xl'] * typography.lineHeight.tight,
+            letterSpacing: typography.letterSpacing.tight,
+          }]}>
             Financial Calculators
           </Text>
-          <Text style={[styles.calculatorSectionSubtitle, { color: themeColors.text.secondary }]}>
+          <Text style={[styles.calculatorSectionSubtitle, { 
+            color: themeColors.text.secondary,
+            fontSize: typography.size.base,
+            fontWeight: typography.weight.medium,
+            lineHeight: typography.size.base * typography.lineHeight.normal,
+          }]}>
             Swipe to explore • Tap for instant calculations
           </Text>
           <HorizontalCalculators onOpen={handleCalculatorPress} />
@@ -367,7 +398,25 @@ const styles = StyleSheet.create({
   logoBackdrop: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 32,
+    marginBottom: 20,
+  },
+  appNameContainer: {
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  appName: {
+    fontSize: typography.size['3xl'],
+    fontWeight: typography.weight.black,
+    letterSpacing: typography.letterSpacing.tight,
+    lineHeight: typography.size['3xl'] * typography.lineHeight.tight,
+    marginBottom: 4,
+  },
+  appTagline: {
+    fontSize: typography.size.base,
+    fontWeight: typography.weight.medium,
+    letterSpacing: typography.letterSpacing.wide,
+    lineHeight: typography.size.base * typography.lineHeight.normal,
+    opacity: 0.8,
   },
   
   // Profit Banner

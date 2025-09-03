@@ -263,12 +263,17 @@ export default function MortgageCalculator() {
             >
               <View style={styles.profitHeaderContent}>
                 <View style={[styles.logoContainer, {
-                  backgroundColor: 'transparent',
-                  shadowColor: 'transparent',
-                  elevation: 0,
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: 80,
+                  padding: 16,
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.15,
+                  shadowRadius: 12,
+                  elevation: 8,
                 }]}>
                   <SageMascot 
-                    size={120} 
+                    size={100} 
                     emotion="analytical" 
                     premium={hasPremiumAccess}
                     animated={true}
@@ -323,7 +328,13 @@ export default function MortgageCalculator() {
           >
             <View style={styles.sectionHeader}>
               <Calculator size={20} color="#00E67A" strokeWidth={2.5} />
-              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Property Details</Text>
+              <Text style={[styles.sectionTitle, { 
+                color: themeColors.text.primary,
+                fontSize: typography.size.lg,
+                fontWeight: typography.weight.bold,
+                lineHeight: typography.size.lg * typography.lineHeight.tight,
+                letterSpacing: typography.letterSpacing.tight,
+              }]}>Property Details</Text>
             </View>
             
             <InputField
@@ -380,7 +391,13 @@ export default function MortgageCalculator() {
           >
             <View style={styles.sectionHeader}>
               <DollarSign size={20} color="#00E67A" strokeWidth={2.5} />
-              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Additional Costs</Text>
+              <Text style={[styles.sectionTitle, { 
+                color: themeColors.text.primary,
+                fontSize: typography.size.lg,
+                fontWeight: typography.weight.bold,
+                lineHeight: typography.size.lg * typography.lineHeight.tight,
+                letterSpacing: typography.letterSpacing.tight,
+              }]}>Additional Costs</Text>
             </View>
             
             <SliderInput
@@ -447,10 +464,20 @@ export default function MortgageCalculator() {
           >
             <View style={styles.sectionHeader}>
               <BarChart3 size={20} color="#00E67A" strokeWidth={2.5} />
-              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Smart Analysis</Text>
+              <Text style={[styles.sectionTitle, { 
+                color: themeColors.text.primary,
+                fontSize: typography.size.lg,
+                fontWeight: typography.weight.bold,
+                lineHeight: typography.size.lg * typography.lineHeight.tight,
+                letterSpacing: typography.letterSpacing.tight,
+              }]}>Smart Analysis</Text>
               <View style={styles.liveIndicator}>
                 <Animated.View style={[styles.pulseDot, { transform: [{ scale: pulseAnim }] }]} />
-                <Text style={[styles.liveText, { color: themeColors.text.secondary }]}>Live</Text>
+                <Text style={[styles.liveText, { 
+                  color: themeColors.text.secondary,
+                  fontSize: typography.size.xs,
+                  fontWeight: typography.weight.medium,
+                }]}>Live</Text>
               </View>
             </View>
             

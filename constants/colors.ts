@@ -150,46 +150,46 @@ const colors = {
     pink: '#EC4899',
   },
 
-  // Dark theme colors - CashApp/modern fintech dark mode
+  // Dark theme colors - Optimized for OLED and performance
   dark: {
     surface: {
-      primary: '#0F0F0F',     // True black base
-      secondary: '#1A1A1A',   // Slightly lighter for cards
-      tertiary: '#262626',    // Medium dark for elevated surfaces
-      elevated: '#1F1F1F',    // Elevated cards
-      overlay: 'rgba(0, 0, 0, 0.8)',
+      primary: '#000000',     // True black for OLED efficiency
+      secondary: '#111111',   // Minimal power consumption
+      tertiary: '#1A1A1A',    // Subtle elevation
+      elevated: '#0D0D0D',    // Elevated cards
+      overlay: 'rgba(0, 0, 0, 0.85)',
     },
     text: {
-      primary: '#FFFFFF',     // Pure white for primary text
-      secondary: '#E5E5E5',   // Light gray for secondary
-      tertiary: '#A3A3A3',    // Medium gray for tertiary
-      quaternary: '#737373',  // Darker gray for quaternary
+      primary: '#FFFFFF',     // Maximum contrast
+      secondary: '#E8E8E8',   // Optimized readability
+      tertiary: '#B8B8B8',    // Balanced contrast
+      quaternary: '#888888',  // Subtle text
       inverse: '#000000',
-      accent: '#00E67A',      // Keep brand green
+      accent: '#00E67A',      // Brand green
     },
     border: {
-      light: 'rgba(255, 255, 255, 0.08)',   // Very subtle borders
-      medium: 'rgba(255, 255, 255, 0.12)',  // Subtle borders
-      strong: 'rgba(255, 255, 255, 0.16)',  // More visible borders
+      light: 'rgba(255, 255, 255, 0.06)',   // Ultra-subtle
+      medium: 'rgba(255, 255, 255, 0.10)',  // Subtle
+      strong: 'rgba(255, 255, 255, 0.14)',  // Visible
       accent: '#00E67A',
     },
-    background: '#000000',  // Pure black background
+    background: '#000000',  // True black for OLED
   },
 };
 
-// Typography scale - iOS-optimized for perfect readability
+// Typography scale - Optimized for maximum readability and performance
 export const typography = {
   size: {
-    xs: 12,      // iOS-optimized minimum readable size
-    sm: 14,      // Perfect for secondary text on iOS
-    base: 16,    // iOS system default - perfect readability
-    lg: 18,      // Comfortable reading on all iOS devices
-    xl: 20,      // Clear headings
-    '2xl': 24,   // Section titles - iOS friendly
-    '3xl': 28,   // Page titles - perfect for iOS
-    '4xl': 34,   // Hero text - iOS optimized
-    '5xl': 42,   // Large display
-    '6xl': 50,   // Extra large display
+    xs: 11,      // Compact but readable
+    sm: 13,      // Secondary text - optimized
+    base: 15,    // Primary text - perfect balance
+    lg: 17,      // Comfortable reading
+    xl: 19,      // Clear headings
+    '2xl': 22,   // Section titles
+    '3xl': 26,   // Page titles
+    '4xl': 32,   // Hero text
+    '5xl': 40,   // Large display
+    '6xl': 48,   // Extra large display
   },
   weight: {
     light: '300' as const,
@@ -201,19 +201,19 @@ export const typography = {
     black: '900' as const,
   },
   lineHeight: {
-    tight: 1.2,      // Tighter for headings
-    snug: 1.3,       // Snug for titles
-    normal: 1.4,     // Normal reading
-    relaxed: 1.5,    // Comfortable reading
-    loose: 1.6,      // Very comfortable
+    tight: 1.15,     // Tighter for headings - optimized
+    snug: 1.25,      // Snug for titles - better spacing
+    normal: 1.35,    // Normal reading - improved
+    relaxed: 1.45,   // Comfortable reading
+    loose: 1.55,     // Very comfortable
   },
   letterSpacing: {
-    tighter: -0.02,
-    tight: -0.01,
+    tighter: -0.025,
+    tight: -0.015,
     normal: 0,
-    wide: 0.01,
-    wider: 0.02,
-    widest: 0.04,
+    wide: 0.015,
+    wider: 0.025,
+    widest: 0.05,
   },
 };
 

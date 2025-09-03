@@ -147,12 +147,17 @@ export default function CarLoanCalculator() {
             >
               <View style={styles.profitHeaderContent}>
                 <View style={[styles.logoContainer, {
-                  backgroundColor: 'transparent',
-                  shadowColor: 'transparent',
-                  elevation: 0,
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: 80,
+                  padding: 16,
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.15,
+                  shadowRadius: 12,
+                  elevation: 8,
                 }]}>
                   <SageMascot 
-                    size={120} 
+                    size={100} 
                     emotion="focused" 
                     premium={hasPremiumAccess}
                     animated={true}
@@ -182,7 +187,13 @@ export default function CarLoanCalculator() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Car size={20} color="#667EEA" strokeWidth={2.5} />
-              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Vehicle Details</Text>
+              <Text style={[styles.sectionTitle, { 
+                color: themeColors.text.primary,
+                fontSize: typography.size.lg,
+                fontWeight: typography.weight.bold,
+                lineHeight: typography.size.lg * typography.lineHeight.tight,
+                letterSpacing: typography.letterSpacing.tight,
+              }]}>Vehicle Details</Text>
             </View>
             
             <InputField
@@ -218,7 +229,13 @@ export default function CarLoanCalculator() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Calculator size={20} color="#667EEA" strokeWidth={2.5} />
-              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Loan Terms</Text>
+              <Text style={[styles.sectionTitle, { 
+                color: themeColors.text.primary,
+                fontSize: typography.size.lg,
+                fontWeight: typography.weight.bold,
+                lineHeight: typography.size.lg * typography.lineHeight.tight,
+                letterSpacing: typography.letterSpacing.tight,
+              }]}>Loan Terms</Text>
             </View>
             
             <SliderInput
@@ -247,7 +264,13 @@ export default function CarLoanCalculator() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <DollarSign size={20} color="#667EEA" strokeWidth={2.5} />
-              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Additional Costs</Text>
+              <Text style={[styles.sectionTitle, { 
+                color: themeColors.text.primary,
+                fontSize: typography.size.lg,
+                fontWeight: typography.weight.bold,
+                lineHeight: typography.size.lg * typography.lineHeight.tight,
+                letterSpacing: typography.letterSpacing.tight,
+              }]}>Additional Costs</Text>
             </View>
             
             <SliderInput
@@ -276,7 +299,13 @@ export default function CarLoanCalculator() {
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
                 <BarChart3 size={20} color="#667EEA" strokeWidth={2.5} />
-                <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Financial Analysis</Text>
+                <Text style={[styles.sectionTitle, { 
+                  color: themeColors.text.primary,
+                  fontSize: typography.size.lg,
+                  fontWeight: typography.weight.bold,
+                  lineHeight: typography.size.lg * typography.lineHeight.tight,
+                  letterSpacing: typography.letterSpacing.tight,
+                }]}>Financial Analysis</Text>
               </View>
               
               <View style={styles.resultsGrid}>

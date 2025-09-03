@@ -146,16 +146,20 @@ export default function CarLoanCalculator() {
               style={styles.profitHeaderGradient}
             >
               <View style={styles.profitHeaderContent}>
-                <SageMascot 
-                  size={64} 
-                  emotion="focused" 
-                  premium={hasPremiumAccess}
-                  animated={true}
-                  testID="car-loan-mascot"
-                  imageUrl={MASCOT_URL}
-                />
-                <Text style={styles.profitHeaderTitle}>Auto Loan Calculator</Text>
-                <Text style={styles.profitHeaderSubtitle}>AI-powered auto financing analysis</Text>
+                <View style={[styles.logoContainer, {
+                  backgroundColor: 'transparent',
+                  shadowColor: 'transparent',
+                  elevation: 0,
+                }]}>
+                  <SageMascot 
+                    size={120} 
+                    emotion="focused" 
+                    premium={hasPremiumAccess}
+                    animated={true}
+                    testID="car-loan-mascot"
+                    imageUrl={MASCOT_URL}
+                  />
+                </View>
               </View>
             </LinearGradient>
           </View>
@@ -509,7 +513,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: spacing[4],
-    paddingBottom: spacing[10],
+    paddingBottom: spacing[12],
   },
   headerActions: {
     flexDirection: 'row',
@@ -527,6 +531,11 @@ const styles = StyleSheet.create({
   },
   profitHeaderContent: {
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerIcon: {
     width: 64,
@@ -537,22 +546,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: spacing[3],
   },
-  profitHeaderTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginTop: 12,
-    textAlign: 'center',
-    lineHeight: 28,
-  },
-  profitHeaderSubtitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: 'rgba(255,255,255,0.9)',
-    marginTop: 8,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
+
   profitBanner: {
     marginBottom: spacing[6],
     borderRadius: borderRadius.xl,

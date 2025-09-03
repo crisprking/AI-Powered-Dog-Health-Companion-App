@@ -263,25 +263,18 @@ export default function MortgageCalculator() {
             >
               <View style={styles.profitHeaderContent}>
                 <View style={[styles.logoContainer, {
-                  backgroundColor: isDark ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.9)'
+                  backgroundColor: 'transparent',
+                  shadowColor: 'transparent',
+                  elevation: 0,
                 }]}>
                   <SageMascot 
-                    size={80} 
+                    size={120} 
                     emotion="analytical" 
                     premium={hasPremiumAccess}
                     animated={true}
                     testID="mortgage-mascot"
                     imageUrl={MASCOT_URL}
                   />
-                </View>
-                <View style={styles.headerTextContainer}>
-                  <Text style={[styles.profitHeaderTitle, {
-                    color: BRAND_COLORS.textBlack,
-                    textShadowColor: 'rgba(255,255,255,0.8)',
-                    textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 2,
-                  }]}>FinSage Pro</Text>
-                  <Text style={styles.profitHeaderSubtitle}>AI-powered mortgage analysis</Text>
                 </View>
               </View>
             </LinearGradient>
@@ -698,8 +691,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: spacing[6], // More padding for breathing room
-    paddingBottom: spacing[16], // More bottom space
+    padding: spacing[4],
+    paddingBottom: spacing[12],
   },
   headerActions: {
     flexDirection: 'row',
@@ -716,22 +709,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profitHeaderContent: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing[4],
   },
   logoContainer: {
-    borderRadius: 50,
-    padding: spacing[2],
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  headerTextContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
   },
   headerIcon: {
     width: 64,
@@ -742,22 +725,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: spacing[3],
   },
-  profitHeaderTitle: {
-    fontSize: 28,
-    fontWeight: '900',
-    textAlign: 'center',
-    lineHeight: 32,
-    letterSpacing: -0.5,
-    marginBottom: 4,
-  },
-  profitHeaderSubtitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.95)',
-    textAlign: 'center',
-    lineHeight: 18,
-    letterSpacing: 0.2,
-  },
+
   profitBanner: {
     marginBottom: spacing[6],
     borderRadius: borderRadius.xl,

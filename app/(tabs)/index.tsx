@@ -82,15 +82,6 @@ export default function WelcomeScreen() {
             <View style={[styles.logoBackdrop, {
               backgroundColor: 'transparent'
             }]}>
-              <LinearGradient
-                colors={isDark 
-                  ? ['rgba(0,230,122,0.15)', 'rgba(0,209,102,0.08)']
-                  : ['rgba(0,230,122,0.12)', 'rgba(0,209,102,0.06)']
-                }
-                style={styles.logoGradientRing}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              />
               <SageMascot 
                 size={160} 
                 emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
@@ -286,7 +277,7 @@ function HorizontalCalculators({ onOpen }: { onOpen: (type: 'mortgage' | 'car-lo
           <TouchableOpacity
             key={item.key}
             onPress={() => onOpen(item.key)}
-            activeOpacity={0.85}
+            activeOpacity={0.92}
             testID={item.testID}
             style={{
               width: CARD_WIDTH,
@@ -376,22 +367,7 @@ const styles = StyleSheet.create({
   logoBackdrop: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 220,
-    height: 220,
-    position: 'relative',
-    borderRadius: 110,
     marginBottom: 32,
-  },
-  logoGradientRing: {
-    position: 'absolute',
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
   },
   
   // Profit Banner
@@ -446,10 +422,10 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 3,
   },
   calculatorCardContent: {
     flexDirection: 'row',

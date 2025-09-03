@@ -4,6 +4,7 @@ import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, Save, FileText, Share, MoreHorizontal, Car, TrendingUp, Calculator, DollarSign, Target, BarChart3, Sparkles, Zap, ArrowRight } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
+import FinSageLogo from '@/components/shared/FinSageLogo';
 import { MASCOT_URL } from '@/constants/branding';
 import * as Haptics from 'expo-haptics';
 import InputField from '@/components/shared/InputField';
@@ -526,7 +527,13 @@ export default function CarLoanCalculator() {
                 colors={['#F59E0B', '#D97706']}
                 style={styles.premiumGradient}
               >
-                <Crown size={28} color="#FFFFFF" />
+                <FinSageLogo 
+                  variant="premium" 
+                  size="medium" 
+                  premium={true} 
+                  animated={true}
+                  testID="car-loan-premium-logo"
+                />
                 <Text style={styles.premiumTitle}>Unlock FinSage Pro</Text>
                 <Text style={styles.premiumSubtitle}>
                   Rate comparison • Payment scenarios • Professional reports

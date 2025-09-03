@@ -177,19 +177,19 @@ const colors = {
   },
 };
 
-// Typography scale - Fintech-optimized for readability and trust
+// Typography scale - iOS-optimized for perfect readability
 export const typography = {
   size: {
-    xs: 11,      // Smaller for subtle text
-    sm: 13,      // Better for mobile readability
-    base: 15,    // Optimized base size
-    lg: 17,      // Comfortable reading
-    xl: 19,      // Headings
-    '2xl': 22,   // Section titles
-    '3xl': 26,   // Page titles
-    '4xl': 32,   // Hero text
-    '5xl': 40,   // Large display
-    '6xl': 48,   // Extra large display
+    xs: 12,      // iOS-optimized minimum readable size
+    sm: 14,      // Perfect for secondary text on iOS
+    base: 16,    // iOS system default - perfect readability
+    lg: 18,      // Comfortable reading on all iOS devices
+    xl: 20,      // Clear headings
+    '2xl': 24,   // Section titles - iOS friendly
+    '3xl': 28,   // Page titles - perfect for iOS
+    '4xl': 34,   // Hero text - iOS optimized
+    '5xl': 42,   // Large display
+    '6xl': 50,   // Extra large display
   },
   weight: {
     light: '300' as const,

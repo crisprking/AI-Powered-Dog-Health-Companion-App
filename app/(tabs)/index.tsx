@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Home, Car, Crown, Shield, Star, ArrowRight, Calculator, DollarSign, Target, BarChart3, Settings } from 'lucide-react-native';
+import SageMascot from '@/components/shared/SageMascot';
 import { StatusBar } from 'expo-status-bar';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
 import { useSubscription, useSubscriptionStatusText, useHasPremiumAccess } from '@/contexts/SubscriptionContext';
@@ -76,13 +77,15 @@ export default function WelcomeScreen() {
           </View>
           
           <View style={styles.brandContainer}>
-            <View style={[styles.logoContainer, {
-              backgroundColor: hasPremiumAccess ? '#F59E0B' : '#00E67A'
-            }]}>
-              <Calculator size={48} color="#FFF" />
-            </View>
+            <SageMascot 
+              size={96} 
+              emotion={hasPremiumAccess ? 'celebrating' : 'confident'} 
+              premium={hasPremiumAccess}
+              animated={true}
+              testID="sage-mascot"
+            />
             <Text style={[styles.brandTitle, { color: themeColors.text.primary }]}>FinSage Pro</Text>
-            <Text style={[styles.brandSubtitle, { color: themeColors.text.secondary }]}>Professional Financial Calculator</Text>
+            <Text style={[styles.brandSubtitle, { color: themeColors.text.secondary }]}>Your AI Financial Advisor</Text>
           </View>
         </View>
 
@@ -100,39 +103,45 @@ export default function WelcomeScreen() {
           </LinearGradient>
         </View>
 
-        {/* Calculator Cards - Clean & Readable */}
+        {/* Calculator Cards - iOS Optimized */}
         <View style={styles.calculatorSection}>
           <TouchableOpacity
-            style={styles.calculatorCard}
+            style={[styles.calculatorCard, { backgroundColor: themeColors.surface.secondary }]}
             onPress={() => handleCalculatorPress('mortgage')}
             testID="open-mortgage"
+            activeOpacity={0.8}
           >
-            <View style={[styles.calculatorCardContent, { backgroundColor: themeColors.surface.secondary }]}>
-              <View style={styles.calculatorIconContainer}>
-                <Home size={32} color="#00E67A" />
+            <View style={styles.calculatorCardContent}>
+              <View style={[styles.calculatorIconContainer, { backgroundColor: 'rgba(0, 230, 122, 0.15)' }]}>
+                <Home size={28} color="#00E67A" strokeWidth={2.5} />
               </View>
               <View style={styles.calculatorTextContainer}>
                 <Text style={[styles.calculatorTitle, { color: themeColors.text.primary }]}>Mortgage Calculator</Text>
                 <Text style={[styles.calculatorSubtitle, { color: themeColors.text.secondary }]}>Complete home loan analysis</Text>
               </View>
-              <ArrowRight size={20} color={themeColors.text.tertiary} />
+              <View style={styles.calculatorArrow}>
+                <ArrowRight size={18} color={themeColors.text.tertiary} strokeWidth={2} />
+              </View>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.calculatorCard}
+            style={[styles.calculatorCard, { backgroundColor: themeColors.surface.secondary }]}
             onPress={() => handleCalculatorPress('car-loan')}
             testID="open-car-loan"
+            activeOpacity={0.8}
           >
-            <View style={[styles.calculatorCardContent, { backgroundColor: themeColors.surface.secondary }]}>
-              <View style={styles.calculatorIconContainer}>
-                <Car size={32} color="#667EEA" />
+            <View style={styles.calculatorCardContent}>
+              <View style={[styles.calculatorIconContainer, { backgroundColor: 'rgba(102, 126, 234, 0.15)' }]}>
+                <Car size={28} color="#667EEA" strokeWidth={2.5} />
               </View>
               <View style={styles.calculatorTextContainer}>
                 <Text style={[styles.calculatorTitle, { color: themeColors.text.primary }]}>Auto Loan Calculator</Text>
                 <Text style={[styles.calculatorSubtitle, { color: themeColors.text.secondary }]}>Smart vehicle financing</Text>
               </View>
-              <ArrowRight size={20} color={themeColors.text.tertiary} />
+              <View style={styles.calculatorArrow}>
+                <ArrowRight size={18} color={themeColors.text.tertiary} strokeWidth={2} />
+              </View>
             </View>
           </TouchableOpacity>
         </View>
@@ -323,17 +332,20 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   brandTitle: {
-    fontSize: typography.size['4xl'], // More comfortable size
+    fontSize: typography.size['3xl'],
     fontWeight: typography.weight.bold,
-    letterSpacing: typography.letterSpacing.tight,
-    marginBottom: spacing[3],
+    letterSpacing: -0.5,
+    marginBottom: spacing[2],
+    marginTop: spacing[4],
+    textAlign: 'center',
   },
   brandSubtitle: {
     fontSize: typography.size.base,
     fontWeight: typography.weight.medium,
     textAlign: 'center',
-    letterSpacing: typography.letterSpacing.normal,
-    lineHeight: typography.lineHeight.relaxed,
+    letterSpacing: 0.2,
+    lineHeight: 20,
+    opacity: 0.9,
   },
   
   // Profit Banner
@@ -368,42 +380,48 @@ const styles = StyleSheet.create({
   },
   calculatorCard: {
     borderRadius: borderRadius.xl,
+    marginBottom: spacing[4],
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 4,
   },
   calculatorCardContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: spacing[5],
+    padding: spacing[6],
     borderRadius: borderRadius.xl,
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.05)',
   },
   calculatorIconContainer: {
-    width: 56,
-    height: 56,
+    width: 52,
+    height: 52,
     borderRadius: borderRadius.lg,
-    backgroundColor: 'rgba(0, 230, 122, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing[4],
   },
   calculatorTextContainer: {
     flex: 1,
+    paddingRight: spacing[2],
   },
   calculatorTitle: {
     fontSize: typography.size.lg,
     fontWeight: typography.weight.semibold,
     marginBottom: spacing[1],
-    lineHeight: typography.lineHeight.snug,
+    lineHeight: 22,
   },
   calculatorSubtitle: {
     fontSize: typography.size.sm,
     fontWeight: typography.weight.regular,
-    lineHeight: typography.lineHeight.normal,
+    lineHeight: 18,
+    opacity: 0.8,
+  },
+  calculatorArrow: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   
   // Premium Section - Clean Design

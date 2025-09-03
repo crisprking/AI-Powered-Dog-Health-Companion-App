@@ -3,6 +3,7 @@ import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Animated, 
 import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, Save, FileText, Share, MoreHorizontal, Car, TrendingUp, Calculator, DollarSign, Target, BarChart3, Sparkles, Zap, ArrowRight } from 'lucide-react-native';
+import SageMascot from '@/components/shared/SageMascot';
 import * as Haptics from 'expo-haptics';
 import InputField from '@/components/shared/InputField';
 import SliderInput from '@/components/shared/SliderInput';
@@ -137,18 +138,22 @@ export default function CarLoanCalculator() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Professional Header */}
+          {/* Professional Header with Mascot */}
           <View style={styles.profitHeader}>
             <LinearGradient
               colors={['#667EEA', '#764BA2']}
               style={styles.profitHeaderGradient}
             >
               <View style={styles.profitHeaderContent}>
-                <View style={styles.headerIcon}>
-                  <Car size={32} color="#FFF" />
-                </View>
+                <SageMascot 
+                  size={64} 
+                  emotion="focused" 
+                  premium={hasPremiumAccess}
+                  animated={true}
+                  testID="car-loan-mascot"
+                />
                 <Text style={styles.profitHeaderTitle}>Auto Loan Calculator</Text>
-                <Text style={styles.profitHeaderSubtitle}>Professional auto financing analysis</Text>
+                <Text style={styles.profitHeaderSubtitle}>AI-powered auto financing analysis</Text>
               </View>
             </LinearGradient>
           </View>
@@ -169,7 +174,10 @@ export default function CarLoanCalculator() {
           </View>
 
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Vehicle Details</Text>
+            <View style={styles.sectionHeader}>
+              <Car size={20} color="#667EEA" strokeWidth={2.5} />
+              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Vehicle Details</Text>
+            </View>
             
             <InputField
               label="Vehicle Price"
@@ -202,7 +210,10 @@ export default function CarLoanCalculator() {
           </View>
 
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Loan Terms</Text>
+            <View style={styles.sectionHeader}>
+              <Calculator size={20} color="#667EEA" strokeWidth={2.5} />
+              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Loan Terms</Text>
+            </View>
             
             <SliderInput
               label="Interest Rate"
@@ -228,7 +239,10 @@ export default function CarLoanCalculator() {
           </View>
 
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Additional Costs</Text>
+            <View style={styles.sectionHeader}>
+              <DollarSign size={20} color="#667EEA" strokeWidth={2.5} />
+              <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Additional Costs</Text>
+            </View>
             
             <SliderInput
               label="Sales Tax Rate"
@@ -255,7 +269,7 @@ export default function CarLoanCalculator() {
           {calculation && (
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <BarChart3 size={24} color="#667EEA" />
+                <BarChart3 size={20} color="#667EEA" strokeWidth={2.5} />
                 <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Financial Analysis</Text>
               </View>
               
@@ -576,10 +590,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing[4],
   },
   sectionTitle: {
-    fontSize: typography.size.xl,
-    fontWeight: typography.weight.bold,
-    color: '#FFFFFF',
-    marginLeft: spacing[2],
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.semibold,
+    marginLeft: spacing[3],
+    lineHeight: 22,
   },
   resultsGrid: {
     gap: spacing[3],

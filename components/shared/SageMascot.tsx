@@ -79,7 +79,25 @@ const SageMascot: React.FC<SageMascotProps> = ({
     }
   };
 
+  const getEmotionExpression = () => {
+    switch (emotion) {
+      case 'celebrating':
+        return { eyeSize: 8, mouthWidth: 16, mouthHeight: 4 };
+      case 'analytical':
+        return { eyeSize: 6, mouthWidth: 10, mouthHeight: 2 };
+      case 'encouraging':
+        return { eyeSize: 7, mouthWidth: 14, mouthHeight: 3 };
+      case 'focused':
+        return { eyeSize: 5, mouthWidth: 8, mouthHeight: 2 };
+      case 'trustworthy':
+        return { eyeSize: 7, mouthWidth: 12, mouthHeight: 3 };
+      default:
+        return { eyeSize: 6, mouthWidth: 12, mouthHeight: 3 };
+    }
+  };
+
   const eyeColor = getEmotionColor();
+  const expression = getEmotionExpression();
   const gradientColors: [string, string] = premium 
     ? ['#F59E0B', '#D97706'] 
     : ['#00E67A', '#00D166'];
@@ -113,11 +131,26 @@ const SageMascot: React.FC<SageMascotProps> = ({
         end={{ x: 1, y: 1 }}
       >
         <View style={[styles.face, { width: size * 0.6, height: size * 0.6 }]}>
-          <View style={[styles.eye, { backgroundColor: eyeColor }]} />
-          <View style={[styles.eye, { backgroundColor: eyeColor }]} />
+          <View style={styles.eyeContainer}>
+            <View style={[styles.eye, { 
+              backgroundColor: eyeColor,
+              width: expression.eyeSize,
+              height: expression.eyeSize,
+              borderRadius: expression.eyeSize / 2
+            }]} />
+            <View style={[styles.eye, { 
+              backgroundColor: eyeColor,
+              width: expression.eyeSize,
+              height: expression.eyeSize,
+              borderRadius: expression.eyeSize / 2
+            }]} />
+          </View>
           <View style={[styles.mouth, { 
             backgroundColor: eyeColor,
-            borderRadius: emotion === 'confident' ? 10 : 2
+            width: expression.mouthWidth,
+            height: expression.mouthHeight,
+            borderRadius: expression.mouthHeight,
+            marginTop: 6
           }]} />
         </View>
       </LinearGradient>
@@ -145,20 +178,31 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     padding: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  eyeContainer: {
+    flexDirection: 'row',
+    gap: 4,
+    marginBottom: 2,
   },
   eye: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    margin: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    elevation: 1,
   },
   mouth: {
-    width: 12,
-    height: 3,
-    marginTop: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    elevation: 1,
   },
   glow: {
     position: 'absolute',

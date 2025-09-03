@@ -3,6 +3,7 @@ import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Animated, 
 import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, Save, FileText, Share, MoreHorizontal, Home, TrendingUp, Calculator, DollarSign, Target, BarChart3, Sparkles, Zap, ArrowRight } from 'lucide-react-native';
+import SageMascot from '@/components/shared/SageMascot';
 import * as Haptics from 'expo-haptics';
 import InputField from '@/components/shared/InputField';
 import SliderInput from '@/components/shared/SliderInput';
@@ -211,7 +212,7 @@ export default function MortgageCalculator() {
             testID="mortgage-feedback"
           />
 
-          {/* Clean Professional Header */}
+          {/* Clean Professional Header with Mascot */}
           <Animated.View 
             style={[
               styles.profitHeader,
@@ -226,11 +227,15 @@ export default function MortgageCalculator() {
               style={styles.profitHeaderGradient}
             >
               <View style={styles.profitHeaderContent}>
-                <View style={styles.headerIcon}>
-                  <Home size={32} color="#FFF" />
-                </View>
+                <SageMascot 
+                  size={64} 
+                  emotion="analytical" 
+                  premium={hasPremiumAccess}
+                  animated={true}
+                  testID="mortgage-mascot"
+                />
                 <Text style={styles.profitHeaderTitle}>Mortgage Calculator</Text>
-                <Text style={styles.profitHeaderSubtitle}>Professional mortgage analysis</Text>
+                <Text style={styles.profitHeaderSubtitle}>AI-powered mortgage analysis</Text>
               </View>
             </LinearGradient>
           </Animated.View>
@@ -277,7 +282,7 @@ export default function MortgageCalculator() {
             ]}
           >
             <View style={styles.sectionHeader}>
-              <Calculator size={24} color="#00E67A" />
+              <Calculator size={20} color="#00E67A" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Property Details</Text>
             </View>
             
@@ -334,7 +339,7 @@ export default function MortgageCalculator() {
             ]}
           >
             <View style={styles.sectionHeader}>
-              <DollarSign size={24} color="#00E67A" />
+              <DollarSign size={20} color="#00E67A" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Additional Costs</Text>
             </View>
             
@@ -401,11 +406,11 @@ export default function MortgageCalculator() {
             ]}
           >
             <View style={styles.sectionHeader}>
-              <BarChart3 size={24} color="#00E67A" />
+              <BarChart3 size={20} color="#00E67A" strokeWidth={2.5} />
               <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Smart Analysis</Text>
               <View style={styles.liveIndicator}>
                 <Animated.View style={[styles.pulseDot, { transform: [{ scale: pulseAnim }] }]} />
-                <Text style={styles.liveText}>Live</Text>
+                <Text style={[styles.liveText, { color: themeColors.text.secondary }]}>Live</Text>
               </View>
             </View>
             
@@ -707,10 +712,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing[4],
   },
   sectionTitle: {
-    fontSize: typography.size.lg, // Smaller section titles
-    fontWeight: typography.weight.semibold, // Less aggressive
-    color: '#F5F5F5', // Softer white
-    marginLeft: spacing[2],
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.semibold,
+    marginLeft: spacing[3],
+    lineHeight: 22,
   },
   resultsGrid: {
     gap: spacing[3],
@@ -893,8 +898,8 @@ const styles = StyleSheet.create({
   },
   liveText: {
     fontSize: typography.size.xs,
-    color: '#00E67A', // Softer green
-    fontWeight: typography.weight.regular, // Lighter weight
+    fontWeight: typography.weight.medium,
+    opacity: 0.8,
   },
   aiIndicator: {
     flexDirection: 'row',
@@ -908,7 +913,7 @@ const styles = StyleSheet.create({
   },
   aiText: {
     fontSize: typography.size.xs,
-    color: '#00E67A', // Softer green
-    fontWeight: typography.weight.regular, // Lighter weight
+    color: '#00E67A',
+    fontWeight: typography.weight.medium,
   },
 });

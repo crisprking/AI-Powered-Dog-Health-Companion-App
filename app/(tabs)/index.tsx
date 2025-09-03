@@ -7,6 +7,7 @@ import SageMascot from '@/components/shared/SageMascot';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
+import { APP_NAME, TAGLINE, MASCOT_URL } from '@/constants/branding';
 import { useSubscription, useSubscriptionStatusText, useHasPremiumAccess } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { SimpleThemeToggle } from '@/components/shared/ThemeToggle';
@@ -84,9 +85,10 @@ export default function WelcomeScreen() {
               premium={hasPremiumAccess}
               animated={true}
               testID="sage-mascot"
+              imageUrl={MASCOT_URL}
             />
-            <Text style={[styles.brandTitle, { color: themeColors.text.primary }]}>FinSage Pro</Text>
-            <Text style={[styles.brandSubtitle, { color: themeColors.text.secondary }]}>Your AI Financial Advisor</Text>
+            <Text style={[styles.brandTitle, { color: themeColors.text.primary }]}>{APP_NAME}</Text>
+            <Text style={[styles.brandSubtitle, { color: themeColors.text.secondary }]}>{TAGLINE}</Text>
           </View>
         </View>
 

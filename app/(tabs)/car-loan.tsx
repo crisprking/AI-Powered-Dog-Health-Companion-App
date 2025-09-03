@@ -4,6 +4,7 @@ import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, Save, FileText, Share, MoreHorizontal, Car, TrendingUp, Calculator, DollarSign, Target, BarChart3, Sparkles, Zap, ArrowRight } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
+import { MASCOT_URL } from '@/constants/branding';
 import * as Haptics from 'expo-haptics';
 import InputField from '@/components/shared/InputField';
 import SliderInput from '@/components/shared/SliderInput';
@@ -151,6 +152,7 @@ export default function CarLoanCalculator() {
                   premium={hasPremiumAccess}
                   animated={true}
                   testID="car-loan-mascot"
+                  imageUrl={MASCOT_URL}
                 />
                 <Text style={styles.profitHeaderTitle}>Auto Loan Calculator</Text>
                 <Text style={styles.profitHeaderSubtitle}>AI-powered auto financing analysis</Text>

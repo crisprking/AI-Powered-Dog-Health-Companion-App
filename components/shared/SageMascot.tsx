@@ -131,6 +131,7 @@ const SageMascot: React.FC<SageMascotProps> = ({
           source={{ uri: imageUrl }}
           style={{ width: size, height: size, borderRadius: size * 0.3 }}
           resizeMode="contain"
+          accessibilityIgnoresInvertColors={true}
         />
       ) : (
         <LinearGradient

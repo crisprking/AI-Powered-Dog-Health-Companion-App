@@ -66,10 +66,10 @@ import { useTheme } from "@/contexts/ThemeContext";
             tabBarStyle: {
               backgroundColor: themeColors.surface.elevated,
               borderTopWidth: 0,
-              paddingTop: spacing[3],
-              paddingBottom: Platform.OS === 'ios' ? spacing[8] : spacing[4],
-              paddingHorizontal: spacing[4],
-              height: Platform.OS === 'ios' ? 92 : 72,
+              paddingTop: spacing[4],
+              paddingBottom: Platform.OS === 'ios' ? spacing[10] : spacing[6],
+              paddingHorizontal: spacing[5],
+              height: Platform.OS === 'ios' ? 104 : 84,
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 16 },
               shadowOpacity: 0.2,
@@ -80,14 +80,14 @@ import { useTheme } from "@/contexts/ThemeContext";
               position: 'absolute',
             },
             tabBarLabelStyle: {
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: '700',
-              marginTop: spacing[1],
-              letterSpacing: 0.3,
+              marginTop: spacing[2],
+              letterSpacing: 0.4,
             },
             tabBarItemStyle: {
-              paddingVertical: spacing[1],
-              paddingHorizontal: spacing[2],
+              paddingVertical: spacing[2],
+              paddingHorizontal: spacing[3],
             },
             tabBarHideOnKeyboard: true,
           }}
@@ -96,6 +96,7 @@ import { useTheme } from "@/contexts/ThemeContext";
             name="index"
             options={{
               title: "Calculator",
+              tabBarAccessibilityLabel: 'Open Home',
               tabBarIcon: (props) => (
                 <TabIcon 
                   {...props} 
@@ -110,6 +111,7 @@ import { useTheme } from "@/contexts/ThemeContext";
             name="mortgage"
             options={{
               title: "Mortgage",
+              tabBarAccessibilityLabel: 'Mortgage Calculator',
               tabBarIcon: (props) => (
                 <TabIcon 
                   {...props} 
@@ -123,7 +125,8 @@ import { useTheme } from "@/contexts/ThemeContext";
           <Tabs.Screen
             name="car-loan"
             options={{
-              title: "Auto Loan",
+              title: "Car Loan",
+              tabBarAccessibilityLabel: 'Car Loan Calculator',
               tabBarIcon: (props) => (
                 <TabIcon 
                   {...props} 
@@ -140,8 +143,8 @@ import { useTheme } from "@/contexts/ThemeContext";
 
     const styles = StyleSheet.create({
       iconContainer: {
-        width: 44,
-        height: 44,
+        width: 48,
+        height: 48,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: borderRadius['2xl'],

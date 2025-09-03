@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, X, Sparkles, Check, Star, Shield, Zap } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
+import { MASCOT_URL } from '@/constants/branding';
 import { useSubscription, useSubscriptionStatusText } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -58,7 +59,7 @@ function PaywallScreen() {
               premium={isPro}
               animated={true}
               testID="paywall-mascot"
-              imageUrl="https://pub-e001eb4506b145aa938b5d3badbff6a5.r2.dev/attachments/t2vyqi799p9auoc72kb7v"
+              imageUrl={MASCOT_URL}
             />
           </View>
           

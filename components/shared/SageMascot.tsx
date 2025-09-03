@@ -26,7 +26,7 @@ const SageMascot: React.FC<SageMascotProps> = ({
   useEffect(() => {
     if (!animated) return;
 
-    const useDriver = Platform.OS !== 'web';
+    const useDriver = false;
 
     const bounceAnimation = Animated.loop(
       Animated.sequence([

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Animated, Platform } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Alert, Animated, Platform, ActivityIndicator } from 'react-native';
 import { Stack, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Crown, Save, FileText, Share, MoreHorizontal, Home, TrendingUp, Calculator, DollarSign, Target, BarChart3, Sparkles, Zap, ArrowRight } from 'lucide-react-native';
@@ -20,6 +20,10 @@ import colors, { typography, spacing, borderRadius } from '@/constants/colors';
 import { useHasPremiumAccess, useSubscription } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { MortgageInputs } from '@/types/financial';
+
+type ContentPart = { type: 'text'; text: string } | { type: 'image'; image: string };
+type CoreMessage = { role: 'system' | 'user' | 'assistant'; content: string | Array<ContentPart> };
+
 
 export default function MortgageCalculator() {
   const { inputs, calculation, updateInput, error } = useMortgageCalculator();
@@ -173,6 +177,36 @@ export default function MortgageCalculator() {
       Haptics.selectionAsync();
     }
   }, [updateInput, inputs]);
+
+  const [aiLoading, setAiLoading] = useState<boolean>(false);
+  const [aiAdvice, setAiAdvice] = useState<string>('');
+  const [aiError, setAiError] = useState<string>('');
+
+  const askAI = useCallback(async () => {
+    try {
+      setAiError('');
+      setAiAdvice('');
+      setAiLoading(true);
+      const messages: CoreMessage[] = [
+        { role: 'system', content: 'You are a helpful, concise financial assistant. Provide practical, risk-aware advice.' },
+        { role: 'user', content: `Give me tailored mortgage tips. Home price ${inputs.homePrice}, down ${inputs.downPayment}, rate ${inputs.interestRate}%, term ${inputs.loanTerm} yrs, HOA ${inputs.hoaFees}/mo, tax rate ${inputs.propertyTaxRate}%, insurance rate ${inputs.homeInsuranceRate}%, PMI rate ${inputs.pmiRate}%. Focus on: reducing monthly payment, cutting lifetime interest, PMI elimination strategies, and actionable next steps in 3-5 bullets.` }
+      ];
+      const res = await fetch('https://toolkit.rork.com/text/llm/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages }),
+      });
+      if (!res.ok) throw new Error(`AI request failed: ${res.status}`);
+      const json = await res.json();
+      const text = (json?.completion as string) ?? '';
+      setAiAdvice(text);
+    } catch (e: any) {
+      setAiError('Unable to fetch AI advice right now. Please try again.');
+      console.log('AI error', e?.message ?? e);
+    } finally {
+      setAiLoading(false);
+    }
+  }, [inputs]);
 
   const potentialSavings = useMemo(() => {
     return calculation.totalInterest * 0.15; // Potential 15% savings with optimization
@@ -523,9 +557,32 @@ export default function MortgageCalculator() {
                     </Text>
                   </View>
                 </View>
+
+                <View style={{ gap: spacing[3] }}>
+                  <TouchableOpacity style={styles.insightActionButton} onPress={askAI} testID="mortgage-ask-ai">
+                    {aiLoading ? (
+                      <ActivityIndicator color="#00E67A" />
+                    ) : (
+                      <>
+                        <Text style={styles.insightActionText}>Ask AI for tips</Text>
+                        <ArrowRight size={16} color="#00E67A" />
+                      </>
+                    )}
+                  </TouchableOpacity>
+
+                  {aiError ? (
+                    <Text style={[styles.insightDetailText, { color: '#EF4444' }]}>{aiError}</Text>
+                  ) : null}
+
+                  {aiAdvice ? (
+                    <View style={{ backgroundColor: 'rgba(0,230,122,0.08)', borderColor: 'rgba(0,230,122,0.25)', borderWidth: 1, borderRadius: borderRadius.lg, padding: spacing[3] }}>
+                      <Text style={{ color: themeColors.text.primary, fontSize: 14, lineHeight: 18 }}>{aiAdvice}</Text>
+                    </View>
+                  ) : null}
+                </View>
                 
                 {hasPremiumAccess && (
-                  <TouchableOpacity style={styles.insightActionButton}>
+                  <TouchableOpacity style={[styles.insightActionButton, { marginTop: spacing[2] }]}>
                     <Text style={styles.insightActionText}>View Detailed Analysis</Text>
                     <ArrowRight size={16} color="#00E67A" />
                   </TouchableOpacity>

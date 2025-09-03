@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import React, { useMemo, useRef, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Home, Car, Crown, Shield, Star, ArrowRight, Calculator, DollarSign, Target, BarChart3, Settings } from 'lucide-react-native';
@@ -113,47 +113,9 @@ export default function WelcomeScreen() {
           </LinearGradient>
         </View>
 
-        {/* Calculator Cards - Perfect Text Readability */}
+        {/* Calculator Cards - Horizontal, snap, swipeable */}
         <View style={styles.calculatorSection}>
-          <TouchableOpacity
-            style={[styles.calculatorCard, { backgroundColor: themeColors.surface.secondary }]}
-            onPress={() => handleCalculatorPress('mortgage')}
-            testID="open-mortgage"
-            activeOpacity={0.8}
-          >
-            <View style={styles.calculatorCardContent}>
-              <View style={[styles.calculatorIconContainer, { backgroundColor: 'rgba(0, 230, 122, 0.15)' }]}>
-                <Home size={28} color="#00E67A" strokeWidth={2.5} />
-              </View>
-              <View style={styles.calculatorTextContainer}>
-                <Text style={[styles.calculatorTitle, { color: themeColors.text.primary }]}>Mortgage Calculator</Text>
-                <Text style={[styles.calculatorSubtitle, { color: themeColors.text.secondary }]}>Complete home loan analysis</Text>
-              </View>
-              <View style={styles.calculatorArrow}>
-                <ArrowRight size={18} color={themeColors.text.tertiary} strokeWidth={2} />
-              </View>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.calculatorCard, { backgroundColor: themeColors.surface.secondary }]}
-            onPress={() => handleCalculatorPress('car-loan')}
-            testID="open-car-loan"
-            activeOpacity={0.8}
-          >
-            <View style={styles.calculatorCardContent}>
-              <View style={[styles.calculatorIconContainer, { backgroundColor: 'rgba(102, 126, 234, 0.15)' }]}>
-                <Car size={28} color="#667EEA" strokeWidth={2.5} />
-              </View>
-              <View style={styles.calculatorTextContainer}>
-                <Text style={[styles.calculatorTitle, { color: themeColors.text.primary }]}>Auto Loan Calculator</Text>
-                <Text style={[styles.calculatorSubtitle, { color: themeColors.text.secondary }]}>Smart vehicle financing</Text>
-              </View>
-              <View style={styles.calculatorArrow}>
-                <ArrowRight size={18} color={themeColors.text.tertiary} strokeWidth={2} />
-              </View>
-            </View>
-          </TouchableOpacity>
+          <HorizontalCalculators onOpen={handleCalculatorPress} />
         </View>
 
         {/* Premium Section - Clean Design */}
@@ -262,6 +224,87 @@ export default function WelcomeScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+const CARD_SPACING = 16 as const;
+const CARD_WIDTH = 320 as const;
+
+function HorizontalCalculators({ onOpen }: { onOpen: (type: 'mortgage' | 'car-loan') => void }) {
+  const scrollRef = useRef<ScrollView>(null);
+  const [index, setIndex] = useState<number>(0);
+  const data = useMemo(() => ([
+    {
+      key: 'mortgage' as const,
+      title: 'Mortgage Calculator',
+      subtitle: 'Complete home loan analysis',
+      bg: 'rgba(0, 230, 122, 0.15)',
+      icon: <Home size={28} color="#00E67A" strokeWidth={2.5} />,
+      testID: 'open-mortgage'
+    },
+    {
+      key: 'car-loan' as const,
+      title: 'Auto Loan Calculator',
+      subtitle: 'Smart vehicle financing',
+      bg: 'rgba(102, 126, 234, 0.15)',
+      icon: <Car size={28} color="#667EEA" strokeWidth={2.5} />,
+      testID: 'open-car-loan'
+    }
+  ]), []);
+
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const x = e.nativeEvent.contentOffset.x;
+    const i = Math.round(x / (CARD_WIDTH + CARD_SPACING));
+    if (i !== index) setIndex(i);
+  };
+
+  return (
+    <View>
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={CARD_WIDTH + CARD_SPACING}
+        decelerationRate="fast"
+        contentContainerStyle={{ paddingHorizontal: 20 }}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        testID="calculator-carousel"
+      >
+        {data.map((item) => (
+          <TouchableOpacity
+            key={item.key}
+            onPress={() => onOpen(item.key)}
+            activeOpacity={0.85}
+            testID={item.testID}
+            style={{
+              width: CARD_WIDTH,
+              marginRight: CARD_SPACING,
+            }}
+          >
+            <View style={[styles.calculatorCard, { backgroundColor: colors.surface.secondary }]}> 
+              <View style={styles.calculatorCardContent}>
+                <View style={[styles.calculatorIconContainer, { backgroundColor: item.bg }]}> 
+                  {item.icon}
+                </View>
+                <View style={styles.calculatorTextContainer}>
+                  <Text style={[styles.calculatorTitle, { color: colors.text.primary }]}>{item.title}</Text>
+                  <Text style={[styles.calculatorSubtitle, { color: colors.text.secondary }]}>{item.subtitle}</Text>
+                </View>
+                <View style={styles.calculatorArrow}>
+                  <ArrowRight size={18} color={colors.text.tertiary} strokeWidth={2} />
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <View style={styles.dots}>
+        {data.map((_, i) => (
+          <View key={i} style={[styles.dot, i === index && styles.dotActive]} />
+        ))}
+      </View>
+    </View>
   );
 }
 
@@ -439,6 +482,21 @@ const styles = StyleSheet.create({
     height: 32,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dots: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
+    marginTop: 8,
+  },
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(0,0,0,0.15)',
+  },
+  dotActive: {
+    backgroundColor: '#00E67A',
   },
   
   // Premium Section

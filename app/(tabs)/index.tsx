@@ -101,15 +101,23 @@ export default function WelcomeScreen() {
               />
             </View>
             <View style={styles.appNameContainer}>
-              <Text style={[styles.appName, { 
-                color: isDark ? '#FFFFFF' : '#000000',
-                textShadowColor: isDark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)',
-                textShadowOffset: { width: 0, height: 2 },
-                textShadowRadius: 6,
-                fontWeight: '900',
+              <View style={[styles.appNameBadge, {
+                backgroundColor: isDark 
+                  ? 'rgba(0, 0, 0, 0.85)' 
+                  : 'rgba(255, 255, 255, 0.95)',
+                borderColor: isDark 
+                  ? 'rgba(0, 230, 122, 0.3)' 
+                  : 'rgba(0, 0, 0, 0.1)',
+                shadowColor: isDark ? '#00E67A' : '#000',
+                shadowOpacity: isDark ? 0.3 : 0.15,
               }]}>
-                {APP_NAME}
-              </Text>
+                <Text style={[styles.appName, { 
+                  color: isDark ? '#FFFFFF' : '#000000',
+                  fontWeight: '900',
+                }]}>
+                  {APP_NAME}
+                </Text>
+              </View>
               <Text style={[styles.appTagline, { color: themeColors.text.secondary }]}>
                 {TAGLINE}
               </Text>
@@ -407,12 +415,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 16,
   },
+  appNameBadge: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 25,
+    borderWidth: 1,
+    marginBottom: 8,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 12,
+    elevation: 8,
+  },
   appName: {
-    fontSize: typography.size['3xl'],
+    fontSize: typography.size['2xl'],
     fontWeight: typography.weight.black,
     letterSpacing: typography.letterSpacing.tight,
-    lineHeight: typography.size['3xl'] * typography.lineHeight.tight,
-    marginBottom: 4,
+    lineHeight: typography.size['2xl'] * typography.lineHeight.tight,
+    textAlign: 'center',
   },
   appTagline: {
     fontSize: typography.size.base,

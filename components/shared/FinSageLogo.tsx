@@ -74,16 +74,6 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
             }]}>
               FinSage
             </Text>
-            <View style={styles.proContainer}>
-              <LinearGradient
-                colors={['#059669', '#047857', '#065f46']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.proGradient}
-              >
-                <Text style={[styles.proText, { fontSize: config.fontSize * 0.5 }]}>PRO</Text>
-              </LinearGradient>
-            </View>
           </View>
           <Text style={[styles.taglineText, { 
             fontSize: config.fontSize * 0.5,

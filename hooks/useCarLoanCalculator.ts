@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { CarLoanInputs } from '@/types/financial';
+import { CarLoanInputs, CarLoanCalculation } from '@/types/financial';
 import { calculateCarLoan, generateAmortizationSchedule } from '@/utils/calculations';
 
 export function useCarLoanCalculator() {

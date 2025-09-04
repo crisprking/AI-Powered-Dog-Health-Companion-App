@@ -54,17 +54,43 @@ export default function PaywallScreen() {
 
         {!isPro && (
           <View>
-            <LinearGradient colors={['#00E67A', '#00D166']} style={styles.ctaCard}>
-              <Text style={styles.price}>$4.99</Text>
-              <Text style={styles.period}>/month</Text>
+            <View style={styles.pricingContainer}>
               <TouchableOpacity
                 onPress={upgradeToPro}
-                style={styles.ctaButton}
-                testID={isTrialActive ? 'upgrade-to-pro' : 'start-trial'}
+                style={[styles.pricingCard, { backgroundColor: themeColors.surface.elevated, borderColor: themeColors.border.light }]}
+                testID="upgrade-to-pro"
               >
-                <Text style={styles.ctaText}>{isTrialActive ? 'Upgrade' : 'Start Trial'}</Text>
+                <View style={styles.pricingHeader}>
+                  <Text style={[styles.pricingTitle, { color: themeColors.text.primary }]}>Monthly</Text>
+                  <Text style={[styles.pricingPrice, { color: themeColors.text.primary }]}>$4.99</Text>
+                  <Text style={[styles.pricingPeriod, { color: themeColors.text.secondary }]}>per month</Text>
+                </View>
+                <View style={styles.pricingFeatures}>
+                  <Text style={[styles.pricingFeature, { color: themeColors.text.secondary }]}>• All Pro features</Text>
+                  <Text style={[styles.pricingFeature, { color: themeColors.text.secondary }]}>• Cancel anytime</Text>
+                </View>
               </TouchableOpacity>
-            </LinearGradient>
+
+              <TouchableOpacity
+                onPress={upgradeToPro}
+                style={[styles.pricingCard, styles.pricingCardRecommended, { backgroundColor: themeColors.surface.elevated, borderColor: '#00E67A' }]}
+                testID="upgrade-to-pro-annual"
+              >
+                <View style={styles.recommendedBadge}>
+                  <Text style={styles.recommendedText}>BEST VALUE</Text>
+                </View>
+                <View style={styles.pricingHeader}>
+                  <Text style={[styles.pricingTitle, { color: themeColors.text.primary }]}>Annual</Text>
+                  <Text style={[styles.pricingPrice, { color: themeColors.text.primary }]}>$29.99</Text>
+                  <Text style={[styles.pricingPeriod, { color: themeColors.text.secondary }]}>per year</Text>
+                </View>
+                <View style={styles.pricingFeatures}>
+                  <Text style={[styles.pricingFeature, { color: themeColors.text.secondary }]}>• All Pro features</Text>
+                  <Text style={[styles.pricingFeature, { color: themeColors.text.secondary }]}>• Save 50% vs monthly</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
             <TouchableOpacity onPress={restorePurchases} style={styles.restoreButton} testID="restore-purchases">
               <Text style={[styles.restoreText, { color: themeColors.text.secondary }]}>Restore Purchases</Text>
             </TouchableOpacity>
@@ -93,11 +119,31 @@ const styles = StyleSheet.create({
   features: { borderRadius: 16, borderWidth: 1, padding: 16, gap: 12 },
   featureItem: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   featureText: { fontSize: 15, fontWeight: '600' },
-  ctaCard: { borderRadius: 16, padding: 20, alignItems: 'center' },
-  price: { fontSize: 36, fontWeight: '900', color: '#000' },
-  period: { fontSize: 16, fontWeight: '600', color: '#000', opacity: 0.8, marginBottom: 12 },
-  ctaButton: { backgroundColor: '#000', paddingVertical: 12, paddingHorizontal: 20, borderRadius: 10 },
-  ctaText: { color: '#00E67A', fontSize: 16, fontWeight: '800' },
+  pricingContainer: { gap: 12 },
+  pricingCard: { borderRadius: 16, borderWidth: 2, padding: 20, position: 'relative' },
+  pricingCardRecommended: { borderWidth: 2 },
+  recommendedBadge: { 
+    position: 'absolute', 
+    top: -8, 
+    left: 20, 
+    right: 20, 
+    backgroundColor: '#00E67A', 
+    borderRadius: 12, 
+    paddingVertical: 4, 
+    alignItems: 'center' 
+  },
+  recommendedText: { 
+    color: '#000', 
+    fontSize: 12, 
+    fontWeight: '800', 
+    letterSpacing: 0.5 
+  },
+  pricingHeader: { alignItems: 'center', marginBottom: 12 },
+  pricingTitle: { fontSize: 18, fontWeight: '700', marginBottom: 4 },
+  pricingPrice: { fontSize: 32, fontWeight: '900', marginBottom: 2 },
+  pricingPeriod: { fontSize: 14, fontWeight: '500' },
+  pricingFeatures: { gap: 4 },
+  pricingFeature: { fontSize: 13, fontWeight: '500' },
   restoreButton: { alignItems: 'center', paddingVertical: 12 },
   restoreText: { fontSize: 14, fontWeight: '600' },
   footnote: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 12, borderWidth: 1, padding: 12, justifyContent: 'center' },

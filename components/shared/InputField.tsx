@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface InputFieldProps {
   label: string;
@@ -25,21 +26,30 @@ const InputField = React.memo<InputFieldProps>((
     testID
   }
 ) => {
+  const { colors: themeColors } = useTheme();
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={styles.inputContainer}>
-        {prefix && <Text style={styles.prefix}>{prefix}</Text>}
+      <Text style={[styles.label, { color: themeColors.text.primary }]}>{label}</Text>
+      <View style={[styles.inputContainer, { 
+        backgroundColor: themeColors.surface.elevated,
+        borderColor: themeColors.border.light 
+      }]}>
+        {prefix && <Text style={[styles.prefix, { color: '#00E67A' }]}>{prefix}</Text>}
         <TextInput
-          style={[styles.input, prefix && styles.inputWithPrefix, suffix && styles.inputWithSuffix]}
+          style={[styles.input, 
+            prefix && styles.inputWithPrefix, 
+            suffix && styles.inputWithSuffix,
+            { color: themeColors.text.primary }
+          ]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
           keyboardType={keyboardType}
-          placeholderTextColor={colors.text.tertiary}
+          placeholderTextColor={themeColors.text.tertiary}
           testID={testID}
         />
-        {suffix && <Text style={styles.suffix}>{suffix}</Text>}
+        {suffix && <Text style={[styles.suffix, { color: '#00E67A' }]}>{suffix}</Text>}
       </View>
     </View>
   );
@@ -56,17 +66,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: typography.size.base,
     fontWeight: typography.weight.semibold,
-    color: colors.text.primary,
     marginBottom: spacing[2],
     letterSpacing: typography.letterSpacing.wide,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface.elevated,
     borderRadius: borderRadius.xl,
     borderWidth: 1,
-    borderColor: colors.border.light,
     paddingHorizontal: spacing[4],
     height: 64,
     shadowColor: colors.shadow.sm.shadowColor,
@@ -78,7 +85,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: typography.size.lg,
-    color: colors.text.primary,
     paddingVertical: 0,
     fontWeight: typography.weight.medium,
   },
@@ -90,12 +96,10 @@ const styles = StyleSheet.create({
   },
   prefix: {
     fontSize: typography.size.lg,
-    color: colors.text.secondary,
-    fontWeight: typography.weight.semibold,
+    fontWeight: typography.weight.bold,
   },
   suffix: {
     fontSize: typography.size.lg,
-    color: colors.text.secondary,
-    fontWeight: typography.weight.semibold,
+    fontWeight: typography.weight.bold,
   },
 });

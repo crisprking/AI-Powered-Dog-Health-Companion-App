@@ -76,7 +76,7 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
             </Text>
             <View style={styles.proContainer}>
               <LinearGradient
-                colors={['#F59E0B', '#D97706', '#B45309']}
+                colors={['#059669', '#047857', '#065f46']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.proGradient}
@@ -95,7 +95,7 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
         {premium && (
           <View style={[styles.premiumBadge, { marginTop: config.spacing * 0.4 }]}>
             <LinearGradient
-              colors={['#F59E0B', '#D97706', '#B45309']}
+              colors={['#059669', '#047857', '#065f46']}
               style={styles.premiumGradient}
             >
               <Text style={[styles.premiumText, { fontSize: config.fontSize * 0.35 }]}>✨ PREMIUM UNLOCKED</Text>
@@ -157,10 +157,10 @@ const styles = StyleSheet.create({
   premiumContainer: {
     padding: 12,
     borderRadius: 20,
-    backgroundColor: 'rgba(245, 158, 11, 0.08)',
+    backgroundColor: 'rgba(5, 150, 105, 0.08)',
     borderWidth: 2,
-    borderColor: 'rgba(245, 158, 11, 0.3)',
-    shadowColor: '#F59E0B',
+    borderColor: 'rgba(5, 150, 105, 0.3)',
+    shadowColor: '#059669',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 10,
-    shadowColor: '#F59E0B',
+    shadowColor: '#059669',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    shadowColor: '#F59E0B',
+    shadowColor: '#059669',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,

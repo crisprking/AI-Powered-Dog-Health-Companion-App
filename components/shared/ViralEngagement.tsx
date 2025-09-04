@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native
 import { LinearGradient } from 'expo-linear-gradient';
 import { Flame, Trophy, Target, TrendingUp, Star, Zap } from 'lucide-react-native';
 import { useTheme } from '@/contexts/ThemeContext';
-import { BRAND_COLORS } from '@/constants/branding';
+import { BRAND_COLORS, ENGAGEMENT_ELEMENTS } from '@/constants/branding';
 import FinSageLogo from './FinSageLogo';
 import { typography, spacing, borderRadius } from '@/constants/colors';
 
@@ -105,20 +105,23 @@ const ViralEngagement: React.FC<ViralEngagementProps> = ({
   }, [calculationsCount, streakDays, achievements]);
 
   const getStreakMessage = () => {
-    if (streakDays === 0) return 'Start your financial journey!';
-    if (streakDays === 1) return 'Great start! Keep going!';
-    if (streakDays < 7) return `${streakDays} days strong! 🔥`;
-    if (streakDays < 30) return `${streakDays} days of wisdom! 🏆`;
-    return `${streakDays} days - Financial Sage! 🌟`;
+    if (streakDays === 0) return ENGAGEMENT_ELEMENTS.streaks.messages.start;
+    if (streakDays === 1) return 'Great start! Keep building wealth! 💪';
+    if (streakDays < 7) return `${streakDays} days strong! ${ENGAGEMENT_ELEMENTS.streaks.messages.maintain}`;
+    if (streakDays < 30) return `${streakDays} days of wisdom! You're becoming a financial genius! 🏆`;
+    return `${streakDays} days - ${ENGAGEMENT_ELEMENTS.streaks.messages.celebrate}`;
   };
 
   const getMotivationalQuote = () => {
     const quotes = [
-      'Every calculation brings you closer to financial freedom',
-      'Small steps today, big wins tomorrow',
-      'Your future self will thank you',
-      'Building wealth, one decision at a time',
-      'Financial wisdom is your superpower'
+      'Every calculation brings you closer to financial freedom 💰',
+      'Small steps today, millionaire mindset tomorrow 🚀',
+      'Your future wealthy self will thank you 🙏',
+      'Building generational wealth, one decision at a time 💎',
+      'Financial wisdom is your superpower - use it! ⚡',
+      'You\'re not just calculating - you\'re transforming your life 🌟',
+      'Smart money moves = smart life moves 🧠',
+      'Every expert was once a beginner - keep going! 💪'
     ];
     return quotes[calculationsCount % quotes.length];
   };

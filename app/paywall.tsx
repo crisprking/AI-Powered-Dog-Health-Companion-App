@@ -6,7 +6,7 @@ import { X, Sparkles, Check, Star, Shield, Zap } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
 import FinSageLogo from '@/components/shared/FinSageLogo';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
-import { MASCOT_URL, BRAND_STORY } from '@/constants/branding';
+import { MASCOT_URL, BRAND_STORY, VIRAL_COPY, BRAND_COLORS } from '@/constants/branding';
 import { useSubscription, useSubscriptionStatusText } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -71,7 +71,7 @@ function PaywallScreen() {
           <Text style={styles.subtitle}>
             {isPro 
               ? BRAND_STORY.mission 
-              : 'Transform your financial future with AI-powered insights'}
+              : VIRAL_COPY.onboarding.promise}
           </Text>
           
           <View style={styles.statusBadge}>
@@ -81,11 +81,11 @@ function PaywallScreen() {
       </LinearGradient>
 
       <ScrollView style={[styles.content, { backgroundColor: themeColors.background }]} showsVerticalScrollIndicator={false}>
-        {/* Professional Value Proposition */}
+        {/* Viral Value Proposition */}
         <View style={styles.valueSection}>
-          <Text style={[styles.valueTitle, { color: themeColors.text.primary }]}>Professional Features</Text>
+          <Text style={[styles.valueTitle, { color: themeColors.text.primary }]}>{BRAND_STORY.viralHook}</Text>
           <Text style={[styles.valueSubtitle, { color: themeColors.text.secondary }]}>
-            {BRAND_STORY.vision} - Advanced AI-powered financial intelligence
+            {BRAND_STORY.socialProof} • {VIRAL_COPY.appStore.description}
           </Text>
         </View>
 
@@ -132,7 +132,7 @@ function PaywallScreen() {
           </View>
         </View>
 
-        {/* Social Proof with Emotional Testimonials */}
+        {/* Viral Social Proof */}
         <View style={[styles.socialProof, { backgroundColor: themeColors.surface.elevated }]}>
           <View style={styles.ratingContainer}>
             <View style={styles.stars}>
@@ -140,12 +140,27 @@ function PaywallScreen() {
                 <Star key={i} size={16} color="#F59E0B" fill="#F59E0B" />
               ))}
             </View>
-            <Text style={[styles.ratingText, { color: themeColors.text.secondary }]}>4.9 • 2,847 reviews</Text>
+            <Text style={[styles.ratingText, { color: themeColors.text.secondary }]}>4.9 • 50,000+ users</Text>
           </View>
           <Text style={[styles.testimonial, { color: themeColors.text.primary }]}>
-            &ldquo;FinSage Pro transformed my financial decisions. The AI insights helped me save $47,000 on my mortgage and build a smarter investment strategy.&rdquo;
+            &ldquo;FinSage Pro is like having a financial genius in your pocket. Saved me $47K on my mortgage and helped me build a 6-figure investment portfolio. This app literally changed my life! 🚀&rdquo;
           </Text>
-          <Text style={[styles.testimonialAuthor, { color: themeColors.text.tertiary }]}>— Sarah M., Real Estate Investor</Text>
+          <Text style={[styles.testimonialAuthor, { color: themeColors.text.tertiary }]}>— Sarah M., went from $0 to $100K in 2 years</Text>
+          
+          <View style={styles.viralStats}>
+            <View style={styles.viralStat}>
+              <Text style={[styles.viralStatNumber, { color: BRAND_COLORS.success }]}>$2.3M+</Text>
+              <Text style={[styles.viralStatLabel, { color: themeColors.text.secondary }]}>Total Saved</Text>
+            </View>
+            <View style={styles.viralStat}>
+              <Text style={[styles.viralStatNumber, { color: BRAND_COLORS.premium }]}>50K+</Text>
+              <Text style={[styles.viralStatLabel, { color: themeColors.text.secondary }]}>Success Stories</Text>
+            </View>
+            <View style={styles.viralStat}>
+              <Text style={[styles.viralStatNumber, { color: BRAND_COLORS.trust }]}>4.9★</Text>
+              <Text style={[styles.viralStatLabel, { color: themeColors.text.secondary }]}>App Store</Text>
+            </View>
+          </View>
         </View>
 
         {/* Pricing with Emotional Appeal */}
@@ -169,8 +184,14 @@ function PaywallScreen() {
                 </View>
                 
                 <Text style={[styles.pricingDescription, { color: 'rgba(255, 255, 255, 0.9)' }]}>
-                  {isTrialActive ? 'Continue professional access' : '7-day free trial, then $4.99/month'}
+                  {isTrialActive ? 'Continue building wealth with Pro' : 'Start FREE • Then just $4.99/month'}
                 </Text>
+                
+                <View style={styles.valueHighlight}>
+                  <Text style={[styles.valueHighlightText, { color: 'rgba(255, 255, 255, 0.95)' }]}>
+                    💰 Average user saves $12,000+ in first year
+                  </Text>
+                </View>
                 
                 <TouchableOpacity
                   onPress={isTrialActive ? handleUpgrade : handleStartTrial}
@@ -178,7 +199,7 @@ function PaywallScreen() {
                   testID={isTrialActive ? "upgrade-to-pro" : "start-trial"}
                 >
                   <Text style={[styles.ctaButtonText, { color: themeColors.text.inverse }]}>
-                    {isTrialActive ? 'Upgrade to Pro' : 'Start Free Trial'}
+                    {isTrialActive ? '🚀 Unlock Full Potential' : '🎯 Start Building Wealth FREE'}
                   </Text>
                 </TouchableOpacity>
               </LinearGradient>
@@ -490,6 +511,42 @@ const styles = StyleSheet.create({
         fontSize: typography.size.sm,
         textAlign: 'center',
         fontWeight: typography.weight.medium,
+      },
+      viralStats: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: spacing[6],
+        paddingTop: spacing[4],
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(156, 163, 175, 0.2)',
+      },
+      viralStat: {
+        alignItems: 'center',
+        flex: 1,
+      },
+      viralStatNumber: {
+        fontSize: 18,
+        fontWeight: '800',
+        marginBottom: 4,
+      },
+      viralStatLabel: {
+        fontSize: 12,
+        fontWeight: '600',
+        textAlign: 'center',
+      },
+      valueHighlight: {
+        backgroundColor: 'rgba(255,255,255,0.1)',
+        paddingHorizontal: spacing[4],
+        paddingVertical: spacing[2],
+        borderRadius: borderRadius.lg,
+        marginBottom: spacing[4],
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.2)',
+      },
+      valueHighlightText: {
+        fontSize: 14,
+        fontWeight: '600',
+        textAlign: 'center',
       },
     });
 

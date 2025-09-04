@@ -72,14 +72,14 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
               fontSize: config.fontSize * 1.2,
               color: '#059669',
             }]}>
-              FinSage
+              FinSage Pro
             </Text>
           </View>
           <Text style={[styles.taglineText, { 
             fontSize: config.fontSize * 0.5,
             color: colors.text.secondary,
           }]}>
-            AI Financial Wisdom
+            AI Financial Advisor
           </Text>
         </View>
         {premium && (

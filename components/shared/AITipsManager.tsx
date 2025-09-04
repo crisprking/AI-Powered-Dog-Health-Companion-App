@@ -45,7 +45,7 @@ export default function AITipsManager({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
-  const [conversationHistory, setConversationHistory] = useState<CoreMessage[]>([]);
+  const [, setConversationHistory] = useState<CoreMessage[]>([]);
   const [copied, setCopied] = useState<boolean>(false);
 
   const handleLike = useCallback(() => {
@@ -81,7 +81,7 @@ export default function AITipsManager({
       await recordAIUse(1);
       setIsSaved(true);
       Alert.alert('Saved', 'AI tip saved to your library.');
-    } catch (e) {
+    } catch {
       Alert.alert('Error', 'Could not save tip.');
     }
   }, [currentAdvice, calculatorType, isLiked, canUseAI, recordAIUse]);
@@ -91,8 +91,7 @@ export default function AITipsManager({
       const shareContent = `FinSage AI Insight:\n\n${currentAdvice}`;
       if (Platform.OS === 'web') {
         try {
-          const canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator;
-          if (canNativeShare) {
+          if (typeof navigator !== 'undefined' && 'share' in navigator && (navigator as any).canShare) {
             await (navigator as any).share({ title: 'FinSage AI Tip', text: shareContent });
           } else if (navigator?.clipboard?.writeText) {
             await navigator.clipboard.writeText(shareContent);
@@ -100,12 +99,16 @@ export default function AITipsManager({
           } else {
             Alert.alert('Share Unavailable', 'Press Cmd/Ctrl+C to copy.');
           }
-        } catch (err) {
-          try {
-            await navigator.clipboard.writeText(shareContent);
-            Alert.alert('Copied', 'Advice copied to clipboard');
-          } catch {
-            Alert.alert('Share Unavailable', 'Press Cmd/Ctrl+C to copy.');
+        } catch (err: any) {
+          if (err.name === 'NotAllowedError') {
+            try {
+              await navigator.clipboard.writeText(shareContent);
+              Alert.alert('Copied', 'Advice copied to clipboard');
+            } catch {
+              Alert.alert('Copy to Clipboard', shareContent);
+            }
+          } else {
+            Alert.alert('Copy to Clipboard', shareContent);
           }
         }
       } else {

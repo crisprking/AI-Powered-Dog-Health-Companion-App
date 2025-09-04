@@ -38,8 +38,8 @@ const STORAGE_KEYS = {
   AI_LAST_DATE: '@finsage_ai_last_date',
 } as const;
 
-const FREE_AI_LIMIT = 3;
-const TRIAL_AI_LIMIT = 10;
+const FREE_AI_LIMIT = 2;
+const TRIAL_AI_LIMIT = 8;
 
 function todayString(): string {
   const d = new Date();
@@ -185,7 +185,7 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
 
               Alert.alert(
                 'Welcome to FinSage Pro!',
-                'Thank you for upgrading! Unlimited AI access and premium features are now unlocked.',
+                'Thank you for upgrading! You now have unlimited AI access, PDF/CSV exports, and premium features.',
                 [{ text: 'Awesome!', style: 'default' }]
               );
             },
@@ -235,8 +235,8 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
       await ensureDailyCounters('trial');
 
       Alert.alert(
-        'Welcome to FinSage Pro!',
-        `Your 7-day free trial has started. Enjoy premium features and a higher AI limit (${TRIAL_AI_LIMIT}/day).`,
+        'Welcome to FinSage Pro Trial!',
+        `Your 7-day free trial has started. Enjoy premium features including ${TRIAL_AI_LIMIT} daily AI interactions, PDF/CSV exports, and more.`,
         [{ text: 'Get Started', style: 'default' }]
       );
 

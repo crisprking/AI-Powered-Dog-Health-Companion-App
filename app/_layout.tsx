@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -124,17 +125,19 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <SubscriptionProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <ThemedStatusBar />
-              <RootLayoutNav />
-            </GestureHandlerRootView>
-          </SubscriptionProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </SafeAreaProvider>
+    <ErrorBoundary>
+      <SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <SubscriptionProvider>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <ThemedStatusBar />
+                <RootLayoutNav />
+              </GestureHandlerRootView>
+            </SubscriptionProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    </ErrorBoundary>
   );
 }

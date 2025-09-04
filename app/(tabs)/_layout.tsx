@@ -332,6 +332,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing[2],
     paddingHorizontal: spacing[2],
     marginHorizontal: spacing[1],
+    minHeight: 60,
   },
   tabLabel: {
     fontSize: 12,

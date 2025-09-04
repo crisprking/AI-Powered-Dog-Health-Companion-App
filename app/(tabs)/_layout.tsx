@@ -50,8 +50,8 @@ const AutoHideTabBar = ({ state, descriptors, navigation }: any) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const translateY = useRef(new Animated.Value(0)).current;
   const scaleY = useRef(new Animated.Value(1)).current;
-  const hideTimer = useRef<NodeJS.Timeout | null>(null);
-  const minimizeTimer = useRef<NodeJS.Timeout | null>(null);
+  const hideTimer = useRef<number | null>(null);
+  const minimizeTimer = useRef<number | null>(null);
 
   const tabBarHeight = Platform.OS === 'ios' ? 104 : 84;
   const minimizedHeight = 24;

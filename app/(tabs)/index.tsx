@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   featuresTitle: { fontSize: 22, fontWeight: '700', textAlign: 'center', marginBottom: 24, letterSpacing: -0.3, lineHeight: 26 },
   featuresList: { gap: 16, marginBottom: 24 },
   featureItem: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  featureIcon: { width: 32, height: 32, borderRadius: 8 },
+  featureIcon: { width: 32, height: 32, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
   featureText: { fontSize: 16, fontWeight: '500', flex: 1, lineHeight: 20 },
   premiumStatus: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: 'rgba(245, 158, 11, 0.1)', borderWidth: 1, borderColor: 'rgba(245, 158, 11, 0.3)', padding: 16, borderRadius: 12 },
   premiumStatusText: { fontSize: 15, color: '#F59E0B', fontWeight: '600', flex: 1, lineHeight: 18 }

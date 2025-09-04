@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Platform, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import createContextHook from '@nkzw/create-context-hook';
+import { purchaseManager, PRODUCT_IDS, PurchaseResult } from '@/utils/purchaseUtils';
 
 interface SubscriptionState {
   isPro: boolean;
@@ -161,34 +162,21 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
         return;
       }
 
+      // Show subscription options
       Alert.alert(
-        'Upgrade to FinSage Pro',
-        'This will redirect you to the App Store to complete your purchase of FinSage Pro ($4.99/month or $29.99/year).',
+        'Choose Your Plan',
+        'Select your FinSage Pro subscription:',
         [
           { text: 'Cancel', style: 'cancel' },
           {
-            text: 'Continue',
+            text: 'Monthly - $4.99',
             style: 'default',
-            onPress: async () => {
-              await Promise.all([
-                AsyncStorage.setItem(STORAGE_KEYS.IS_PRO, 'true'),
-                AsyncStorage.setItem(STORAGE_KEYS.SUBSCRIPTION_TYPE, 'pro'),
-              ]);
-
-              setSubscriptionState(prev => ({
-                ...prev,
-                isPro: true,
-                subscriptionType: 'pro',
-              }));
-
-              await ensureDailyCounters('pro');
-
-              Alert.alert(
-                'Welcome to FinSage Pro!',
-                'Thank you for upgrading! You now have unlimited AI access, PDF/CSV exports, and premium features.',
-                [{ text: 'Awesome!', style: 'default' }]
-              );
-            },
+            onPress: () => initiatePurchase(PRODUCT_IDS.PRO_MONTHLY),
+          },
+          {
+            text: 'Annual - $29.99',
+            style: 'default',
+            onPress: () => initiatePurchase(PRODUCT_IDS.PRO_ANNUAL),
           },
         ]
       );
@@ -196,7 +184,53 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
       console.error('[FinSage] Error upgrading to Pro:', error);
       Alert.alert('Error', 'Failed to upgrade. Please try again.');
     }
-  }, [ensureDailyCounters]);
+  }, []);
+
+  const initiatePurchase = async (productId: string): Promise<void> => {
+    try {
+      console.log('[FinSage] Initiating purchase for:', productId);
+      
+      // Show loading state
+      Alert.alert('Processing...', 'Please wait while we process your purchase.');
+
+      const result: PurchaseResult = await purchaseManager.purchaseProduct(productId);
+
+      if (result.success) {
+        // Purchase successful - update subscription state
+        await Promise.all([
+          AsyncStorage.setItem(STORAGE_KEYS.IS_PRO, 'true'),
+          AsyncStorage.setItem(STORAGE_KEYS.SUBSCRIPTION_TYPE, 'pro'),
+        ]);
+
+        setSubscriptionState(prev => ({
+          ...prev,
+          isPro: true,
+          subscriptionType: 'pro',
+        }));
+
+        await ensureDailyCounters('pro');
+
+        Alert.alert(
+          'Welcome to FinSage Pro!',
+          'Thank you for upgrading! You now have unlimited AI access, PDF/CSV exports, and premium features.',
+          [{ text: 'Awesome!', style: 'default' }]
+        );
+
+        console.log('[FinSage] Purchase completed successfully');
+      } else {
+        // Purchase failed
+        const errorMessage = result.error || 'Purchase failed. Please try again.';
+        console.error('[FinSage] Purchase failed:', errorMessage);
+        
+        if (errorMessage !== 'Purchase was canceled') {
+          Alert.alert('Purchase Failed', errorMessage);
+        }
+      }
+    } catch (error) {
+      console.error('[FinSage] Purchase error:', error);
+      Alert.alert('Error', 'Failed to process purchase. Please try again.');
+    }
+  };
 
   const startTrial = useCallback(async (): Promise<void> => {
     try {
@@ -260,15 +294,34 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
         return;
       }
 
-      const isProStored = await AsyncStorage.getItem(STORAGE_KEYS.IS_PRO);
+      // Show loading state
+      Alert.alert('Restoring...', 'Please wait while we restore your purchases.');
 
-      if (isProStored === 'true') {
+      const results = await purchaseManager.restorePurchases();
+      const successfulRestores = results.filter(result => result.success);
+
+      if (successfulRestores.length > 0) {
+        // Found valid purchases - update subscription state
+        await Promise.all([
+          AsyncStorage.setItem(STORAGE_KEYS.IS_PRO, 'true'),
+          AsyncStorage.setItem(STORAGE_KEYS.SUBSCRIPTION_TYPE, 'pro'),
+        ]);
+
+        setSubscriptionState(prev => ({
+          ...prev,
+          isPro: true,
+          subscriptionType: 'pro',
+        }));
+
+        await ensureDailyCounters('pro');
+
         Alert.alert(
           'Purchases Restored',
           'Your FinSage Pro subscription has been restored successfully!',
           [{ text: 'Great!', style: 'default' }]
         );
-        await checkSubscriptionStatus();
+
+        console.log('[FinSage] Purchases restored successfully:', successfulRestores.length);
       } else {
         Alert.alert(
           'No Purchases Found',
@@ -280,7 +333,7 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
       console.error('[FinSage] Error restoring purchases:', error);
       Alert.alert('Error', 'Failed to restore purchases. Please try again.');
     }
-  }, [checkSubscriptionStatus]);
+  }, [ensureDailyCounters]);
 
   const canUseAI = useCallback(async (required: number = 1): Promise<{ allowed: boolean; remaining: number; reason?: string }> => {
     await ensureDailyCounters();
@@ -315,6 +368,15 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
 
   useEffect(() => {
     checkSubscriptionStatus();
+    
+    // Initialize purchase manager
+    purchaseManager.initialize().then(initialized => {
+      if (initialized) {
+        console.log('[FinSage] Purchase manager initialized successfully');
+      } else {
+        console.warn('[FinSage] Purchase manager initialization failed');
+      }
+    });
   }, [checkSubscriptionStatus]);
 
   useEffect(() => {

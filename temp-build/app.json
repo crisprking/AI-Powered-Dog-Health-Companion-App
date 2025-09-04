@@ -4,6 +4,7 @@
     "slug": "elite-financier-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "platforms": ["ios"],
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
@@ -21,17 +22,6 @@
         "ITSAppUsesNonExemptEncryption": false,
         "UIDeviceFamily": [1]
       }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "app.rork.elite-financier-app",
-      "permissions": [
-        "android.permission.VIBRATE",
-        "android.permission.VIBRATE"
-      ]
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

@@ -131,7 +131,7 @@ import React, { useEffect, useRef } from 'react';
                 ]}
               >
                 <Svg width="18" height="18" viewBox="0 0 18 18">
-                  <Path d="M9 0 L10 7 L18 9 L10 11 L9 18 L8 11 L0 9 L8 7 Z" fill={colors.semantic.delight} />
+                  <Path d="M9 0 L10 7 L18 9 L10 11 L9 18 L8 11 L0 9 L8 7 Z" fill={colors.primary[500]} />
                 </Svg>
               </Animated.View>
             </>

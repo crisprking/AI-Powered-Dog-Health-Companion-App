@@ -87,8 +87,10 @@ class PurchaseManager {
       console.log('[PurchaseManager] Starting purchase for:', productId);
 
       // Ensure IAP is connected before purchase
-      if (!InAppPurchases.isConnectedAsync()) {
+      try {
         await InAppPurchases.connectAsync();
+      } catch (error) {
+        console.warn('[PurchaseManager] Connection check failed, continuing with purchase');
       }
 
       // Get available products first to ensure product exists
@@ -196,21 +198,25 @@ class PurchaseManager {
     }
   }
 
-  private getErrorMessage(responseCode: InAppPurchases.IAPResponseCode): string {
+  private getErrorMessage(responseCode: any): string {
+    if (!InAppPurchases) {
+      return 'In-app purchases not available';
+    }
+    
     switch (responseCode) {
-      case InAppPurchases.IAPResponseCode.USER_CANCELED:
+      case InAppPurchases.IAPResponseCode?.USER_CANCELED:
         return 'Purchase was canceled';
-      case InAppPurchases.IAPResponseCode.PAYMENT_INVALID:
+      case InAppPurchases.IAPResponseCode?.PAYMENT_INVALID:
         return 'Payment is invalid';
-      case InAppPurchases.IAPResponseCode.PAYMENT_NOT_ALLOWED:
+      case InAppPurchases.IAPResponseCode?.PAYMENT_NOT_ALLOWED:
         return 'Payment not allowed';
-      case InAppPurchases.IAPResponseCode.STORE_PRODUCT_NOT_AVAILABLE:
+      case InAppPurchases.IAPResponseCode?.STORE_PRODUCT_NOT_AVAILABLE:
         return 'Product not available';
-      case InAppPurchases.IAPResponseCode.CLOUD_SERVICE_PERMISSION_DENIED:
+      case InAppPurchases.IAPResponseCode?.CLOUD_SERVICE_PERMISSION_DENIED:
         return 'Cloud service permission denied';
-      case InAppPurchases.IAPResponseCode.CLOUD_SERVICE_NETWORK_CONNECTION_FAILED:
+      case InAppPurchases.IAPResponseCode?.CLOUD_SERVICE_NETWORK_CONNECTION_FAILED:
         return 'Network connection failed';
-      case InAppPurchases.IAPResponseCode.CLOUD_SERVICE_REVOKED:
+      case InAppPurchases.IAPResponseCode?.CLOUD_SERVICE_REVOKED:
         return 'Cloud service revoked';
       default:
         return 'Purchase failed with unknown error';

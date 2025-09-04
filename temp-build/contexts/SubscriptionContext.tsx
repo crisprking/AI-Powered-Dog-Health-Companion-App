@@ -208,9 +208,6 @@ export const [SubscriptionProvider, useSubscription] = createContextHook<Subscri
     try {
       console.log('[FinSage] Initiating purchase for:', productId);
       
-      // Show loading state
-      Alert.alert('Processing...', 'Please wait while we process your purchase.');
-
       const result: PurchaseResult = await purchaseManager.purchaseProduct(productId);
 
       if (result.success) {

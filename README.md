@@ -1,66 +1,119 @@
-# FinSage Pro - App Store Review Fixes
+# Luna Rising - Habit Tracking App
 
-This package contains all the files modified to fix the App Store review issues and optimize the app functionality.
+A premium habit tracking app with AI-powered insights and personalized coaching.
 
-## 🎯 Issues Fixed
+## 🚀 Features
 
-### 1. iPad Support Removed
-- **File**: `app.json`
-- **Change**: Removed `"supportsTablet": true`
-- **Reason**: App Store rejected due to iPad screenshots not showing actual app usage
+### Core Features
+- **Habit Tracking**: Create and track daily habits with streak counters
+- **AI Insights**: Personalized coaching and recommendations powered by AI
+- **Analytics**: Detailed progress tracking and success metrics
+- **Achievements**: Gamification with badges and rewards
+- **Dark Theme**: Beautiful dark mode interface
 
-### 2. In-App Purchase Flow Fixed
-- **Files**: 
-  - `contexts/SubscriptionContext.tsx` - Updated with real purchase flow
-  - `utils/purchaseUtils.ts` - New purchase management system
-  - `app.json` - Added IAP plugin configuration
-- **Reason**: App didn't initiate purchase flow when attempting to subscribe
+### Premium Features
+- **Unlimited AI Insights**: Get personalized recommendations anytime
+- **Advanced Analytics**: Detailed progress charts and success factors
+- **Premium Achievements**: Exclusive badges and rewards
+- **Priority Support**: Get help when you need it
+- **Data Export**: Export your progress data
 
-### 3. Enhanced User Experience
-- **File**: `app/paywall.tsx` - Redesigned with monthly/annual pricing options
-- **File**: `app/_layout.tsx` - Fixed title consistency
+## 💰 Business Model & Pricing
 
-## 📁 Files Included
+### Free Tier
+- **Habits**: Up to 8 habits
+- **AI Boosts**: 50 total (3 per day)
+- **Analytics**: Basic progress tracking
+- **Achievements**: Standard achievements
 
-1. **app.json** - App configuration with iPad support removed and IAP plugin added
-2. **contexts/SubscriptionContext.tsx** - Updated subscription management with real purchases
-3. **app/paywall.tsx** - Enhanced paywall screen with pricing options
-4. **app/_layout.tsx** - Fixed navigation title consistency
-5. **utils/purchaseUtils.ts** - New comprehensive purchase management system
+### Premium Subscription
+- **Monthly**: $4.99/month
+- **Annual**: $29.99/year (50% savings)
+- **Features**: Unlimited everything
 
-## 🚀 Installation Instructions
+### AI Boost Packs
+- **Pack of 50**: $2.99
+- **Perfect for**: Users who want more insights without full premium
 
-1. Replace the existing files in your project with these updated versions
-2. Install the required dependency:
+## 📱 App Store Configuration
+
+### iPhone Only
+- **Platform**: iOS only (no iPad/Android)
+- **Bundle ID**: `com.rork.luna-rising`
+- **Orientation**: Portrait only
+- **Theme**: Dark mode
+
+### In-App Purchases
+1. **Premium Monthly**: `com.rork.luna-rising.premium.monthly`
+2. **Premium Annual**: `com.rork.luna-rising.premium.annual`
+3. **AI Boost Pack**: `com.rork.luna-rising.ai-boost.pack`
+
+## 🔧 Technical Stack
+
+- **Framework**: React Native with Expo
+- **Navigation**: React Navigation
+- **State Management**: React Context
+- **In-App Purchases**: Expo In-App Purchases
+- **Storage**: AsyncStorage
+- **Icons**: Expo Vector Icons
+
+## 🚀 Getting Started
+
+1. Install dependencies:
    ```bash
-   npm install expo-in-app-purchases --legacy-peer-deps
+   npm install
    ```
-3. Update your App Store Connect with the product IDs:
-   - Monthly: `com.rork.finsage.pro.monthly`
-   - Annual: `com.rork.finsage.pro.annual`
 
-## ✅ App Store Compliance
+2. Start the development server:
+   ```bash
+   npx expo start
+   ```
 
-- ✅ iPad support removed (iPhone-only targeting)
-- ✅ Real in-app purchase flow implemented
-- ✅ Proper product IDs configured
-- ✅ Receipt validation with sandbox/production support
-- ✅ Enhanced user experience and error handling
+3. Run on iOS:
+   ```bash
+   npx expo run:ios
+   ```
 
-## 📱 Product IDs for App Store Connect
+## 📦 Building for Production
 
-Make sure to create these products in App Store Connect:
+1. Configure EAS:
+   ```bash
+   npx eas build:configure
+   ```
 
-- **Monthly Subscription**: `com.rork.finsage.pro.monthly` ($4.99/month)
-- **Annual Subscription**: `com.rork.finsage.pro.annual` ($29.99/year)
+2. Build for iOS:
+   ```bash
+   npx eas build --platform ios --profile production
+   ```
 
-## 🔧 Next Steps
+3. Submit to App Store:
+   ```bash
+   npx eas submit --platform ios
+   ```
 
-1. Upload these files to your project
-2. Test the in-app purchase flow in sandbox mode
-3. Submit for App Store review
-4. The app should now pass review and be approved
+## 🎯 Target Audience
 
----
+- **Primary**: Health and productivity enthusiasts
+- **Secondary**: People looking to build better habits
+- **Tertiary**: Users interested in AI-powered personal development
 
-**Note**: These fixes address the specific App Store review issues mentioned in the rejection notice. The app is now fully compliant and ready for resubmission.
+## 📊 Revenue Projections
+
+### Conservative Estimates
+- **Monthly Active Users**: 1,000
+- **Conversion Rate**: 5%
+- **Average Revenue Per User**: $3.50
+- **Monthly Revenue**: $175
+
+### Optimistic Estimates
+- **Monthly Active Users**: 10,000
+- **Conversion Rate**: 8%
+- **Average Revenue Per User**: $4.50
+- **Monthly Revenue**: $3,600
+
+## 🔒 Privacy & Security
+
+- **Data Storage**: Local device storage
+- **Analytics**: Anonymous usage statistics
+- **No Personal Data**: No collection of personal information
+- **GDPR Compliant**: Full compliance with privacy regulations

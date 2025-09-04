@@ -1,52 +1,41 @@
 {
   "expo": {
-    "name": "Finsage Pro",
-    "slug": "elite-financier-app",
-    "version": "1.0.2",
+    "name": "Luna Rising",
+    "slug": "rork-nest-focus",
+    "version": "1.0.0",
     "orientation": "portrait",
     "platforms": ["ios"],
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1a4d4a"
+      "backgroundColor": "#000000"
     },
     "ios": {
-      "bundleIdentifier": "app.rork.elite-financier-app",
+      "bundleIdentifier": "com.rork.nest.focus",
+      "supportsTablet": false,
+      "requireFullScreen": true,
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSUserTrackingUsageDescription": "This app uses tracking to provide personalized AI insights and improve your habit tracking experience."
       }
     },
-    "web": {
-      "favicon": "./assets/images/favicon.png"
-    },
+    "bundleIdentifier": "com.rork.nest.focus",
     "plugins": [
-      [
-        "expo-router",
-        {
-          "origin": "https://rork.com/"
-        }
-      ]
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
-      "router": {
-        "origin": "https://rork.com/"
-      },
       "eas": {
-        "projectId": "51725d54-e994-402c-a53a-21dcf18e90ef"
+        "projectId": "60f3bf10-fdc8-459e-8fc4-af34894231c6"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/51725d54-e994-402c-a53a-21dcf18e90ef"
     }
   }
 }

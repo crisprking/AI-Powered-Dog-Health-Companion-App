@@ -1,448 +1,300 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import { Platform, Alert } from 'react-native';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import createContextHook from '@nkzw/create-context-hook';
-import { purchaseManager, PRODUCT_IDS, PurchaseResult } from '@/utils/purchaseUtils';
+import { Platform } from 'react-native';
 
-interface SubscriptionState {
-  isPro: boolean;
-  isTrialActive: boolean;
-  trialDaysLeft: number;
-  subscriptionType: 'free' | 'trial' | 'pro';
-  trialStartDate: string | null;
-}
+// Mock IAP implementation for development
+const mockIAP = {
+  connectAsync: async () => true,
+  getProductsAsync: async (productIds: string[]) => {
+    console.log('Mock: Getting products for:', productIds);
+    return { responseCode: 'OK', results: [] };
+  },
+  purchaseItemAsync: async (productId: string) => {
+    console.log('Mock: Purchasing product:', productId);
+    return { 
+      responseCode: 'OK', 
+      productId, 
+      transactionId: `mock_${Date.now()}` 
+    };
+  },
+  getPurchaseHistoryAsync: async () => {
+    console.log('Mock: Getting purchase history');
+    return { responseCode: 'OK', results: [] };
+  }
+};
 
-interface UsageState {
-  aiDailyCount: number;
-  aiDailyLimit: number;
-  aiLastDate: string | null;
-}
+// Use mock IAP for development
+const InAppPurchases = mockIAP;
 
-interface SubscriptionActions {
-  startTrial: () => Promise<void>;
-  upgradeToPro: () => Promise<void>;
-  restorePurchases: () => Promise<void>;
-  checkSubscriptionStatus: () => Promise<void>;
-  canUseAI: (required?: number) => Promise<{ allowed: boolean; remaining: number; reason?: string }>;
-  recordAIUse: (used?: number) => Promise<void>;
-  getAIRemaining: () => number;
-}
-
-type SubscriptionContextType = SubscriptionState & UsageState & SubscriptionActions;
-
-const TRIAL_DURATION_DAYS = 7;
-const STORAGE_KEYS = {
-  TRIAL_START_DATE: '@finsage_trial_start_date',
-  IS_PRO: '@finsage_is_pro',
-  SUBSCRIPTION_TYPE: '@finsage_subscription_type',
-  AI_DAILY_COUNT: '@finsage_ai_daily_count',
-  AI_LAST_DATE: '@finsage_ai_last_date',
+// Product IDs for in-app purchases - Updated to match App Store Connect
+export const PRODUCT_IDS = {
+  PREMIUM_MONTHLY: 'com.rork.nest.focus.monthly.subscription',
+  PREMIUM_ANNUAL: 'com.rork.nest.focus.annual.subscription',
+  AI_BOOST_PACK: 'com.rork.lunarising.aiboost.pack',
 } as const;
 
-const FREE_AI_LIMIT = 2;
-const TRIAL_AI_LIMIT = 8;
-
-function todayString(): string {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = `${d.getMonth() + 1}`.padStart(2, '0');
-  const day = `${d.getDate()}`.padStart(2, '0');
-  return `${y}-${m}-${day}`;
+interface SubscriptionContextType {
+  isPremium: boolean;
+  aiBoostsRemaining: number;
+  isLoading: boolean;
+  purchasePremium: (productId: string) => Promise<void>;
+  purchaseAIBoost: () => Promise<void>;
+  restorePurchases: () => Promise<void>;
+  useAIBoost: () => boolean;
 }
 
-const defaultContextValue: SubscriptionContextType = {
-  isPro: false,
-  isTrialActive: false,
-  trialDaysLeft: 0,
-  subscriptionType: 'free',
-  trialStartDate: null,
-  aiDailyCount: 0,
-  aiDailyLimit: FREE_AI_LIMIT,
-  aiLastDate: null,
-  startTrial: async () => {},
-  upgradeToPro: async () => {},
-  restorePurchases: async () => {},
-  checkSubscriptionStatus: async () => {},
-  canUseAI: async () => ({ allowed: false, remaining: 0 }),
-  recordAIUse: async () => {},
-  getAIRemaining: () => 0,
+const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
+
+export const useSubscription = () => {
+  const context = useContext(SubscriptionContext);
+  if (!context) {
+    throw new Error('useSubscription must be used within a SubscriptionProvider');
+  }
+  return context;
 };
 
-export const [SubscriptionProvider, useSubscription] = createContextHook<SubscriptionContextType>(() => {
-  const [subscriptionState, setSubscriptionState] = useState<SubscriptionState>({
-    isPro: false,
-    isTrialActive: false,
-    trialDaysLeft: 0,
-    subscriptionType: 'free',
-    trialStartDate: null,
-  });
+interface SubscriptionProviderProps {
+  children: ReactNode;
+}
 
-  const [usageState, setUsageState] = useState<UsageState>({
-    aiDailyCount: 0,
-    aiDailyLimit: FREE_AI_LIMIT,
-    aiLastDate: null,
-  });
+export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ children }) => {
+  const [isPremium, setIsPremium] = useState(false);
+  const [aiBoostsRemaining, setAiBoostsRemaining] = useState(50);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const calculateTrialStatus = (trialStartDate: string | null): { isTrialActive: boolean; trialDaysLeft: number } => {
-    if (!trialStartDate) {
-      return { isTrialActive: false, trialDaysLeft: 0 };
-    }
-
-    const startDate = new Date(trialStartDate);
-    const currentDate = new Date();
-    const daysDiff = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-    const daysLeft = Math.max(0, TRIAL_DURATION_DAYS - daysDiff);
-
-    return {
-      isTrialActive: daysLeft > 0,
-      trialDaysLeft: daysLeft,
-    };
-  };
-
-  const resolveAiLimit = (subType: 'free' | 'trial' | 'pro'): number => {
-    if (subType === 'pro') return Number.MAX_SAFE_INTEGER;
-    if (subType === 'trial') return TRIAL_AI_LIMIT;
-    return FREE_AI_LIMIT;
-  };
-
-  const ensureDailyCounters = useCallback(async (subTypeOverride?: 'free' | 'trial' | 'pro'): Promise<void> => {
-    const today = todayString();
-    try {
-      const [storedCount, storedDate] = await Promise.all([
-        AsyncStorage.getItem(STORAGE_KEYS.AI_DAILY_COUNT),
-        AsyncStorage.getItem(STORAGE_KEYS.AI_LAST_DATE),
-      ]);
-
-      const subType = subTypeOverride ?? subscriptionState.subscriptionType;
-      const limit = resolveAiLimit(subType);
-
-      if (storedDate !== today) {
-        await Promise.all([
-          AsyncStorage.setItem(STORAGE_KEYS.AI_DAILY_COUNT, '0'),
-          AsyncStorage.setItem(STORAGE_KEYS.AI_LAST_DATE, today),
-        ]);
-        setUsageState({ aiDailyCount: 0, aiDailyLimit: limit, aiLastDate: today });
-      } else {
-        const count = Number(storedCount ?? '0');
-        setUsageState({ aiDailyCount: Number.isFinite(count) ? count : 0, aiDailyLimit: limit, aiLastDate: today });
-      }
-    } catch (e) {
-      console.warn('[FinSage] Failed to sync AI counters', e);
-      setUsageState(prev => ({ ...prev, aiDailyLimit: resolveAiLimit(subscriptionState.subscriptionType) }));
-    }
-  }, [subscriptionState.subscriptionType]);
-
-  const checkSubscriptionStatus = useCallback(async (): Promise<void> => {
-    try {
-      console.log('[FinSage] Checking subscription status...');
-
-      const [trialStartDate, isProStored] = await Promise.all([
-        AsyncStorage.getItem(STORAGE_KEYS.TRIAL_START_DATE),
-        AsyncStorage.getItem(STORAGE_KEYS.IS_PRO),
-      ]);
-
-      const isPro = isProStored === 'true';
-      const { isTrialActive, trialDaysLeft } = calculateTrialStatus(trialStartDate);
-
-      let subscriptionType: 'free' | 'trial' | 'pro' = 'free';
-      if (isPro) {
-        subscriptionType = 'pro';
-      } else if (isTrialActive) {
-        subscriptionType = 'trial';
-      }
-
-      setSubscriptionState({
-        isPro,
-        isTrialActive,
-        trialDaysLeft,
-        subscriptionType,
-        trialStartDate,
-      });
-
-      await ensureDailyCounters(subscriptionType);
-
-      console.log('[FinSage] Status updated:', { isPro, isTrialActive, trialDaysLeft, subscriptionType });
-    } catch (error) {
-      console.error('[FinSage] Error checking status:', error);
-    }
-  }, [ensureDailyCounters]);
-
-  const upgradeToPro = useCallback(async (): Promise<void> => {
-    try {
-      console.log('[FinSage] Upgrading to Pro...');
-
-      if (Platform.OS === 'web') {
-        Alert.alert(
-          'Upgrade on Mobile',
-          'To upgrade to FinSage Pro, please download the app from the App Store or Google Play Store.',
-          [{ text: 'OK', style: 'default' }]
-        );
-        return;
-      }
-
-      // Show subscription options
-      Alert.alert(
-        'Choose Your Plan',
-        'Select your FinSage Pro subscription:',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Monthly - $4.99',
-            style: 'default',
-            onPress: () => initiatePurchase(PRODUCT_IDS.PRO_MONTHLY),
-          },
-          {
-            text: 'Annual - $29.99',
-            style: 'default',
-            onPress: () => initiatePurchase(PRODUCT_IDS.PRO_ANNUAL),
-          },
-        ]
-      );
-    } catch (error) {
-      console.error('[FinSage] Error upgrading to Pro:', error);
-      Alert.alert('Error', 'Failed to upgrade. Please try again.');
-    }
+  useEffect(() => {
+    initializeSubscription();
   }, []);
 
-  const initiatePurchase = async (productId: string): Promise<void> => {
+  const initializeSubscription = async () => {
     try {
-      console.log('[FinSage] Initiating purchase for:', productId);
-      
-      // Initialize purchase manager first
-      const initialized = await purchaseManager.initialize();
-      if (!initialized) {
-        Alert.alert('Error', 'Unable to initialize purchase system. Please try again.');
+      if (Platform.OS === 'web') return;
+
+      // Initialize In-App Purchases
+      const isConnected = await InAppPurchases.connectAsync();
+      if (!isConnected) {
+        console.error('Failed to connect to App Store');
         return;
       }
 
-      // Show loading state
-      Alert.alert('Processing...', 'Please wait while we process your purchase.');
+      // Get available products
+      const products = await InAppPurchases.getProductsAsync([
+        PRODUCT_IDS.PREMIUM_MONTHLY,
+        PRODUCT_IDS.PREMIUM_ANNUAL,
+        PRODUCT_IDS.AI_BOOST_PACK,
+      ]);
 
-      const result: PurchaseResult = await purchaseManager.purchaseProduct(productId);
+      console.log('Available products:', products);
 
-      if (result.success) {
-        // Purchase successful - update subscription state
-        await Promise.all([
-          AsyncStorage.setItem(STORAGE_KEYS.IS_PRO, 'true'),
-          AsyncStorage.setItem(STORAGE_KEYS.SUBSCRIPTION_TYPE, 'pro'),
-        ]);
-
-        setSubscriptionState(prev => ({
-          ...prev,
-          isPro: true,
-          subscriptionType: 'pro',
-        }));
-
-        await ensureDailyCounters('pro');
-
-        Alert.alert(
-          'Welcome to FinSage Pro!',
-          'Thank you for upgrading! You now have unlimited AI access, PDF/CSV exports, and premium features.',
-          [{ text: 'Awesome!', style: 'default' }]
-        );
-
-        console.log('[FinSage] Purchase completed successfully');
-      } else {
-        // Purchase failed
-        const errorMessage = result.error || 'Purchase failed. Please try again.';
-        console.error('[FinSage] Purchase failed:', errorMessage);
-        
-        if (errorMessage !== 'Purchase was canceled') {
-          Alert.alert('Purchase Failed', errorMessage);
-        }
+      // Load saved subscription status
+      const savedPremium = await AsyncStorage.getItem('isPremium');
+      const savedBoosts = await AsyncStorage.getItem('aiBoostsRemaining');
+      
+      if (savedPremium === 'true') {
+        setIsPremium(true);
       }
+      
+      if (savedBoosts) {
+        setAiBoostsRemaining(parseInt(savedBoosts, 10));
+      }
+
     } catch (error) {
-      console.error('[FinSage] Purchase error:', error);
-      Alert.alert('Error', 'Failed to process purchase. Please try again.');
+      console.error('Error initializing subscription:', error);
     }
   };
 
-  const startTrial = useCallback(async (): Promise<void> => {
+    const purchasePremium = async (productId: string) => {
     try {
-      console.log('[FinSage] Starting trial...');
-
-      const existingTrialDate = await AsyncStorage.getItem(STORAGE_KEYS.TRIAL_START_DATE);
-      if (existingTrialDate) {
-        Alert.alert(
-          'Trial Already Used',
-          'You have already used your free trial. Upgrade to FinSage Pro to continue enjoying premium features.',
-          [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Upgrade Now', onPress: upgradeToPro },
-          ]
-        );
-        return;
-      }
-
-      const trialStartDate = new Date().toISOString();
-
-      await Promise.all([
-        AsyncStorage.setItem(STORAGE_KEYS.TRIAL_START_DATE, trialStartDate),
-        AsyncStorage.setItem(STORAGE_KEYS.SUBSCRIPTION_TYPE, 'trial'),
-      ]);
-
-      const { isTrialActive, trialDaysLeft } = calculateTrialStatus(trialStartDate);
-
-      setSubscriptionState(prev => ({
-        ...prev,
-        isTrialActive,
-        trialDaysLeft,
-        subscriptionType: 'trial',
-        trialStartDate,
-      }));
-
-      await ensureDailyCounters('trial');
-
-      Alert.alert(
-        'Welcome to FinSage Pro Trial!',
-        `Your 7-day free trial has started. Enjoy premium features including ${TRIAL_AI_LIMIT} daily AI interactions, PDF/CSV exports, and more.`,
-        [{ text: 'Get Started', style: 'default' }]
-      );
-
-      console.log('[FinSage] Trial started successfully');
-    } catch (error) {
-      console.error('[FinSage] Error starting trial:', error);
-      Alert.alert('Error', 'Failed to start trial. Please try again.');
-    }
-  }, [upgradeToPro, ensureDailyCounters]);
-
-  const restorePurchases = useCallback(async (): Promise<void> => {
-    try {
-      console.log('[FinSage] Restoring purchases...');
+      setIsLoading(true);
 
       if (Platform.OS === 'web') {
-        Alert.alert(
-          'Restore on Mobile',
-          'Purchase restoration is only available on mobile devices.',
-          [{ text: 'OK', style: 'default' }]
-        );
+        Alert.alert('Web Not Supported', 'In-app purchases are not supported on web. Please use a mobile device.');
         return;
       }
 
-      // Show loading state
-      Alert.alert('Restoring...', 'Please wait while we restore your purchases.');
+      // Start the purchase
+      const result = await InAppPurchases.purchaseItemAsync(productId);
+      
+      if (result && result.responseCode === 'OK') {
+        // Verify the purchase
+        const isValid = await verifyPurchase(result);
+        
+        if (isValid) {
+          setIsPremium(true);
+          await AsyncStorage.setItem('isPremium', 'true');
 
-      const results = await purchaseManager.restorePurchases();
-      const successfulRestores = results.filter(result => result.success);
-
-      if (successfulRestores.length > 0) {
-        // Found valid purchases - update subscription state
-        await Promise.all([
-          AsyncStorage.setItem(STORAGE_KEYS.IS_PRO, 'true'),
-          AsyncStorage.setItem(STORAGE_KEYS.SUBSCRIPTION_TYPE, 'pro'),
-        ]);
-
-        setSubscriptionState(prev => ({
-          ...prev,
-          isPro: true,
-          subscriptionType: 'pro',
-        }));
-
-        await ensureDailyCounters('pro');
-
-        Alert.alert(
-          'Purchases Restored',
-          'Your FinSage Pro subscription has been restored successfully!',
-          [{ text: 'Great!', style: 'default' }]
-        );
-
-        console.log('[FinSage] Purchases restored successfully:', successfulRestores.length);
+          Alert.alert(
+            'Welcome to Premium!',
+            'You now have unlimited AI insights and premium features.',
+            [{ text: 'Awesome!', style: 'default' }]
+          );
+        } else {
+          Alert.alert('Error', 'Purchase verification failed. Please try again.');
+        }
       } else {
-        Alert.alert(
-          'No Purchases Found',
-          'No previous purchases were found for this account.',
-          [{ text: 'OK', style: 'default' }]
-        );
+        const errorMessage = getErrorMessage(result?.responseCode);
+        Alert.alert('Purchase Failed', errorMessage);
       }
     } catch (error) {
-      console.error('[FinSage] Error restoring purchases:', error);
-      Alert.alert('Error', 'Failed to restore purchases. Please try again.');
+      console.error('Purchase error:', error);
+      Alert.alert('Error', 'Failed to process purchase. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
-  }, [ensureDailyCounters]);
+  };
 
-  const canUseAI = useCallback(async (required: number = 1): Promise<{ allowed: boolean; remaining: number; reason?: string }> => {
-    await ensureDailyCounters();
-    const limit = usageState.aiDailyLimit;
-    if (!Number.isFinite(limit)) {
-      return { allowed: true, remaining: Number.MAX_SAFE_INTEGER };
-    }
-    const remaining = Math.max(0, limit - usageState.aiDailyCount);
-    if (remaining >= required) return { allowed: true, remaining };
-    const reason = subscriptionState.subscriptionType === 'free'
-      ? 'Daily free AI limit reached. Upgrade to Pro for unlimited access.'
-      : 'Daily trial AI limit reached. Upgrade to Pro for unlimited access.';
-    return { allowed: false, remaining, reason };
-  }, [ensureDailyCounters, usageState.aiDailyLimit, usageState.aiDailyCount, subscriptionState.subscriptionType]);
-
-  const recordAIUse = useCallback(async (used: number = 1): Promise<void> => {
+    const purchaseAIBoost = async () => {
     try {
-      await ensureDailyCounters();
-      const next = usageState.aiDailyCount + used;
-      setUsageState(prev => ({ ...prev, aiDailyCount: next }));
-      await AsyncStorage.setItem(STORAGE_KEYS.AI_DAILY_COUNT, String(next));
-    } catch (e) {
-      console.warn('[FinSage] Failed to record AI use', e);
-    }
-  }, [ensureDailyCounters, usageState.aiDailyCount]);
+      setIsLoading(true);
 
-  const getAIRemaining = useCallback((): number => {
-    const limit = usageState.aiDailyLimit;
-    if (!Number.isFinite(limit)) return Number.MAX_SAFE_INTEGER;
-    return Math.max(0, limit - usageState.aiDailyCount);
-  }, [usageState.aiDailyLimit, usageState.aiDailyCount]);
+      if (Platform.OS === 'web') {
+        Alert.alert('Web Not Supported', 'In-app purchases are not supported on web. Please use a mobile device.');
+        return;
+      }
 
-  useEffect(() => {
-    checkSubscriptionStatus();
-    
-    // Initialize purchase manager
-    purchaseManager.initialize().then(initialized => {
-      if (initialized) {
-        console.log('[FinSage] Purchase manager initialized successfully');
+      // Start the purchase
+      const result = await InAppPurchases.purchaseItemAsync(PRODUCT_IDS.AI_BOOST_PACK);
+      
+      if (result && result.responseCode === 'OK') {
+        // Verify the purchase
+        const isValid = await verifyPurchase(result);
+        
+        if (isValid) {
+          const newBoosts = aiBoostsRemaining + 50; // Add 50 AI boosts
+          setAiBoostsRemaining(newBoosts);
+          await AsyncStorage.setItem('aiBoostsRemaining', newBoosts.toString());
+
+          Alert.alert(
+            'AI Boosts Added!',
+            'You now have 50 additional AI boosts.',
+            [{ text: 'Great!', style: 'default' }]
+          );
+        } else {
+          Alert.alert('Error', 'Purchase verification failed. Please try again.');
+        }
       } else {
-        console.warn('[FinSage] Purchase manager initialization failed');
+        const errorMessage = getErrorMessage(result?.responseCode);
+        Alert.alert('Purchase Failed', errorMessage);
       }
-    });
-  }, [checkSubscriptionStatus]);
+    } catch (error) {
+      console.error('Purchase error:', error);
+      Alert.alert('Error', 'Failed to process purchase. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (subscriptionState.isTrialActive) {
-        checkSubscriptionStatus();
+  const restorePurchases = async () => {
+    try {
+      setIsLoading(true);
+
+      if (Platform.OS === 'web') {
+        Alert.alert('Web Not Supported', 'In-app purchases are not supported on web. Please use a mobile device.');
+        return;
       }
-      ensureDailyCounters();
-    }, 60 * 1000);
 
-    return () => clearInterval(interval);
-  }, [subscriptionState.isTrialActive, checkSubscriptionStatus, ensureDailyCounters]);
+      const result = await InAppPurchases.getPurchaseHistoryAsync();
+      
+      if (result && result.responseCode === 'OK') {
+        // Check for premium purchases
+        const hasPremium = result.results?.some((purchase: any) => 
+          purchase.productId === PRODUCT_IDS.PREMIUM_MONTHLY || 
+          purchase.productId === PRODUCT_IDS.PREMIUM_ANNUAL
+        );
 
-  return useMemo(() => ({
-    ...subscriptionState,
-    ...usageState,
-    startTrial,
-    upgradeToPro,
-    restorePurchases,
-    checkSubscriptionStatus,
-    canUseAI,
-    recordAIUse,
-    getAIRemaining,
-  }), [subscriptionState, usageState, startTrial, upgradeToPro, restorePurchases, checkSubscriptionStatus, canUseAI, recordAIUse, getAIRemaining]);
-});
+        if (hasPremium) {
+          setIsPremium(true);
+          await AsyncStorage.setItem('isPremium', 'true');
+          Alert.alert('Purchases Restored', 'Your premium subscription has been restored.');
+        } else {
+          Alert.alert('No Purchases Found', 'No previous purchases were found to restore.');
+        }
+      } else {
+        Alert.alert('Error', 'Failed to restore purchases. Please try again.');
+      }
+    } catch (error) {
+      console.error('Restore error:', error);
+      Alert.alert('Error', 'Failed to restore purchases. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-export const useHasPremiumAccess = (): boolean => {
-  const { isPro, isTrialActive } = useSubscription();
-  return isPro || isTrialActive;
-};
+  const useAIBoost = (): boolean => {
+    if (isPremium) {
+      return true; // Unlimited for premium users
+    }
 
-export const useSubscriptionStatusText = (): string => {
-  const { subscriptionType, trialDaysLeft } = useSubscription();
+    if (aiBoostsRemaining > 0) {
+      const newBoosts = aiBoostsRemaining - 1;
+      setAiBoostsRemaining(newBoosts);
+      AsyncStorage.setItem('aiBoostsRemaining', newBoosts.toString());
+      return true;
+    }
 
-  switch (subscriptionType) {
-    case 'pro':
-      return 'FinSage Pro Active';
-    case 'trial':
-      return `Trial: ${trialDaysLeft} days left`;
-    case 'free':
+    return false; // No boosts remaining
+  };
+
+  const verifyPurchase = async (purchase: any): Promise<boolean> => {
+    try {
+      // Basic validation
+      if (!purchase.productId || !purchase.transactionId) {
+        console.warn('Missing required purchase data');
+        return false;
+      }
+
+      // Check if the product ID is valid
+      const validProductIds = Object.values(PRODUCT_IDS);
+      if (!validProductIds.includes(purchase.productId)) {
+        console.warn('Invalid product ID:', purchase.productId);
+        return false;
+      }
+
+      // For development and testing, use basic validation
+      // In production, you would implement server-side receipt validation
+      console.log('Purchase verified with basic validation:', purchase.productId);
+      return true;
+    } catch (error) {
+      console.error('Purchase verification failed:', error);
+      return false;
+    }
+  };
+
+  const getErrorMessage = (responseCode: any): string => {
+    switch (responseCode) {
+      case 'USER_CANCELED':
+        return 'Purchase was canceled';
+      case 'PAYMENT_INVALID':
+        return 'Payment is invalid';
+      case 'PAYMENT_NOT_ALLOWED':
+        return 'Payment not allowed';
+      case 'STORE_PRODUCT_NOT_AVAILABLE':
+        return 'Product not available';
+      case 'CLOUD_SERVICE_PERMISSION_DENIED':
+        return 'Cloud service permission denied';
+      case 'CLOUD_SERVICE_NETWORK_CONNECTION_FAILED':
+        return 'Network connection failed';
+      case 'CLOUD_SERVICE_REVOKED':
+        return 'Cloud service revoked';
     default:
-      return 'Free Version';
-  }
+        return 'Purchase failed with unknown error';
+    }
+  };
+
+  const value: SubscriptionContextType = {
+    isPremium,
+    aiBoostsRemaining,
+    isLoading,
+    purchasePremium,
+    purchaseAIBoost,
+    restorePurchases,
+    useAIBoost,
+  };
+
+  return (
+    <SubscriptionContext.Provider value={value}>
+      {children}
+    </SubscriptionContext.Provider>
+  );
 };

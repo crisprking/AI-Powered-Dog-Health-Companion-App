@@ -4,9 +4,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Sparkles, Heart, Share2, Bookmark, MessageCircle, TrendingUp, DollarSign, X, Copy, Check } from 'lucide-react-native';
 import FinSageLogo from './FinSageLogo';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useHasPremiumAccess } from '@/contexts/SubscriptionContext';
+import { useHasPremiumAccess, useSubscription } from '@/contexts/SubscriptionContext';
 import { router } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { typography, spacing, borderRadius } from '@/constants/colors';
 
 type ContentPart = { type: 'text'; text: string } | { type: 'image'; image: string };
@@ -39,48 +40,51 @@ export default function AITipsManager({
 }: AITipsManagerProps) {
   const { colors: themeColors } = useTheme();
   const hasPremiumAccess = useHasPremiumAccess();
+  const { canUseAI, recordAIUse, getAIRemaining, aiDailyCount, aiDailyLimit } = useSubscription();
   const [currentAdvice, setCurrentAdvice] = useState<string>(initialAdvice);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [conversationHistory, setConversationHistory] = useState<CoreMessage[]>([]);
   const [copied, setCopied] = useState<boolean>(false);
-  const [tipUsageCount, setTipUsageCount] = useState<number>(0);
 
   const handleLike = useCallback(() => {
     setIsLiked(!isLiked);
-    // Track engagement for monetization
     console.log('AI tip liked - engagement metric');
   }, [isLiked]);
 
   const handleSave = useCallback(async () => {
-    if (!hasPremiumAccess && tipUsageCount >= 2) {
-      Alert.alert(
-        'FinSage Pro Required',
-        'Save unlimited AI tips with FinSage Pro. Upgrade now to unlock advanced financial insights and build your personal finance knowledge base.',
-        [
+    try {
+      const gate = await canUseAI(1);
+      if (!gate.allowed) {
+        Alert.alert('FinSage Pro Required', gate.reason ?? 'Upgrade to FinSage Pro to continue.', [
           { text: 'Cancel', style: 'cancel' },
           { text: 'Upgrade Now', onPress: () => router.push('/paywall') },
-        ]
-      );
-      return;
-    }
+        ]);
+        return;
+      }
 
-    setIsSaved(!isSaved);
-    setTipUsageCount(prev => prev + 1);
-    
-    // Here you would save to AsyncStorage or backend
-    const savedTip: SavedTip = {
-      id: Date.now().toString(),
-      advice: currentAdvice,
-      timestamp: Date.now(),
-      calculatorType,
-      liked: isLiked
-    };
-    
-    console.log('Saving tip:', savedTip);
-    Alert.alert('Success', 'AI tip saved to your personal finance library!');
-  }, [currentAdvice, calculatorType, isLiked, hasPremiumAccess, tipUsageCount, isSaved]);
+      const savedTip: SavedTip = {
+        id: Date.now().toString(),
+        advice: currentAdvice,
+        timestamp: Date.now(),
+        calculatorType,
+        liked: isLiked
+      };
+
+      const key = '@finsage_saved_tips';
+      const existingRaw = await AsyncStorage.getItem(key);
+      const existing: SavedTip[] = existingRaw ? (JSON.parse(existingRaw) as SavedTip[]) : [];
+      const next = [savedTip, ...existing].slice(0, 200);
+      await AsyncStorage.setItem(key, JSON.stringify(next));
+
+      await recordAIUse(1);
+      setIsSaved(true);
+      Alert.alert('Saved', 'AI tip saved to your library.');
+    } catch (e) {
+      Alert.alert('Error', 'Could not save tip.');
+    }
+  }, [currentAdvice, calculatorType, isLiked, canUseAI, recordAIUse]);
 
   const handleShare = useCallback(async () => {
     try {
@@ -120,10 +124,11 @@ export default function AITipsManager({
   }, [currentAdvice]);
 
   const askFollowUp = useCallback(async (question: string) => {
-    if (!hasPremiumAccess && tipUsageCount >= 1) {
+    const gate = await canUseAI(1);
+    if (!gate.allowed) {
       Alert.alert(
         'FinSage Pro Required',
-        'Ask unlimited follow-up questions with FinSage Pro. Get deeper insights and personalized financial strategies.',
+        gate.reason ?? 'Daily AI limit reached. Upgrade for unlimited.',
         [
           { text: 'Cancel', style: 'cancel' },
           { text: 'Upgrade Now', onPress: () => router.push('/paywall') },
@@ -137,8 +142,7 @@ export default function AITipsManager({
 
     try {
       setIsLoading(true);
-      setTipUsageCount(prev => prev + 1);
-      
+
       const messages: CoreMessage[] = [
         { role: 'system', content: 'You are a helpful, concise financial assistant. Keep answers to 3-5 tight bullets. Avoid fluff.' },
         { role: 'user', content: `Previous advice: ${currentAdvice}\n\nFollow-up question: ${question}\n\nCalculator data: ${JSON.stringify(calculationData)}` }
@@ -157,6 +161,7 @@ export default function AITipsManager({
       
       setCurrentAdvice(text);
       setConversationHistory(prev => [...prev, ...messages, { role: 'assistant', content: text }]);
+      await recordAIUse(1);
     } catch (error: any) {
       if (error?.name === 'AbortError') {
         Alert.alert('Timeout', 'AI response took too long. Please try again.');
@@ -168,7 +173,7 @@ export default function AITipsManager({
       clearTimeout(timeoutId);
       setIsLoading(false);
     }
-  }, [currentAdvice, calculationData, hasPremiumAccess, tipUsageCount]);
+  }, [currentAdvice, calculationData, canUseAI, recordAIUse]);
 
   const quickQuestions = useMemo(() => [
     'Top 3 actions to lower payment',
@@ -183,7 +188,6 @@ export default function AITipsManager({
     <View style={[styles.overlay, { backgroundColor: 'rgba(0,0,0,0.8)' }]}>
       <View style={[styles.container, { backgroundColor: themeColors.surface.primary }]}>
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          {/* Header */}
           <View style={styles.header}>
             <View style={styles.headerLeft}>
               <View style={[styles.aiIcon, { backgroundColor: 'rgba(0, 230, 122, 0.1)' }]}>
@@ -199,7 +203,6 @@ export default function AITipsManager({
             </TouchableOpacity>
           </View>
 
-          {/* AI Advice Card */}
           <View style={[styles.adviceCard, { backgroundColor: themeColors.surface.secondary }]}>
             <LinearGradient
               colors={['rgba(0, 230, 122, 0.05)', 'rgba(0, 230, 122, 0.02)']}
@@ -211,7 +214,6 @@ export default function AITipsManager({
             </LinearGradient>
           </View>
 
-          {/* Action Buttons */}
           <View style={styles.actionRow}>
             <TouchableOpacity 
               onPress={handleLike} 
@@ -224,7 +226,7 @@ export default function AITipsManager({
             <TouchableOpacity onPress={handleSave} style={[styles.actionButton, isSaved && styles.actionButtonActive]}>
               <Bookmark size={18} color={isSaved ? '#F59E0B' : themeColors.text.tertiary} fill={isSaved ? '#F59E0B' : 'none'} />
               <Text style={[styles.actionText, { color: isSaved ? '#F59E0B' : themeColors.text.tertiary }]}>Save</Text>
-              {!hasPremiumAccess && tipUsageCount >= 2 && (
+              {!hasPremiumAccess && getAIRemaining() <= 0 && (
                 <FinSageLogo variant="icon" size="small" premium={true} testID="save-premium-indicator" />
               )}
             </TouchableOpacity>
@@ -246,7 +248,6 @@ export default function AITipsManager({
             </TouchableOpacity>
           </View>
 
-          {/* Quick Follow-up Questions */}
           <View style={styles.quickQuestionsSection}>
             <Text style={[styles.sectionTitle, { color: themeColors.text.primary }]}>Ask Follow-up Questions</Text>
             <View style={styles.quickQuestions}>
@@ -259,7 +260,7 @@ export default function AITipsManager({
                 >
                   <MessageCircle size={14} color="#00E67A" />
                   <Text style={[styles.quickQuestionText, { color: themeColors.text.secondary }]}>{question}</Text>
-                  {!hasPremiumAccess && tipUsageCount >= 1 && (
+                  {!hasPremiumAccess && getAIRemaining() <= 0 && (
                     <FinSageLogo variant="icon" size="small" premium={true} testID="question-premium-indicator" />
                   )}
                 </TouchableOpacity>
@@ -267,7 +268,6 @@ export default function AITipsManager({
             </View>
           </View>
 
-          {/* Premium Upsell */}
           {!hasPremiumAccess && (
             <View style={styles.premiumUpsell}>
               <LinearGradient
@@ -295,18 +295,16 @@ export default function AITipsManager({
             </View>
           )}
 
-          {/* Usage Counter for Free Users */}
           {!hasPremiumAccess && (
             <View style={[styles.usageCounter, { backgroundColor: themeColors.surface.tertiary }]}>
               <DollarSign size={16} color={themeColors.text.tertiary} />
-              <Text style={[styles.usageText, { color: themeColors.text.tertiary }]}>
-                {tipUsageCount}/3 free AI interactions used
+              <Text style={[styles.usageText, { color: themeColors.text.tertiary }]} testID="ai-usage-counter">
+                {aiDailyCount}/{aiDailyLimit} free AI interactions used today
               </Text>
             </View>
           )}
         </ScrollView>
 
-        {/* Loading Overlay */}
         {isLoading && (
           <View style={styles.loadingOverlay}>
             <ActivityIndicator size="large" color="#00E67A" />

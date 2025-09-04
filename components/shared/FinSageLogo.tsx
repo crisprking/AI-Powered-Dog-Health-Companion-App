@@ -70,7 +70,7 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
           <View style={styles.brandContainer}>
             <Text style={[styles.brandText, { 
               fontSize: config.fontSize * 1.2,
-              color: colors.text.primary,
+              color: '#059669',
             }]}>
               FinSage
             </Text>

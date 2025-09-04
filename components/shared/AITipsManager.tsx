@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Share, ActivityIndicator } from 'react-native';
+import React, { useState, useCallback, useMemo } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Share, ActivityIndicator, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Sparkles, Heart, Share2, Bookmark, MessageCircle, TrendingUp, DollarSign, X, Copy, Check } from 'lucide-react-native';
 import FinSageLogo from './FinSageLogo';
@@ -84,14 +84,29 @@ export default function AITipsManager({
 
   const handleShare = useCallback(async () => {
     try {
-      const shareContent = `💡 FinSage Pro AI Insight:\n\n${currentAdvice}\n\n📊 Get personalized financial advice with FinSage Pro!\n\n#FinSagePro #FinancialPlanning #SmartMoney`;
-      
-      await Share.share({
-        message: shareContent,
-        title: 'FinSage Pro AI Financial Tip'
-      });
-      
-      // Track sharing for viral growth
+      const shareContent = `FinSage AI Insight:\n\n${currentAdvice}`;
+      if (Platform.OS === 'web') {
+        try {
+          const canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator;
+          if (canNativeShare) {
+            await (navigator as any).share({ title: 'FinSage AI Tip', text: shareContent });
+          } else if (navigator?.clipboard?.writeText) {
+            await navigator.clipboard.writeText(shareContent);
+            Alert.alert('Copied', 'Advice copied to clipboard');
+          } else {
+            Alert.alert('Share Unavailable', 'Press Cmd/Ctrl+C to copy.');
+          }
+        } catch (err) {
+          try {
+            await navigator.clipboard.writeText(shareContent);
+            Alert.alert('Copied', 'Advice copied to clipboard');
+          } catch {
+            Alert.alert('Share Unavailable', 'Press Cmd/Ctrl+C to copy.');
+          }
+        }
+      } else {
+        await Share.share({ message: shareContent, title: 'FinSage AI Tip' });
+      }
       console.log('AI tip shared - viral metric');
     } catch (error) {
       console.error('Error sharing:', error);
@@ -117,12 +132,15 @@ export default function AITipsManager({
       return;
     }
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
     try {
       setIsLoading(true);
       setTipUsageCount(prev => prev + 1);
       
       const messages: CoreMessage[] = [
-        { role: 'system', content: 'You are a helpful, concise financial assistant. Provide practical, risk-aware advice.' },
+        { role: 'system', content: 'You are a helpful, concise financial assistant. Keep answers to 3-5 tight bullets. Avoid fluff.' },
         { role: 'user', content: `Previous advice: ${currentAdvice}\n\nFollow-up question: ${question}\n\nCalculator data: ${JSON.stringify(calculationData)}` }
       ];
       
@@ -130,6 +148,7 @@ export default function AITipsManager({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages }),
+        signal: controller.signal,
       });
       
       if (!res.ok) throw new Error(`AI request failed: ${res.status}`);
@@ -139,19 +158,24 @@ export default function AITipsManager({
       setCurrentAdvice(text);
       setConversationHistory(prev => [...prev, ...messages, { role: 'assistant', content: text }]);
     } catch (error: any) {
-      Alert.alert('Error', 'Unable to get follow-up advice. Please try again.');
+      if (error?.name === 'AbortError') {
+        Alert.alert('Timeout', 'AI response took too long. Please try again.');
+      } else {
+        Alert.alert('Error', 'Unable to get follow-up advice. Please try again.');
+      }
       console.error('Follow-up AI error:', error?.message ?? error);
     } finally {
+      clearTimeout(timeoutId);
       setIsLoading(false);
     }
   }, [currentAdvice, calculationData, hasPremiumAccess, tipUsageCount]);
 
-  const quickQuestions = [
-    'How can I save more money?',
-    'What are the risks?',
-    'Any tax implications?',
+  const quickQuestions = useMemo(() => [
+    'Top 3 actions to lower payment',
+    'Key risks to watch',
+    'Tax implications?',
     'Better alternatives?'
-  ];
+  ], []);
 
   if (!visible) return null;
 

@@ -48,7 +48,7 @@ import { Platform, Alert, Share } from 'react-native';
       const timestamp = new Date().toLocaleDateString();
       
       if (type === 'mortgage' && isMortgageData(data)) {
-        return `🏠 FinWise Mortgage Calculator Results - ${timestamp}
+        return `🏠 FinSage Mortgage Calculator Results - ${timestamp}
 
 💰 LOAN DETAILS
 Home Price: ${formatCurrency(data.homePrice)}
@@ -71,12 +71,12 @@ Total Interest: ${formatCurrency(data.totalInterest)}
 Loan-to-Value: ${data.loanToValue.toFixed(1)}%
 ${data.loanToValue > 80 ? '⚠️ PMI Required' : '✅ No PMI Required'}
 
-Calculated with FinWise - Intelligent Financial Intelligence
-📱 Get FinWise on the App Store`;
+Calculated with FinSage
+📱 Get FinSage on the App Store`;
       }
       
       if (type === 'car-loan' && isCarLoanData(data)) {
-        return `🚗 FinWise Car Loan Calculator Results - ${timestamp}
+        return `🚗 FinSage Car Loan Calculator Results - ${timestamp}
 
 💰 VEHICLE DETAILS
 Vehicle Price: ${formatCurrency(data.vehiclePrice)}
@@ -95,8 +95,8 @@ Monthly Payment: ${formatCurrency(data.monthlyPayment)}
 Total Interest: ${formatCurrency(data.totalInterest)}
 Total Cost: ${formatCurrency(data.totalCost)}
 
-Calculated with FinWise - Intelligent Financial Intelligence
-📱 Get FinWise on the App Store`;
+Calculated with FinSage
+📱 Get FinSage on the App Store`;
       }
       
       return 'FinWise Calculator Results';
@@ -106,7 +106,7 @@ Calculated with FinWise - Intelligent Financial Intelligence
       const timestamp = new Date().toISOString();
       
       if (type === 'mortgage' && isMortgageData(data)) {
-        return `FinWise Mortgage Calculator Export,${timestamp}
+        return `FinSage Mortgage Calculator Export,${timestamp}
 
 Loan Details
 Home Price,${data.homePrice}
@@ -130,7 +130,7 @@ PMI Required,${data.loanToValue > 80 ? 'Yes' : 'No'}`;
       }
       
       if (type === 'car-loan' && isCarLoanData(data)) {
-        return `FinWise Car Loan Calculator Export,${timestamp}
+        return `FinSage Car Loan Calculator Export,${timestamp}
 
 Vehicle Details
 Vehicle Price,${data.vehiclePrice}
@@ -163,7 +163,7 @@ Total Cost,${data.totalCost}`;
             if (canNativeShare) {
               // Some browsers throw NotAllowedError if not from a trusted gesture or in insecure context
               await (navigator as any).share({
-                title: `FinWise ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Results`,
+                title: `FinSage ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Results`,
                 text: shareText,
               });
             } else {
@@ -183,7 +183,7 @@ Total Cost,${data.totalCost}`;
           // Native sharing
           const result = await Share.share({
             message: shareText,
-            title: `FinWise ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Results`,
+            title: `FinSage ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Results`,
           });
           
           if (result.action === Share.sharedAction) {
@@ -207,7 +207,7 @@ Total Cost,${data.totalCost}`;
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = `finwise-${type}-calculator-${Date.now()}.txt`;
+          a.download = `finsage-${type}-calculator-${Date.now()}.txt`;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
@@ -218,7 +218,7 @@ Total Cost,${data.totalCost}`;
           // On mobile, share the formatted content
           await Share.share({
             message: pdfContent,
-            title: `FinWise ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Export`,
+            title: `FinSage ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Export`,
           });
         }
       } catch (error) {
@@ -237,7 +237,7 @@ Total Cost,${data.totalCost}`;
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = `finwise-${type}-calculator-${Date.now()}.csv`;
+          a.download = `finsage-${type}-calculator-${Date.now()}.csv`;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
@@ -248,7 +248,7 @@ Total Cost,${data.totalCost}`;
           // On mobile, share the CSV content
           await Share.share({
             message: csvContent,
-            title: `FinWise ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator CSV Export`,
+            title: `FinSage ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator CSV Export`,
           });
         }
       } catch (error) {
@@ -267,7 +267,7 @@ Total Cost,${data.totalCost}`;
       });
       
       if (type === 'mortgage' && isMortgageData(data)) {
-        return `FINWISE MORTGAGE CALCULATOR REPORT
+        return `FINSAGE MORTGAGE CALCULATOR REPORT
 Generated: ${timestamp}
 
 ${'='.repeat(50)}
@@ -303,13 +303,13 @@ PMI Status: ${data.loanToValue > 80 ? 'Required' : 'Not Required'}
 Total Amount Paid: ${formatCurrency((data.monthlyPayment * data.loanTerm * 12) + data.downPayment)}
 
 ${'='.repeat(50)}
-Generated by FinWise - Intelligent Financial Intelligence
+Generated by FinSage
 Download FinWise from the App Store for more features
 ${'='.repeat(50)}`;
       }
       
       if (type === 'car-loan' && isCarLoanData(data)) {
-        return `FINWISE CAR LOAN CALCULATOR REPORT
+        return `FINSAGE CAR LOAN CALCULATOR REPORT
 Generated: ${timestamp}
 
 ${'='.repeat(50)}
@@ -340,7 +340,7 @@ Total of Payments: ${formatCurrency(data.monthlyPayment * data.loanTerm * 12)}
 Total Cost (Vehicle + Interest + Tax + Fees): ${formatCurrency(data.totalCost)}
 
 ${'='.repeat(50)}
-Generated by FinWise - Intelligent Financial Intelligence
+Generated by FinSage
 Download FinWise from the App Store for more features
 ${'='.repeat(50)}`;
       }

@@ -16,7 +16,7 @@ interface FinSageLogoProps {
 const FinSageLogo: React.FC<FinSageLogoProps> = ({
   variant = 'full',
   size = 'medium',
-  showText = true,
+  showText = false,
   premium = false,
   animated = false,
   testID
@@ -63,24 +63,18 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
     return (
       <View style={styles.wordmarkContainer}>
         <View style={[styles.modernContainer, {
-          backgroundColor: isDark ? colors.surface.elevated : colors.surface.primary,
-          borderColor: isDark ? colors.border.medium : colors.border.light,
-          shadowColor: isDark ? '#000' : '#000',
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+          shadowColor: 'transparent',
         }]}>
           <View style={styles.brandContainer}>
             <Text style={[styles.brandText, { 
               fontSize: config.fontSize * 1.2,
-              color: '#059669',
+              color: '#00E67A',
             }]}>
-              FinSage Pro
+              FinSage
             </Text>
           </View>
-          <Text style={[styles.taglineText, { 
-            fontSize: config.fontSize * 0.5,
-            color: colors.text.secondary,
-          }]}>
-            AI Financial Advisor
-          </Text>
         </View>
         {premium && (
           <View style={[styles.premiumBadge, { marginTop: config.spacing * 0.4 }]}>

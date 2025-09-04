@@ -20,6 +20,7 @@ import { shareResults, exportToPDF, exportToCSV } from '@/utils/shareUtils';
 import colors, { typography, spacing, borderRadius } from '@/constants/colors';
 import { useHasPremiumAccess, useSubscription } from '@/contexts/SubscriptionContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { SimpleThemeToggle } from '@/components/shared/ThemeToggle';
 import { MortgageInputs } from '@/types/financial';
 
 type ContentPart = { type: 'text'; text: string } | { type: 'image'; image: string };
@@ -230,6 +231,7 @@ export default function MortgageCalculator() {
               <TouchableOpacity onPress={() => setShowShareSheet(true)} style={{ padding: 6 }}>
                 <MoreHorizontal size={20} color={themeColors.text.primary} />
               </TouchableOpacity>
+              <SimpleThemeToggle style={{ marginLeft: 8 }} />
             </View>
           )
         }} 

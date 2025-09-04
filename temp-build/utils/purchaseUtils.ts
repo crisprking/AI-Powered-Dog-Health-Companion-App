@@ -25,10 +25,10 @@ export interface PurchaseResult {
   error?: string;
 }
 
-// Product IDs for App Store Connect
+// Product IDs for App Store Connect - Updated to match actual App Store Connect
 export const PRODUCT_IDS = {
-  PRO_MONTHLY: 'com.rork.finsage.pro.monthly',
-  PRO_ANNUAL: 'com.rork.finsage.pro.annual',
+  PRO_MONTHLY: 'com.rork.finsage.pro.monthly.subscription',
+  PRO_ANNUAL: 'com.rork.finsage.pro.annual.subscription',
 } as const;
 
 class PurchaseManager {
@@ -86,10 +86,21 @@ class PurchaseManager {
 
       console.log('[PurchaseManager] Starting purchase for:', productId);
 
+      // Ensure IAP is connected before purchase
+      if (!InAppPurchases.isConnectedAsync()) {
+        await InAppPurchases.connectAsync();
+      }
+
+      // Get available products first to ensure product exists
+      const products = await InAppPurchases.getProductsAsync([productId]);
+      if (!products || products.length === 0) {
+        return { success: false, error: 'Product not available. Please try again later.' };
+      }
+
       // Start the purchase
       const result = await InAppPurchases.purchaseItemAsync(productId);
       
-      if (result.responseCode === InAppPurchases.IAPResponseCode.OK) {
+      if (result && (result.responseCode === InAppPurchases.IAPResponseCode.OK || result.responseCode === 'OK')) {
         console.log('[PurchaseManager] Purchase successful:', result);
         
         // Verify the purchase with App Store
@@ -105,7 +116,7 @@ class PurchaseManager {
           return { success: false, error: 'Purchase verification failed' };
         }
       } else {
-        const errorMessage = this.getErrorMessage(result.responseCode);
+        const errorMessage = this.getErrorMessage(result?.responseCode);
         console.error('[PurchaseManager] Purchase failed:', errorMessage);
         return { success: false, error: errorMessage };
       }

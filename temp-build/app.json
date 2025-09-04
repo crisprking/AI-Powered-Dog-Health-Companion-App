@@ -15,8 +15,11 @@
     },
     "ios": {
       "bundleIdentifier": "app.rork.elite-financier-app",
+      "supportsTablet": false,
+      "requireFullScreen": true,
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIDeviceFamily": [1]
       }
     },
     "android": {

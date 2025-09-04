@@ -18,7 +18,7 @@ const THEME_STORAGE_KEY = 'app_theme_mode';
 
 export const [ThemeProvider, useTheme] = createContextHook<ThemeContextType>(() => {
   const systemColorScheme = useColorScheme();
-  const [themeMode, setThemeModeState] = useState<ThemeMode>('system');
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('dark');
   const [, setIsLoaded] = useState(false);
 
   // Determine if dark mode should be active

@@ -63,7 +63,7 @@ function RootLayoutNav() {
         name="paywall" 
         options={{ 
           presentation: "modal", 
-          title: "MintSage Pro",
+          title: "FinSage Pro",
           headerStyle: {
             backgroundColor: '#00E67A',
           },

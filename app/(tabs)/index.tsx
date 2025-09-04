@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Home, Car, Crown, ArrowRight, Calculator, Settings } from 'lucide-react-native';
+import { Home, Car, Crown, ArrowRight, Calculator, Settings, CheckCircle2, Share2 } from 'lucide-react-native';
 import SageMascot from '@/components/shared/SageMascot';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -124,12 +124,16 @@ export default function WelcomeScreen() {
 
           <View style={styles.featuresList}>
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: isDark ? 'rgba(0, 230, 122, 0.15)' : 'rgba(0, 230, 122, 0.1)' }]} />
+              <View style={[styles.featureIcon, { backgroundColor: isDark ? 'rgba(0, 230, 122, 0.15)' : 'rgba(0, 230, 122, 0.1)' }]}>
+                <CheckCircle2 size={18} color="#00E67A" strokeWidth={2.5} />
+              </View>
               <Text style={[styles.featureText, { color: themeColors.text.secondary }]}>Accurate mortgage and auto loan calculators</Text>
             </View>
 
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: isDark ? 'rgba(0, 230, 122, 0.15)' : 'rgba(0, 230, 122, 0.1)' }]} />
+              <View style={[styles.featureIcon, { backgroundColor: isDark ? 'rgba(0, 230, 122, 0.15)' : 'rgba(0, 230, 122, 0.1)' }]}>
+                <Share2 size={18} color="#00E67A" strokeWidth={2.5} />
+              </View>
               <Text style={[styles.featureText, { color: themeColors.text.secondary }]}>Save, share, and export results (Pro)</Text>
             </View>
           </View>

@@ -158,16 +158,26 @@ Total Cost,${data.totalCost}`;
         const shareText = generateShareText(data, type);
         
         if (Platform.OS === 'web') {
-          // Web sharing using Web Share API or fallback to clipboard
-          if (navigator.share) {
-            await navigator.share({
-              title: `FinWise ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Results`,
-              text: shareText,
-            });
-          } else {
-            // Fallback to clipboard
-            await navigator.clipboard.writeText(shareText);
-            Alert.alert('Copied!', 'Results copied to clipboard');
+          try {
+            const canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator;
+            if (canNativeShare) {
+              // Some browsers throw NotAllowedError if not from a trusted gesture or in insecure context
+              await (navigator as any).share({
+                title: `FinWise ${type === 'mortgage' ? 'Mortgage' : 'Car Loan'} Calculator Results`,
+                text: shareText,
+              });
+            } else {
+              await navigator.clipboard.writeText(shareText);
+              Alert.alert('Copied!', 'Results copied to clipboard');
+            }
+          } catch (err: any) {
+            console.warn('Web Share failed, falling back to clipboard:', err?.name || err);
+            try {
+              await navigator.clipboard.writeText(shareText);
+              Alert.alert('Copied!', 'Results copied to clipboard');
+            } catch (clipErr) {
+              Alert.alert('Share Unavailable', 'Your browser blocked sharing. Please press Cmd/Ctrl+C to copy.');
+            }
           }
         } else {
           // Native sharing

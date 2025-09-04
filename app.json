@@ -14,7 +14,6 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
       "bundleIdentifier": "app.rork.elite-financier-app"
     },
     "android": {
@@ -35,6 +34,17 @@
         "expo-router",
         {
           "origin": "https://rork.com/"
+        }
+      ],
+      [
+        "expo-in-app-purchases",
+        {
+          "ios": {
+            "productIdentifiers": [
+              "com.rork.finsage.pro.monthly",
+              "com.rork.finsage.pro.annual"
+            ]
+          }
         }
       ]
     ],

@@ -6,9 +6,7 @@
     "orientation": "portrait",
     "platforms": ["ios"],
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
@@ -18,14 +16,10 @@
       "bundleIdentifier": "app.rork.elite-financier-app",
       "supportsTablet": false,
       "requireFullScreen": true,
-      "buildNumber": "1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "UIDeviceFamily": [1]
       }
-    },
-    "web": {
-      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router"
@@ -34,12 +28,6 @@
       "eas": {
         "projectId": "51725d54-e994-402c-a53a-21dcf18e90ef"
       }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/51725d54-e994-402c-a53a-21dcf18e90ef"
     }
   }
 }

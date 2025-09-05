@@ -8,19 +8,21 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "bundleIdentifier": "app.rork.elite-financier-app",
       "supportsTablet": false,
       "requireFullScreen": true,
+      "buildNumber": "1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "UIDeviceFamily": [1]
+        "UIDeviceFamily": [1],
+        "UILaunchStoryboardName": "SplashScreen"
       }
     },
     "web": {

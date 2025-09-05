@@ -23,7 +23,8 @@
       "autoIncrement": true,
       "channel": "production",
       "ios": {
-        "simulator": false
+        "simulator": false,
+        "buildConfiguration": "Release"
       }
     }
   },

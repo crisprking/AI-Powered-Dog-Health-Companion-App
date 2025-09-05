@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MASCOT_URL } from '@/constants/branding';
 import { useTheme } from '@/contexts/ThemeContext';
+import Svg, { Circle, Path, G, Defs, LinearGradient as SvgLinearGradient, Stop } from 'react-native-svg';
 
 interface FinSageLogoProps {
   variant?: 'full' | 'icon' | 'wordmark' | 'premium';
@@ -36,24 +36,87 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
   
   const config = getSizeConfig();
   
-  const renderMascot = () => (
-    <View style={[styles.mascotContainer, {
-      width: config.mascotSize + 8,
-      height: config.mascotSize + 8,
-      borderRadius: (config.mascotSize + 8) / 2,
-      backgroundColor: isDark ? 'rgba(5, 150, 105, 0.1)' : 'rgba(5, 150, 105, 0.05)',
-      borderWidth: 2,
-      borderColor: isDark ? 'rgba(5, 150, 105, 0.3)' : 'rgba(5, 150, 105, 0.2)',
+  const renderCleanIcon = () => (
+    <View style={[styles.iconContainer, {
+      width: config.mascotSize + 16,
+      height: config.mascotSize + 16,
+      borderRadius: (config.mascotSize + 16) / 2,
     }]}>
-      <Image
-        source={{ uri: MASCOT_URL }}
-        style={{
-          width: config.mascotSize,
-          height: config.mascotSize,
-        }}
-        resizeMode="contain"
-        testID={`${testID}-mascot`}
-      />
+      <Svg
+        width={config.mascotSize}
+        height={config.mascotSize}
+        viewBox="0 0 100 100"
+        testID={`${testID}-icon`}
+      >
+        <Defs>
+          <SvgLinearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <Stop offset="0%" stopColor="#00E67A" />
+            <Stop offset="50%" stopColor="#059669" />
+            <Stop offset="100%" stopColor="#047857" />
+          </SvgLinearGradient>
+        </Defs>
+        
+        {/* Outer glow circle */}
+        <Circle
+          cx="50"
+          cy="50"
+          r="48"
+          fill="url(#gradient)"
+          opacity="0.1"
+        />
+        
+        {/* Main circle */}
+        <Circle
+          cx="50"
+          cy="50"
+          r="40"
+          fill="url(#gradient)"
+          opacity="0.9"
+        />
+        
+        {/* Inner circle for depth */}
+        <Circle
+          cx="50"
+          cy="50"
+          r="35"
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="1"
+          opacity="0.3"
+        />
+        
+        {/* Financial chart icon */}
+        <G transform="translate(25, 25)">
+          {/* Chart bars */}
+          <Path
+            d="M5 35 L15 25 L25 30 L35 15 L45 20"
+            stroke="#FFFFFF"
+            strokeWidth="3"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          
+          {/* Data points */}
+          <Circle cx="5" cy="35" r="2" fill="#FFFFFF" />
+          <Circle cx="15" cy="25" r="2" fill="#FFFFFF" />
+          <Circle cx="25" cy="30" r="2" fill="#FFFFFF" />
+          <Circle cx="35" cy="15" r="2" fill="#FFFFFF" />
+          <Circle cx="45" cy="20" r="2" fill="#FFFFFF" />
+          
+          {/* AI circuit pattern */}
+          <G opacity="0.6">
+            <Path
+              d="M10 10 L20 10 M15 5 L15 15 M30 5 L30 15 M25 10 L35 10"
+              stroke="#FFFFFF"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <Circle cx="15" cy="10" r="1" fill="#FFFFFF" />
+            <Circle cx="30" cy="10" r="1" fill="#FFFFFF" />
+          </G>
+        </G>
+      </Svg>
     </View>
   );
   
@@ -62,24 +125,34 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
     
     return (
       <View style={styles.wordmarkContainer}>
-        <View style={[styles.modernContainer, {
-          backgroundColor: 'transparent',
-          borderColor: 'transparent',
-          shadowColor: 'transparent',
-        }]}>
-          <View style={styles.brandContainer}>
-            <Text style={[styles.brandText, { 
-              fontSize: config.fontSize * 1.2,
+        <View style={styles.brandContainer}>
+          <Text style={[styles.brandText, { 
+            fontSize: config.fontSize * 1.4,
+            color: '#FFFFFF',
+            fontWeight: '700',
+          }]}>
+            FinSage
+          </Text>
+          <View style={styles.proBadge}>
+            <Text style={[styles.proText, { 
+              fontSize: config.fontSize * 0.6,
               color: '#00E67A',
             }]}>
-              FinSage
+              Pro
             </Text>
           </View>
         </View>
+        <Text style={[styles.taglineText, { 
+          fontSize: config.fontSize * 0.5,
+          color: '#9CA3AF',
+          marginTop: 4,
+        }]}>
+          Your AI Financial Advisor
+        </Text>
         {premium && (
           <View style={[styles.premiumBadge, { marginTop: config.spacing * 0.4 }]}>
             <LinearGradient
-              colors={['#059669', '#047857', '#065f46']}
+              colors={['#00E67A', '#059669', '#047857']}
               style={styles.premiumGradient}
             >
               <Text style={[styles.premiumText, { fontSize: config.fontSize * 0.35 }]}>✨ PREMIUM UNLOCKED</Text>
@@ -94,7 +167,7 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
     case 'icon':
       return (
         <View style={styles.container} testID={testID}>
-          {renderMascot()}
+          {renderCleanIcon()}
         </View>
       );
       
@@ -109,7 +182,7 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
       return (
         <View style={[styles.container, styles.premiumContainer]} testID={testID}>
           <View style={styles.premiumLayout}>
-            {renderMascot()}
+            {renderCleanIcon()}
             <View style={{ marginLeft: config.spacing }}>
               {renderWordmark()}
             </View>
@@ -121,7 +194,7 @@ const FinSageLogo: React.FC<FinSageLogoProps> = ({
       return (
         <View style={styles.container} testID={testID}>
           <View style={[styles.fullLayout, { gap: config.spacing }]}>
-            {renderMascot()}
+            {renderCleanIcon()}
             {renderWordmark()}
           </View>
         </View>
@@ -155,14 +228,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  mascotContainer: {
+  iconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#059669',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: '#00E67A',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
   wordmarkContainer: {
     alignItems: 'center',
@@ -180,14 +253,23 @@ const styles = StyleSheet.create({
   },
   brandContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'baseline',
     justifyContent: 'center',
     marginBottom: 4,
   },
   brandText: {
-    fontWeight: '800',
+    fontWeight: '700',
     letterSpacing: -0.5,
     textAlign: 'center',
+  },
+  proBadge: {
+    marginLeft: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    backgroundColor: 'rgba(0, 230, 122, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 230, 122, 0.3)',
   },
   proContainer: {
     marginLeft: 8,

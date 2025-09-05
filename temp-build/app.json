@@ -6,20 +6,10 @@
     "orientation": "portrait",
     "platforms": ["ios"],
     "icon": "./assets/images/icon.png",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
     "ios": {
       "bundleIdentifier": "app.rork.elite-financier-app",
       "supportsTablet": false,
-      "requireFullScreen": true,
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false,
-        "UIDeviceFamily": [1]
-      }
+      "requireFullScreen": true
     },
     "plugins": [
       "expo-router"

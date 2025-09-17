@@ -1,0 +1,72 @@
+const fs = require('fs');
+const path = require('path');
+
+// Create a simple SVG icon for PupPulse
+const svgIcon = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg)" rx="200"/>
+  
+  <!-- White circle -->
+  <circle cx="512" cy="512" r="400" fill="#FFFFFF"/>
+  
+  <!-- Dog head -->
+  <circle cx="512" cy="400" r="180" fill="none" stroke="#4CAF50" stroke-width="20"/>
+  
+  <!-- Dog ears -->
+  <ellipse cx="400" cy="280" rx="60" ry="80" fill="#4CAF50" transform="rotate(-30 400 280)"/>
+  <ellipse cx="624" cy="280" rx="60" ry="80" fill="#4CAF50" transform="rotate(30 624 280)"/>
+  
+  <!-- Inner ears -->
+  <ellipse cx="400" cy="280" rx="35" ry="50" fill="#FFB6C1" transform="rotate(-30 400 280)"/>
+  <ellipse cx="624" cy="280" rx="35" ry="50" fill="#FFB6C1" transform="rotate(30 624 280)"/>
+  
+  <!-- Eyes -->
+  <circle cx="470" cy="380" r="25" fill="#333333"/>
+  <circle cx="554" cy="380" r="25" fill="#333333"/>
+  
+  <!-- Eye highlights -->
+  <circle cx="475" cy="375" r="8" fill="#FFFFFF"/>
+  <circle cx="559" cy="375" r="8" fill="#FFFFFF"/>
+  
+  <!-- Nose -->
+  <ellipse cx="512" cy="450" rx="20" ry="15" fill="#333333"/>
+  
+  <!-- Mouth -->
+  <path d="M 452 480 A 60 60 0 0 1 572 480" stroke="#333333" stroke-width="8" fill="none"/>
+  
+  <!-- Tongue -->
+  <ellipse cx="512" cy="500" rx="15" ry="25" fill="#FF6B6B"/>
+  
+  <!-- Heart for health -->
+  <path d="M 512 600 C 512 580 480 580 480 600 C 480 620 512 650 512 650 C 512 650 544 620 544 600 C 544 580 512 580 512 600 Z" fill="#FF6B6B"/>
+  
+  <!-- Plus sign for health monitoring -->
+  <line x1="512" y1="720" x2="512" y2="780" stroke="#4CAF50" stroke-width="15"/>
+  <line x1="470" y1="750" x2="554" y2="750" stroke="#4CAF50" stroke-width="15"/>
+  
+  <!-- App name -->
+  <text x="512" y="850" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#4CAF50">PupPulse</text>
+  <text x="512" y="890" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#666666">AI Dog Health</text>
+</svg>`;
+
+// Write the SVG file
+fs.writeFileSync(path.join(__dirname, 'assets', 'icon.svg'), svgIcon);
+
+console.log('✅ Dog-themed icon generated successfully!');
+console.log('📁 Icon saved to: assets/icon.svg');
+console.log('🐕 PupPulse icon features:');
+console.log('   - Green medical theme');
+console.log('   - Cute dog face');
+console.log('   - Health heart symbol');
+console.log('   - Medical plus sign');
+console.log('   - Professional typography');
+

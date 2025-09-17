@@ -1,56 +1,62 @@
 {
   "expo": {
-    "name": "Soluna: Habit Transformation",
-    "slug": "soluna-habit-transformation",
+    "name": "PupPulse: AI Dog Health",
+    "slug": "puppulse-ai-dog-health",
     "version": "1.0.0",
     "orientation": "portrait",
-    "platforms": ["ios"],
-    "icon": "./rork-nest-focus/rork-soluna--habit-transformation/assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
-      "image": "./rork-nest-focus/rork-soluna--habit-transformation/assets/images/splash-icon.png",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#4CAF50"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "app.rork.soluna-habit-transformation",
-      "requireFullScreen": true,
+      "bundleIdentifier": "com.abrahamtrueba9898.puppulse",
       "buildNumber": "1",
       "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Access photos to analyze your dog's health symptoms and track wellness",
+        "NSCameraUsageDescription": "Take photos for AI-powered dog health analysis and symptom checking",
+        "NSMicrophoneUsageDescription": "Record audio for veterinary consultations and health monitoring",
+        "NSLocationWhenInUseUsageDescription": "Find nearby veterinary clinics and emergency services for your dog",
         "ITSAppUsesNonExemptEncryption": false,
-        "UIDeviceFamily": [1],
         "CFBundleAllowMixedLocalizations": true,
         "CFBundleLocalizations": [
-          "en", "fr"
+          "en"
         ],
-        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos to share your habit progress",
-        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera to take photos of your habits",
-        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone for voice notes about your habits"
+        "UIRequiredDeviceCapabilities": [
+          "armv7"
+        ],
+        "UIStatusBarStyle": "UIStatusBarStyleLightContent"
       }
     },
-    "plugins": [
-      [
-        "expo-router",
-        {
-          "origin": "https://rork.com/"
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ]
+    "platforms": [
+      "ios"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
+    "scheme": "puppulse-doghealth",
+    "description": "AI-powered dog health companion for comprehensive pet wellness monitoring, symptom checking, and veterinary care coordination",
+    "keywords": [
+      "dog",
+      "health",
+      "AI",
+      "veterinary",
+      "pet",
+      "wellness",
+      "monitoring",
+      "care",
+      "puppy",
+      "canine"
+    ],
+    "privacy": "public",
+    "primaryColor": "#4CAF50",
+    "backgroundColor": "#F5F5F5",
     "extra": {
       "eas": {
-        "projectId": "3dbaee6b-a8d2-41af-aff9-0317755a4056"
+        "projectId": "c8cb52a8-61a1-43da-84ae-92feb36d5695"
       }
     }
   }

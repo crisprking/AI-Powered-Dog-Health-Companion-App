@@ -1,0 +1,41 @@
+{
+  "cli": {
+    "version": ">= 5.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "buildConfiguration": "Release",
+        "autoIncrement": true,
+        "simulator": false,
+        "credentialsSource": "remote"
+      }
+    },
+    "production": {
+      "env": {
+        "NODE_ENV": "production",
+        "EXPO_NO_CAPABILITY_SYNC": "1"
+      },
+      "ios": {
+        "buildConfiguration": "Release",
+        "autoIncrement": true,
+        "simulator": false,
+        "credentialsSource": "remote"
+      }
+    },
+    "simulator": {
+      "ios": {
+        "simulator": true
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

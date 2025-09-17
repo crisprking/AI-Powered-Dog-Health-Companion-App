@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PupPulse Icon Generator</title>
+    <style>
+        body { margin: 0; padding: 20px; background: #f0f0f0; font-family: Arial, sans-serif; }
+        canvas { border: 2px solid #333; margin: 10px; }
+        .container { text-align: center; max-width: 800px; margin: 0 auto; }
+        .download-btn { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .download-btn:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐕 PupPulse App Icon Generator</h1>
+        <p>Creating professional dog health app icon for TestFlight submission</p>
+        
+        <canvas id="icon1024" width="1024" height="1024"></canvas>
+        <canvas id="icon512" width="512" height="512"></canvas>
+        <canvas id="icon256" width="256" height="256"></canvas>
+        <canvas id="icon128" width="128" height="128"></canvas>
+        
+        <br>
+        <button class="download-btn" onclick="downloadIcon('icon1024', 'puppulse-icon-1024.png')">Download 1024x1024</button>
+        <button class="download-btn" onclick="downloadIcon('icon512', 'puppulse-icon-512.png')">Download 512x512</button>
+        <button class="download-btn" onclick="downloadIcon('icon256', 'puppulse-icon-256.png')">Download 256x256</button>
+        <button class="download-btn" onclick="downloadIcon('icon128', 'puppulse-icon-128.png')">Download 128x128</button>
+    </div>
+
+    <script>
+        function createIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const scale = size / 1024;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#4CAF50');
+            gradient.addColorStop(1, '#2E7D32');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // White circle background
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size * 0.4, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Dog head outline
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = size * 0.02;
+            ctx.beginPath();
+            ctx.arc(size/2, size * 0.4, size * 0.18, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Dog ears
+            ctx.fillStyle = '#4CAF50';
+            ctx.beginPath();
+            ctx.ellipse(size * 0.4, size * 0.28, size * 0.06, size * 0.08, -0.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(size * 0.6, size * 0.28, size * 0.06, size * 0.08, 0.5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Inner ear color
+            ctx.fillStyle = '#FFB6C1';
+            ctx.beginPath();
+            ctx.ellipse(size * 0.4, size * 0.28, size * 0.035, size * 0.05, -0.5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(size * 0.6, size * 0.28, size * 0.035, size * 0.05, 0.5, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Eyes
+            ctx.fillStyle = '#333333';
+            ctx.beginPath();
+            ctx.arc(size * 0.47, size * 0.38, size * 0.025, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size * 0.53, size * 0.38, size * 0.025, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Eye highlights
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(size * 0.475, size * 0.375, size * 0.008, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size * 0.525, size * 0.375, size * 0.008, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Nose
+            ctx.fillStyle = '#333333';
+            ctx.beginPath();
+            ctx.ellipse(size/2, size * 0.45, size * 0.02, size * 0.015, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Mouth
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = size * 0.008;
+            ctx.beginPath();
+            ctx.arc(size/2, size * 0.48, size * 0.06, 0, Math.PI);
+            ctx.stroke();
+            
+            // Tongue
+            ctx.fillStyle = '#FF6B6B';
+            ctx.beginPath();
+            ctx.ellipse(size/2, size * 0.5, size * 0.015, size * 0.025, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Heart for health
+            ctx.fillStyle = '#FF6B6B';
+            ctx.beginPath();
+            ctx.moveTo(size/2, size * 0.6);
+            ctx.bezierCurveTo(size/2, size * 0.58, size * 0.48, size * 0.58, size * 0.48, size * 0.6);
+            ctx.bezierCurveTo(size * 0.48, size * 0.62, size/2, size * 0.65, size/2, size * 0.65);
+            ctx.bezierCurveTo(size/2, size * 0.65, size * 0.52, size * 0.62, size * 0.52, size * 0.6);
+            ctx.bezierCurveTo(size * 0.52, size * 0.58, size/2, size * 0.58, size/2, size * 0.6);
+            ctx.fill();
+            
+            // Plus sign for health monitoring
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = size * 0.015;
+            ctx.beginPath();
+            ctx.moveTo(size/2, size * 0.72);
+            ctx.lineTo(size/2, size * 0.78);
+            ctx.moveTo(size * 0.47, size * 0.75);
+            ctx.lineTo(size * 0.53, size * 0.75);
+            ctx.stroke();
+            
+            // App name (only for larger sizes)
+            if (size >= 256) {
+                ctx.fillStyle = '#4CAF50';
+                ctx.font = `bold ${size * 0.048}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.fillText('PupPulse', size/2, size * 0.85);
+                
+                if (size >= 512) {
+                    ctx.fillStyle = '#666666';
+                    ctx.font = `bold ${size * 0.024}px Arial`;
+                    ctx.fillText('AI Dog Health', size/2, size * 0.89);
+                }
+            }
+        }
+        
+        function downloadIcon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Generate all icons on load
+        window.onload = function() {
+            createIcon('icon1024', 1024);
+            createIcon('icon512', 512);
+            createIcon('icon256', 256);
+            createIcon('icon128', 128);
+        };
+    </script>
+</body>
+</html>
+

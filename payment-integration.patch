@@ -1,0 +1,50 @@
+--- App.tsx.original
++++ App.tsx.updated
+@@ -7,6 +7,9 @@ import { LinearGradient } from 'expo-linear-gradient';
+ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+ import { SafeAreaView } from 'react-native-safe-area-context';
+ import * as Haptics from 'expo-haptics';
++import { PaymentScreen } from './src/components/PaymentScreen';
++import { PaymentService } from './src/services/PaymentService';
++import { Profile } from './src/lib/supabase';
+ 
+ const { width, height } = Dimensions.get('window');
+ 
+@@ -30,6 +33,8 @@ export default function App() {
+   const [notificationCount, setNotificationCount] = useState(3);
+   const [isPremium, setIsPremium] = useState(true);
+   const [dailyGoal, setDailyGoal] = useState({ walks: 2, meals: 3, play: 30, completed: 0 });
++  const [showPaymentScreen, setShowPaymentScreen] = useState(false);
++  const [userProfile, setUserProfile] = useState<Profile | null>(null);
+ 
+   const scrollViewRef = useRef<ScrollView>(null);
+ 
+@@ -534,6 +539,12 @@ export default function App() {
+   const handlePremiumFeatures = () => {
+     if (Platform.OS === 'ios') {
+       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+     }
+-    Alert.alert(
+-      '⭐ Premium Features',
+-      'Unlock advanced AI insights, unlimited vet consultations, and priority support!',
+-      [
+-        { text: 'Upgrade Now', onPress: () => console.log('Opening premium upgrade...') },
+-        { text: 'Learn More', onPress: () => console.log('Showing premium features...') },
+-        { text: 'Cancel', style: 'cancel' }
+-      ]
+-    );
++    setShowPaymentScreen(true);
++    addXP(5);
++    pulseAnimationEffect();
+   };
++
++  // Add PaymentScreen component before the closing </SafeAreaView>
++  <PaymentScreen
++    visible={showPaymentScreen}
++    onClose={() => setShowPaymentScreen(false)}
++    onSubscriptionChange={(isPremium) => {
++      setIsPremium(isPremium);
++      setShowPaymentScreen(false);
++    }}
++  />
+
